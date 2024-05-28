@@ -4,30 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        
-     
+        /* Adjust position of container to the left */
+        .footer-container {
+            justify-content: flex-start !important; /* Align items to the start */
+        }
     </style>
 </head>
 <body>
-    <footer class="footer py-5 mt-4">
-        <div class="container">
-            <div class="row row-cols-5">
-                <div class="col">
-                    <h5 style="color:white;">Section</h5>
-                   
-                      <a href="#" class="nav-link-footer">Home</a></li>
-                      <a href="#" class="nav-link-footer">Features</a></li>
-                      <a href="#" class="nav-link-footer">Pricing</a></li>
-                      <a href="#" class="nav-link-footer">FAQs</a></li>
-                      <a href="#" class="nav-link-footer">About</a></li>
-                </div>
-            </div>
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h5>Contact Us</h5>
+          <ul>
+            <li><a href="mailto:info@example.com">info@example.com</a></li>
+            <li><a href="tel:+1234567890">+1234567890</a></li>
+            <li><div>Location</div></li>
+            <li><div>Working Hours</div></li>
+          </ul>
         </div>
-    </footer>
-    <p class="text-muted text-center">© 2021 All Rights Reserved</p>
-
- 
-
+      
+        <div class="col-md-4">
+          <h5>Links</h5>
+          <ul>
+            <li><a href="https://www.example.com/about">Home</a></li>
+            <li><a href="https://www.example.com/terms">About Us</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
