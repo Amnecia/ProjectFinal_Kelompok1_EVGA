@@ -1,0 +1,58 @@
+:root {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Lalezar", system-ui;
+    font-weight: 400;
+    font-style: normal;
+}
+.nav {
+  background-color:  #cdcdcd ;
+}
+
+.offcanvas-header{
+  background-color: #D00000;
+}
+
+
+
+.nav-link{
+  color: black;
+}
+
+.navbar{
+  background-color: #D00000;
+  color : white;
+}
+
+.navbar-brand{
+  color:white;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.navbar-brand:hover{
+    color: #ccc; 
+}
+
+.navbar-toggler{
+    color: #D00000;
+}
+
+.btn-navbar{
+    color: #fff; 
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-decoration: none;
+    margin-right: 3rem; 
+}
+
+.btn-navbar:hover {
+    color: #ccc; 
+}
+
+.bi-pencil{
+    padding-right:4px;
+}
+
