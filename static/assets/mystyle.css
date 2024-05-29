@@ -1,108 +1,114 @@
 :root {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 body {
-    font-family: "Lalezar", system-ui;
-    font-weight: 400;
-    font-style: normal;
+  font-family: "Lalezar", system-ui;
+  font-weight: 400;
+  font-style: normal;
 }
 .nav {
-  background-color:  #cdcdcd ;
+background-color:  #cdcdcd ;
 }
 
 .offcanvas-header{
-  background-color: #D00000;
+background-color: #D00000;
 }
 
-
-
 .nav-link{
-  color: black;
+color: black;
 }
 
 .navbar{
-  background-color: #D00000;
-  color : white;
+background-color: #D00000;
+color : white;
 }
 
 .navbar-brand{
-  color:white;
-  font-size: 1.5rem;
-  font-weight: bold;
+color:white;
+font-size: 1.5rem;
+font-weight: bold;
 }
 
 .navbar-brand:hover{
-    color: #ccc; 
+  color: #ccc; 
 }
 
 .navbar-toggler{
-    color: #D00000;
+  color: #D00000;
 }
 
 .btn-navbar{
-    color: #fff; 
-    font-size: 1.1rem;
-    font-weight: bold;
-    text-decoration: none;
-    margin-right: 3rem; 
+  color: #fff; 
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-decoration: none;
+  margin-right: 3rem; 
 }
 
 .btn-navbar:hover {
-    color: #ccc; 
+  color: #ccc; 
 }
 
 .bi-pencil{
-    padding-right:4px;
+  padding-right:4px;
 }
 
 .logout {
-    background-color: #000000;
-    font-size:16px;
-    color: white;
-    font-weight: bold;
-    max-width: 100%;
-    width: 500px;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    display: flex;
-    align-items: center; 
-    justify-content: flex-start;
-    margin-left: auto; 
-    margin-right: auto; 
+  background-color: #000000;
+  font-size:16px;
+  color: white;
+  font-weight: bold;
+  max-width: 100%;
+  width: 500px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  display: flex;
+  align-items: center; 
+  justify-content: flex-start;
+  margin-left: auto; 
+  margin-right: auto; 
 }
 
 .logout svg {
-    margin-right: 10px; 
+  margin-right: 10px; 
 }
 
 .footer {
-  background-color: black; 
+background-color: black; 
 }
 
 .nav-link-footer {
-  background-color: transparent !important; 
-  color: white; 
+background-color: transparent !important; 
+color: white; 
 }
 
 footer {
-  display: flex;
-  justify-content: space-around;
-  background-color: #333;
-  color: #fff;
-  padding: 20px;
+display: flex;
+justify-content: space-around;
+background-color: #333;
+color: #fff;
+padding: 20px;
 }
 
 .column {
-  width: 27%;
+width: 27%;
 }
 
 p {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 10px;
+font-size: 20px;
+font-weight: bold;
+margin-bottom: 10px;
 }
 
 footer{
-  margin-top: 50px;
+margin-top: 50px;
+}
+
+.navbar .btn-checkout {
+  color: white;
+  position: absolute;
+  right: 4.5rem;
+  top: 50%;
+  transform: translateY(-50%);
 }
