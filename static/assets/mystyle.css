@@ -163,3 +163,14 @@ margin-top: 50px;
   padding: 0;
   box-sizing: border-box;
 }
+
+.navbar .btn-login {
+  color: white;
+  background-color: black;
+  position: absolute;
+  width: 150px;
+  right: 6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 10%;
+}
