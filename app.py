@@ -16,13 +16,17 @@ def home():
 def about():
     return render_template('about.html')
 
-@app.route('/about', methods=['GET'])
+@app.route('/addProduk', methods=['GET'])
 def tambah_produk():
     return render_template('tambah_produk.html')
 
-@app.route('/about', methods=['GET'])
+@app.route('/editProduk', methods=['GET'])
 def edit_produk():
     return render_template('edit_produk.html')
+
+@app.route('/detail', methods=['GET'])
+def detail_produk():
+    return render_template('detail_produk.html')
 
 
 

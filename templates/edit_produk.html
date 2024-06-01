@@ -1,91 +1,85 @@
 {% include 'header.html' %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Satisfy&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://code.jquery.com/jquery-3.7.1.js"
-      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-      crossorigin="anonymous"
-    ></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Satisfy&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <link href="../static/assets/mystyle.css" rel="stylesheet">
     <style>
-      body {
-        font-family: "Source Serif 4", serif;
-        font-optical-sizing: auto;
-        font-weight: bold;
-      }
+        .container {
+            margin-top: 70px;
+            margin-right: 30px;
+            margin-left: 30px;
+            width: calc(100% - 60px); /* Adjust the width */
+        }
     </style>
     <title>Edit Produk</title>
-  </head>
-  <body>
-    <div class="container border border-danger shadow rounded p-3">
-      <div class="row">
+</head>
+<body>
+<div class="container border border-danger shadow rounded p-3">
+    <div class="row">
         <div
-          class="border border-danger col-3 mx-4 mt-4 mb-4"
-          style="height: 250px; width: 250px"
+                class="border border-danger col-3 mx-4 mt-4 mb-4"
+                style="height: 250px; width: 250px"
         ></div>
         <div class="col-9 mt-4">
-          <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label"
-              >Product Name</label
-            >
-            <input
-              type="text"
-              class="form-control border border-dark"
-              id="namaProduk"
-              placeholder="masukan nama produk"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label"
-              >Price</label
-            >
-            <input type="number" class="form-control border border-dark" id="hargaProduk" />
-          </div>
-          <div class="container px-0">
-            <!-- Hidden input file, triggered by clicking the button -->
-            <input type="file" id="imageInput" style="display: none;" accept="image/*">
-            <!-- Button to trigger file input -->
-            <label for="imageInput" class="btn btn-danger">Select Image</label>
-          </div>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label"
+                >Product Name</label
+                >
+                <input
+                        type="text"
+                        class="form-control border border-dark"
+                        id="namaProduk"
+                        placeholder="masukan nama produk"
+                />
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label"
+                >Price</label
+                >
+                <input type="number" class="form-control border border-dark" id="hargaProduk" />
+            </div>
+            <div class="container px-0">
+                <!-- Hidden input file, triggered by clicking the button -->
+                <input type="file" id="imageInput" style="display: none;" accept="image/*">
+                <!-- Button to trigger file input -->
+                <label for="imageInput" class="btn btn-danger">Select Image</label>
+            </div>
         </div>
         <div class="mb-4 mx-2" style="width: 97%;">
-          <label for="exampleFormControlTextarea1" class="form-label"
+            <label for="exampleFormControlTextarea1" class="form-label"
             >Description</label
-          >
-          <textarea
-            class="form-control border border-dark"
-            id="deskripsiProduk"
-            rows="4"
-          ></textarea>
+            >
+            <textarea
+                    class="form-control border border-dark"
+                    id="deskripsiProduk"
+                    rows="4"
+            ></textarea>
         </div>
-      </div>
-      <div class="row justify-content-between">
+    </div>
+    <div class="row justify-content-between">
         <div class="col-9"></div>
         <div class="col-auto">
-          <button type="button" class="btn btn-outline-danger mx-2 px-4">Cancel</button>
-          <button type="button" class="btn btn-danger px-4">Save</button>
+            <button type="button" class="btn btn-outline-danger mx-2 px-4">Cancel</button>
+            <button type="button" class="btn btn-danger px-4">Save</button>
         </div>
-      </div>
     </div>
-    <script
-      src="https://code.jquery.com/jquery-3.6.0.min.js"
-      integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5+5hb7ie1N6xnq7aP6eRA5PJ4LFpo5RR0M0Ez4Jk"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+</div>
+<script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5+5hb7ie1N6xnq7aP6eRA5PJ4LFpo5RR0M0Ez4Jk"
+        crossorigin="anonymous"
+></script>
+</body>
 </html>
+
+{% include 'footer.html' %}
+
+
 {% include 'footer.html' %}
