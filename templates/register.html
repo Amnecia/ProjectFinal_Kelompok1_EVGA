@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Create Account</title>
+    <!-- Menambahkan Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Menambahkan FontAwesome untuk ikon -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: white;
+            /* Warna latar belakang putih */
+        }
+
+        .form-control,
+        .btn {
+            border: 1px solid black;
+            /* Border hitam */
+        }
+
+        .btn {
+            background-color: black;
+            /* Warna tombol hitam */
+            color: white;
+            /* Warna teks tombol putih */
+        }
+
+        a {
+            color: black;
+            /* Warna link hitam */
+        }
+
+        .custom-container {
+            border: 2px solid black;
+            /* Border hitam untuk container */
+            padding: 20px;
+            border-radius: 5px;
+            /* Rounded corners untuk container */
+            margin-top: 50px;
+            /* Margin atas */
+        }
+
+        .input-group-text {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        .input-group .form-control {
+            position: relative;
+        }
+
+        .input-group-text {
+            position: absolute;
+            right: 10px;
+            z-index: 2;
+            border: none;
+            background: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 custom-container">
+                <h2 class="text-center">Create Account</h2>
+                <form action="/submit_registration" method="post">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address:</label>
+                        <input type="text" class="form-control" id="address" name="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact_number">Contact Number:</label>
+                        <input type="text" class="form-control" id="contact_number" name="contact_number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="password" name="password" required>
+                            <span class="input-group-text" onclick="togglePasswordVisibility()">
+                                <i class="fas fa-eye" id="toggleIcon"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn">Sign Up</button>
+                    </div>
+                </form>
+                <p class="text-center">Already have an account? <a href="/login">Login here</a></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        function togglePasswordVisibility() {
+            var passwordInput = document.getElementById('password');
+            var toggleIcon = document.getElementById('toggleIcon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+    </script>
+</body>
+
+</html>
