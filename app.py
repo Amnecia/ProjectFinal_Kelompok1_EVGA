@@ -29,6 +29,20 @@ def detail_produk():
     return render_template('detail_produk.html')
 
 
+@app.route('/order', methods=['GET'])
+def order():
+    return render_template('pesanan.html')
+
+@app.route('/status', methods=['GET'])
+def status():
+    return render_template('status_pesanan.html')
+
+
+@app.route('/list', methods=['GET'])
+def list():
+    return render_template('produk.html')
+
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

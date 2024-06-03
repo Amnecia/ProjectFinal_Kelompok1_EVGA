@@ -171,6 +171,11 @@ margin-top: 50px;
   width: 150px;
   right: 6rem;
   top: 50%;
+  font-size:25px;
   transform: translateY(-50%);
-  border-radius: 10%;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  border:none;
 }

@@ -19,7 +19,7 @@
 <style>
 
   .container-product {
-        border: 1px solid #ccc;
+    border: 1px solid #ccc;
         width: 1800px;
         margin: 0 20px;
         margin-top: 80px;
@@ -28,6 +28,9 @@
         display: flex;
         flex-wrap: wrap;
         align-items: center;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        background-color: #fff;
     }
 
   .main-image-container {
@@ -176,9 +179,17 @@
 
 .reviews-container {
   border: 1px solid #ccc;
-  padding: 20px;
-  margin-top: 30px;
-  margin-left: 30px;
+        width: 1800px;
+        margin: 0 20px;
+        margin-top: 80px;
+        padding-left: 30px;
+        padding-bottom: 40px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        background-color: #fff;
 }
 .review-item {
   display: flex;
@@ -280,9 +291,11 @@
           <p class="review-description">These headphones are amazing! The sound quality is incredible and the noise-cancelling feature is so effective. I highly recommend them!</p>
       </div>
     </div>
-    <div class="review-item">
-      <img src= "https://wallpapercave.com/wp/wp6183733.jpg" alt="User 1" class="review-user-picture">
-      <div class="review-content">
+    </div>
+    <div class="reviews-container">
+      <div class="review-item">
+        <img src= "https://wallpapercave.com/wp/wp6183733.jpg" alt="User 1" class="review-user-picture">
+        <div class="review-content">
           <p class="review-user-name">John Doe</p>
           <div class="review-stars">
               <i class="fas fa-star" aria-hidden="true"></i>
@@ -291,7 +304,7 @@
               <i class="fas fa-star" aria-hidden="true"></i>
               <i class="fas fa-star" aria-hidden="true"></i>
           </div>
-          <p class="review-description">I was a bit skeptical about the noise-cancelling feature, but it really works! The sound quality is also very good. I'm happy with my purchase!</p>
+          <p class="review-description">These headphones are amazing! The sound quality is incredible and the noise-cancelling feature is so effective. I highly recommend them!</p>
       </div>
     </div>
     </div>
