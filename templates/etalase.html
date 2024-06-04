@@ -17,26 +17,39 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <title>Document</title>
+    <style>
+       .main-container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-top:80px;
+            margin-left:30px;
+            margin-right: 30px;;
+        }
+       .container.px-0 {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container px-0">
-        <!-- Hidden input file, triggered by clicking the button -->
-        <input type="file" id="imageInput" style="display: none;" accept="image/*">
-        <!-- Button to trigger file input -->
-        <label for="imageInput" class="btn btn-danger">Select Image</label>
-    </div>
-    <div class="container px-0">
-        <!-- Hidden input file, triggered by clicking the button -->
-        <input type="file" id="imageInput" style="display: none;" accept="image/*">
-        <!-- Button to trigger file input -->
-        <label for="imageInput" class="btn btn-danger">Select Image</label>
-    </div>
-    <div class="container px-0">
-        <!-- Hidden input file, triggered by clicking the button -->
-        <input type="file" id="imageInput" style="display: none;" accept="image/*">
-        <!-- Button to trigger file input -->
-        <label for="imageInput" class="btn btn-danger">Select Image</label>
+    <div class="main-container">
+        <div class="container px-0">
+            <!-- Hidden input file, triggered by clicking the button -->
+            <input type="file" id="imageInput" style="display: none;" accept="image/*">
+            <!-- Button to trigger file input -->
+            <label for="imageInput" class="btn btn-danger">Select Image</label>
+        </div>
+        <div class="container px-0">
+            <!-- Hidden input file, triggered by clicking the button -->
+            <input type="file" id="imageInput" style="display: none;" accept="image/*">
+            <!-- Button to trigger file input -->
+            <label for="imageInput" class="btn btn-danger">Select Image</label>
+        </div>
+        <div class="container px-0">
+            <!-- Hidden input file, triggered by clicking the button -->
+            <input type="file" id="imageInput" style="display: none;" accept="image/*">
+            <!-- Button to trigger file input -->
+            <label for="imageInput" class="btn btn-danger">Select Image</label>
+        </div>
     </div>
 </body>
 </html>
-{% include 'footer.html' %}

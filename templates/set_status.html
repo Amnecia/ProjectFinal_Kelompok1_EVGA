@@ -18,12 +18,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <title>Document</title>
     <style>
-        body {
+            body {
     min-height: 100vh;
     overflow-y: auto;
-    font-family: "Lalezar", system-ui;
-  font-weight: 400;
-  font-style: normal;
 }
        .product-image{
             width:350px;
@@ -51,7 +48,7 @@
        .text-container {
             flex: 1;
             padding-left: 20px;
-            margin-top: -60px;
+            margin-top: -40px;
             display: flex;
             flex-direction: column;
         }
@@ -64,211 +61,21 @@
             margin-right: 30px;
             color:red;
         }
-        .button-ulasan-cancelled {
+        .button-delete {
     background-color: #5e5e5e;
     border: none;
     width:200px;
     height:40px;
-    color:white;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-
-.button-cancel-cancelled {
-    background-color: #2e2e2e;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-
-
-.button-delete-cancelled {
-    background-color: #2e2e2e;
-    border: none;
-    width:40px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    padding: 0;
-}
-
-.button-delete-cancelled i {
-    font-size: 20px;
-    line-height: 40px;
-}
-
-.button-cancel-success {
-    background-color: #2e2e2e;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-.button-delete-success {
-    background-color: #2e2e2e;
-    border: none;
-    width:40px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    padding: 0;
-}
-
-.button-ulasan-success {
-    background-color: #D00000;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-.button-ulasan-preparing {
-    background-color: #5e5e5e;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-
-.button-cancel-preparing {
-    background-color: #D00000;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-.button-delete-preparing {
-    background-color: #2e2e2e;
-    border: none;
-    width:40px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    padding: 0;
-}
-.button-ulasan-delivery {
-    background-color: #5e5e5e;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-
-.button-cancel-delivery {
-    background-color: #2e2e2e;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-.button-delete-delivery {
-    background-color: #2e2e2e;
-    border: none;
-    width:40px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    padding: 0;
-}
-
-.button-ulasan-not-confirmed {
-    background-color: #5e5e5e;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-
-.button-cancel-not-confirmed {
-    background-color: #2e2e2e;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-.button-delete-not-confirmed {
-    background-color: #D00000;
-    border: none;
-    width:40px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    padding: 0;
-}
-.button-delete-preparing{
-    width:100px;
-    height:50px;
     margin-right:-20px;
-}
-
-.button-delete-preparing:hover{
-    background-color: #D00000;
-    width:100px;
-    height:50px;
-}
+    color:white;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+        }
+        .button-delete:hover {
+   background-color: #D00000;
+        }
 select {
             width: 200px;
             height: 40px;
@@ -318,7 +125,7 @@ select {
            </select> 
        </p> 
        <div class="button-container">
-        <button class="button-delete-preparing"><i class="fas fa-trash-alt"></i></button>     
+        <button class="button-delete"><i class="fas fa-trash-alt"></i></button>     
       
     </div>
    </div>
@@ -345,7 +152,7 @@ select {
            </select> 
        </p> 
        <div class="button-container">
-        <button class="button-delete-preparing"><i class="fas fa-trash-alt"></i></button>     
+        <button class="button-delete"><i class="fas fa-trash-alt"></i></button>     
       
     </div>
    </div>
@@ -371,7 +178,7 @@ select {
            </select> 
        </p> 
        <div class="button-container">
-        <button class="button-delete-preparing"><i class="fas fa-trash-alt"></i></button>     
+        <button class="button-delete"><i class="fas fa-trash-alt"></i></button>     
       
     </div>
    </div>
@@ -398,7 +205,7 @@ select {
            </select> 
        </p> 
        <div class="button-container">
-        <button class="button-delete-preparing"><i class="fas fa-trash-alt"></i></button>     
+        <button class="button-delete"><i class="fas fa-trash-alt"></i></button>     
       
     </div>
    </div>
