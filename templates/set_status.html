@@ -21,6 +21,9 @@
         body {
     min-height: 100vh;
     overflow-y: auto;
+    font-family: "Lalezar", system-ui;
+  font-weight: 400;
+  font-style: normal;
 }
        .product-image{
             width:350px;
@@ -255,6 +258,17 @@
     border-bottom-right-radius: 20px;
     padding: 0;
 }
+.button-delete-preparing{
+    width:100px;
+    height:50px;
+    margin-right:-20px;
+}
+
+.button-delete-preparing:hover{
+    background-color: #D00000;
+    width:100px;
+    height:50px;
+}
 select {
             width: 200px;
             height: 40px;
@@ -303,6 +317,37 @@ select {
              
            </select> 
        </p> 
+       <div class="button-container">
+        <button class="button-delete-preparing"><i class="fas fa-trash-alt"></i></button>     
+      
+    </div>
+   </div>
+</div>
+<div class="container-order">
+    <div class="image-container">
+        <img src="https://www.pixelstalk.net/wp-content/uploads/2016/07/3840x2160-Images-Free-Download.jpg" class="product-image">
+    </div>
+    <div class="text-container">
+        <h1 style="font-size:28px;">Product Name</h1> 
+        <p style="font-weight:normal; font-size:16px;">Jumlah : </p> 
+       <p style="font-weight:normal;font-size:16px;">Email : </p> 
+       <p style="font-weight:normal;font-size:16px;">Alamat : </p> 
+       <p style="font-weight:normal;font-size:16px;">Harga : </p> 
+       <p style="font-weight:normal;font-size:16px;">Tanggal : </p> 
+       <p style="font-weight:normal;font-size:16px;"> 
+        
+           <label for="order-status">Order Status:</label> <select id="order-status"> 
+               <option value="preparing" selected>Is being prepared</option> 
+               <option value="delivery">Success</option> 
+               <option value="delivery">Cancelled</option> 
+               <option value="delivery">On delivery</option> 
+               
+           </select> 
+       </p> 
+       <div class="button-container">
+        <button class="button-delete-preparing"><i class="fas fa-trash-alt"></i></button>     
+      
+    </div>
    </div>
 </div>
 <div class="container-order">
@@ -325,7 +370,12 @@ select {
              
            </select> 
        </p> 
+       <div class="button-container">
+        <button class="button-delete-preparing"><i class="fas fa-trash-alt"></i></button>     
+      
+    </div>
    </div>
+   
 </div>
 <div class="container-order">
     <div class="image-container">
@@ -347,28 +397,10 @@ select {
              
            </select> 
        </p> 
-   </div>
-</div>
-<div class="container-order">
-    <div class="image-container">
-        <img src="https://www.pixelstalk.net/wp-content/uploads/2016/07/3840x2160-Images-Free-Download.jpg" class="product-image">
+       <div class="button-container">
+        <button class="button-delete-preparing"><i class="fas fa-trash-alt"></i></button>     
+      
     </div>
-    <div class="text-container">
-        <h1 style="font-size:28px;">Product Name</h1> 
-        <p style="font-weight:normal; font-size:16px;">Jumlah : </p> 
-       <p style="font-weight:normal;font-size:16px;">Email : </p> 
-       <p style="font-weight:normal;font-size:16px;">Alamat : </p> 
-       <p style="font-weight:normal;font-size:16px;">Harga : </p> 
-       <p style="font-weight:normal;font-size:16px;">Tanggal : </p> 
-       <p style="font-weight:normal;font-size:16px;"> 
-           <label for="order-status">Order Status:</label> <select id="order-status"> 
-               <option value="preparing" selected>Is being prepared</option> 
-               <option value="delivery">Success</option> 
-               <option value="delivery">Cancelled</option> 
-               <option value="delivery">On delivery</option> 
-             
-           </select> 
-       </p> 
    </div>
 </div>
 </div>
