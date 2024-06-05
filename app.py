@@ -109,7 +109,7 @@ def SetStatus():
 
 @app.route('/etalase', methods=['GET'])
 def etalase():
-    return render_template('etalase.html')
+    return render_template('edit_etalase.html')
 
 
 if __name__ == '__main__':
