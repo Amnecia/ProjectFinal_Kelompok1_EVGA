@@ -27,13 +27,13 @@ TOKEN_KEY = 'mytoken'
 
 @app.route('/')
 def home():
-    token_receive = request.cookies.get("mytoken")
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
-    except jwt.ExpiredSignatureError:
-        return redirect(url_for("login", msg = "Your token has expired"))
-    except jwt.exceptions.DecodeError:
-        return redirect(url_for("login", msg="There was a problem logging you in"))
+    #token_receive = request.cookies.get("mytoken")
+    #try:
+     #   payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+    #except jwt.ExpiredSignatureError:
+     #   return redirect(url_for("login", msg = "Your token has expired"))
+    #except jwt.exceptions.DecodeError:
+     #   return redirect(url_for("login", msg="There was a problem logging you in"))
     return render_template('index.html')
 
 
