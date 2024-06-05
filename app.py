@@ -1,16 +1,51 @@
-from flask import Flask, redirect, url_for, render_template, request
-from pymongo import MongoClient 
-from bson import ObjectId
-from werkzeug.utils import secure_filename
-from datetime import datetime
 import os
+from os.path import join, dirname
+
+
+from pymongo import MongoClient
+import requests
+import requests
+import jwt
+import datetime
+import hashlib
+from flask import Flask, render_template, jsonify, request, redirect, url_for
+from werkzeug.utils import secure_filename
+from datetime import datetime, timedelta
 
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET'])
+
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+
+
+SECRET_KEY='PLACEHOLDER_RANDOM'
+
+
+
+TOKEN_KEY = 'mytoken'
+
+@app.route('/')
 def home():
+    token_receive = request.cookies.get("mytoken")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg = "Your token has expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="There was a problem logging you in"))
     return render_template('index.html')
+
+
+@app.route('/login', methods=['GET'])
+def login():
+    msg = request.args.get("msg")
+    return render_template('login.html')
+
+
+@app.route('/register', methods=['GET'])
+def register():
+    return render_template('register.html')
 
 
 @app.route('/about', methods=['GET'])
@@ -19,8 +54,12 @@ def about():
 
 
 
-@app.route('/addProduk', methods=['GET'])
+@app.route('/addProduk', methods=['GET', 'POST'])
 def tambah_produk():
+    if request.method=='POST':
+        nama =  request.form['nama']
+        harga = request.form['harga']
+        deskripsi = request.form['deskripsi']
     return render_template('tambah_produk.html')
 
 
@@ -62,20 +101,11 @@ def guest():
 
 
 
-
-@app.route('/register', methods=['GET'])
-def register():
-    return render_template('register.html')
-
-
-
 @app.route('/setstatus', methods=['GET'])
 def SetStatus():
     return render_template('set_status.html')
 
-@app.route('/login', methods=['GET'])
-def login():
-    return render_template('login.html')
+
 
 @app.route('/etalase', methods=['GET'])
 def etalase():
