@@ -16,6 +16,9 @@ from datetime import datetime, timedelta
 app = Flask(__name__)
 
 
+client = MongoClient('mongodb+srv://andreasrafaeltobing:ManhwaXL9LUL@cluster0.aajaqnf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+db = client.dbsandreasrafaeltobing
+
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 
@@ -60,14 +63,21 @@ def tambah_produk():
         nama =  request.form['nama']
         harga = request.form['harga']
         deskripsi = request.form['deskripsi']
-        gambar = request.files['gambar']
-        extension=gambar.filename.split('.')[-1]
+        image = request.files['gambar']
+        extension=image.filename.split('.')[-1]
         today=datetime.now()
         mytime=today.strftime('%Y-%M-%d-%H-%m-%S') 
-        gambar_name=f'gambar-{mytime}.{extension}'
-      
-        
-    return render_template('tambah_produk.html')
+        image_name=f'gambar-{mytime}.{extension}'
+        save_to=f'static/assets/productImage/{image_name}'
+        image.save(save_to)
+        doc={
+            'nama' :nama,
+            'harga':harga,
+            'deskripsi': deskripsi,
+            'image': image_name,
+        }
+        db.produk.insert_one(doc)
+    return redirect(url_for('list'))
 
 
 
