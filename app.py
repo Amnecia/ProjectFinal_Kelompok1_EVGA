@@ -60,6 +60,13 @@ def tambah_produk():
         nama =  request.form['nama']
         harga = request.form['harga']
         deskripsi = request.form['deskripsi']
+        gambar = request.files['gambar']
+        extension=gambar.filename.split('.')[-1]
+        today=datetime.now()
+        mytime=today.strftime('%Y-%M-%d-%H-%m-%S') 
+        gambar_name=f'gambar-{mytime}.{extension}'
+      
+        
     return render_template('tambah_produk.html')
 
 
