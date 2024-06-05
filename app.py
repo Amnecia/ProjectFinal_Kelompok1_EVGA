@@ -94,7 +94,7 @@ def detail_produk():
 
 @app.route('/order', methods=['GET'])
 def order():
-    return render_template('pesanan.html')
+    return render_template('order.html')
 
 
 

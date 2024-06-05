@@ -1,183 +1,182 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Website Name</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
-  <style>
-    body {
-      font-family: sans-serif;
-      margin: 0; /* Hilangkan margin default pada body */
-    }
-    .navbar {
-      background-color: red;
-      padding: 10px 20px; /* Padding yang lebih besar untuk navbar */
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: fixed; /* Navbar fixed di atas */
-      top: 0;
-      width: 100%; /* Lebar penuh */
-      z-index: 1000; /* Pastikan navbar di atas konten lain */
-      box-sizing: border-box; /* Termasuk padding dalam ukuran elemen */
-    }
-    .navbar a {
-      color: white;
-      text-decoration: none;
-      padding: 0 10px; /* Padding yang lebih besar */
-      font-size: 16px; /* Ukuran font yang lebih besar */
-    }
-    .navbar .menu {
-      display: flex;
-      align-items: center;
-      font-size: 18px; /* Ukuran ikon yang lebih besar */
-    }
-    .navbar .menu i {
-      color: white;
-      margin-left: 10px; /* Margin yang lebih besar */
-    }
-    .navbar h1 {
-      font-size: 24px; /* Ukuran font judul yang lebih besar */
-      margin: 0; /* Menghilangkan margin */
-      color: white; /* Warna teks putih */
-    }
-    /* CSS untuk konten */
-    .content-container {
-      padding-top: 80px; /* Tambahkan jarak dari atas untuk menghindari overlap dengan navbar */
-      display: flex;
-      flex-direction: column; /* Susun konten secara vertikal */
-      align-items: center; /* Pusatkan konten secara horizontal */
-    }
+    <meta charset="UTF-8">
+    <title>Pemesanan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
 
-    .content {
-      width: 80%; /* Lebar 80% dari container */
-      max-width: 1200px; /* Lebar maksimum untuk konten */
-      margin: 20px 0; /* Margin atas dan bawah untuk spasi antar konten */
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      box-sizing: border-box; /* Termasuk padding dalam ukuran elemen */
-    }
+        nav {
+            background-color: black;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .order-item {
-      display: flex;
-      align-items: center;
-      margin-bottom: 20px;
-      padding: 10px;
-    }
+        nav .website-name {
+            color: white;
+            margin-left: 10px;
+        }
 
-    .details {
-      flex-grow: 1;
-    }
+        nav .nav-links {
+            flex-grow: 1;
+            text-align: center;
+        }
 
-    .remove {
-      background-color: #ddd;
-      border: 1px solid #ccc;
-      padding: 10px;
-      cursor: pointer;
-    }
+        nav a {
+            color: white;
+            margin: 0 20px;
+            text-decoration: none;
+        }
 
-    .content img {
-      width: 150px;
-      height: 150px;
-      background-color: #eee;
-      display: block;
-      margin-right: 20px;
-    }
+        nav .nav-icons {
+            font-size: 20px;
+        }
 
-    .total-container {
-      width: 80%; /* Lebar 80% dari container */
-      max-width: 1200px; /* Lebar maksimum untuk konten */
-      margin: 20px 0; /* Margin atas dan bawah */
-      padding: 20px;
-      box-sizing: border-box; /* Termasuk padding dalam ukuran elemen */
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+        .product {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: start;
+        }
 
-    .total-container .total-price {
-      font-size: 20px;
-      font-weight: bold;
-    }
+        .product img {
+            width: 100px;
+            height: auto;
+            margin-right: 20px;
+        }
 
-    .total-container .checkout-button {
-      background-color: red; /* Ubah warna tombol menjadi merah */
-      color: white;
-      padding: 10px 20px;
-      border: none; /* Hilangkan border */
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-  </style>
+        .product-info {
+            flex-grow: 1;
+            position: relative;
+            display: flex; /* Menggunakan Flexbox */
+            align-items: center; /* Menyelaraskan item secara vertikal */
+        }
+
+        .product-details {
+            flex-grow: 1;
+        }
+
+        .cancel-button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="number"],
+        input[type="email"],
+        input[type="text"] {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: black;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-  <div class="navbar">
-    <h1>WEBSITE NAME</h1>
-    <div>
-      <a href="#">Home</a>
-      <a href="#">About</a>
-    </div>
-    <div class="menu">
-      <i class="fa fa-shopping-cart"></i>
-      <i class="fa fa-bars"></i>
-    </div>
-  </div>
-
-  <!-- Konten utama -->
-  <div class="content-container">
-    <!-- Konten 1 -->
-    <div class="content">
-      <div class="order-item">
-        <img src="#" alt="Image Placeholder">
-        <div class="details">
-          <h3>Bakso Aci Tulang Rangu</h3>
-          <p>Jumlah: x1</p>
-          <p>Email: example@gmail.com</p>
-          <p>Address: Jl. Contoh12, No. 12</p>
-          <p>Harga: Rp. 15.000</p>
-          <div class="price">Rp. 15.000</div>
+    <nav>
+        <div class="website-name">Nama Website</div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/about">About</a>
         </div>
-        <div class="remove">X</div>
-      </div>
-    </div>
-    <!-- Konten 2 -->
-    <div class="content">
-      <div class="order-item">
-        <img src="#" alt="Image Placeholder">
-        <div class="details">
-          <h3>Bakso Aci Ayam Suwir</h3>
-          <p>Jumlah: x1</p>
-          <p>Email: example@gmail.com</p>
-          <p>Address: Jl. Contoh12, No. 12</p>
-          <p>Harga: Rp. 15.000</p>
-          <div class="price">Rp. 15.000</div>
+        <div class="nav-icons">
+            <span>&#128722;</span>
+            <span>&#9776;</span>
         </div>
-        <div class="remove">X</div>
-      </div>
-    </div>
-    <!-- Konten 3 -->
-    <div class="content">
-      <div class="order-item">
-        <img src="#" alt="Image Placeholder">
-        <div class="details">
-          <h3>Bakso Aci Telur</h3>
-          <p>Jumlah: x1</p>
-          <p>Email: example@gmail.com</p>
-          <p>Address: Jl. Contoh12, No. 12</p>
-          <p>Harga: Rp. 13.000</p>
-          <div class="price">Rp. 13.000</div>
+    </nav>
+    <h1>Pemesanan Barang</h1>
+    <form action="/submit-order" method="post">
+        <!-- Produk A -->
+        <div class="product">
+            <img src="/static/boci_1.jpg" alt="Produk A">
+            <div class="product-info">
+                <div class="product-details">
+                    <h2>Bakso Aci Tulang Rangu</h2>
+                    <p>Harga: Rp15.000</p>
+                    <div>
+                        <label for="quantityA">Jumlah:</label>
+                        <input type="number" id="quantityA" name="quantityA" value="1">
+                    </div>
+                    <div>
+                        <label for="emailA">Email:</label>
+                        <input type="email" id="emailA" name="emailA">
+                    </div>
+                    <div>
+                        <label for="addressA">Alamat:</label>
+                        <input type="text" id="addressA" name="addressA">
+                    </div>
+                </div>
+                <button class="cancel-button">X</button>
+            </div>
         </div>
-        <div class="remove">X</div>
-      </div>
-    </div>
-    <!-- Total Harga dan Checkout -->
-    <div class="total-container">
-      <div class="total-price">Total Harga: Rp. 43.000</div>
-      <button class="checkout-button">Checkout</button>
-    </div>
-  </div>
+        <!-- Produk B -->
+        <div class="product">
+            <img src="/static/boci_2.jpg" alt="Produk B">
+            <div class="product-info">
+                <div class="product-details">
+                    <h2>Bakso Aci Ayam Suwir</h2>
+                    <p>Harga: Rp15.000</p>
+                    <div>
+                        <label for="quantityB">Jumlah:</label>
+                        <input type="number" id="quantityB" name="quantityB" value="1">
+                    </div>
+                    <div>
+                        <label for="emailB">Email:</label>
+                        <input type="email" id="emailB" name="emailB">
+                    </div>
+                    <div>
+                        <label for="addressB">Alamat:</label
+                        <input type="text" id="addressB" name="addressB">
+                    </div>
+                </div>
+                <button class="cancel-button">X</button>
+            </div>
+        </div>
+        <!-- Produk C -->
+        <div class="product">
+            <img src="/static/boci_3.jpg" alt="Produk C">
+            <div class="product-info">
+                <div class="product-details">
+                    <h2>Bakso Aci Telur</h2>
+                    <p>Harga: Rp13.000</p>
+                    <div>
+                        <label for="quantityC">Jumlah:</label>
+                        <input type="number" id="quantityC" name="quantityC" value="1">
+                    </div>
+                    <div>
+                        <label for="emailC">Email:</label>
+                        <input type="email" id="emailC" name="emailC">
+                    </div>
+                    <div>
+                        <label for="addressC">Alamat:</label>
+                        <input type="text" id="addressC" name="addressC">
+                    </div>
+                </div>
+                <button class="cancel-button">X</button>
+            </div>
+        </div>
+        <p>Total Pemesanan: <span id="totalPrice">Rp.43.000</span></p>
+        <button type="submit">Checkout</button>
+    </form>
 </body>
 </html>
-
