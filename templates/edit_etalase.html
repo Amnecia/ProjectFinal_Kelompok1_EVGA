@@ -160,6 +160,7 @@ body {
         <span class="visually-hidden">Next</span>
       </button>
     </div>
+    <br>
     <div class="image-upload">
       <div class="image-upload-label">Gambar 1:</div>
       <input type="file" id="imageUpload1" accept="image/*">
@@ -183,7 +184,7 @@ body {
 </div>
 <script>
 function selectImage(index) {
-  const imageUpload = document.getElementById(imageUpload${index});
+  const imageUpload = document.getElementById(`imageUpload${index}`);
   const imageFile = imageUpload.files[0];
 
   if (imageFile) {

@@ -78,6 +78,7 @@ def tambah_produk():
         }
         db.produk.insert_one(doc)
     return redirect(url_for('list'))
+    return render_template('tambah_produk.html')
 
 
 
