@@ -60,14 +60,14 @@ def about():
 @app.route('/addProduk', methods=['GET', 'POST'])
 def tambah_produk():
     if request.method=='POST':
-        nama =  request.form['nama']
+        nama = request.form['nama']
         harga = request.form['harga']
         deskripsi = request.form['deskripsi']
-        image = request.files['gambar']
+        image = request.files['image']
         extension=image.filename.split('.')[-1]
         today=datetime.now()
         mytime=today.strftime('%Y-%M-%d-%H-%m-%S') 
-        image_name=f'gambar-{mytime}.{extension}'
+        image_name=f'image-{mytime}.{extension}'
         save_to=f'static/assets/productImage/{image_name}'
         image.save(save_to)
         doc={
@@ -77,9 +77,7 @@ def tambah_produk():
             'image': image_name,
         }
         db.produk.insert_one(doc)
-    return redirect(url_for('list'))
     return render_template('tambah_produk.html')
-
 
 
 @app.route('/editProduk', methods=['GET'])

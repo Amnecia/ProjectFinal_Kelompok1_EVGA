@@ -22,31 +22,30 @@
       crossorigin="anonymous"
     ></script>
     <script>
-      function AddProduct(){
-        let nama = $('#nama').val();
-        let harga = $('#harga').val();
-        let deskripsi = $('#deskripsi').val();
-        let image = $('#file')[0].files[0];
-      
+   function AddProduct(){
+  let nama = $('#namaProduk').val();
+  let harga = $('#hargaProduk').val();
+  let deskripsi = $('#deskripsiProduk').val();
+  let image = $('#imageInput')[0].files[0];
 
-        let formData = new FormData();
-        formData.append('nama', nama);
-        formData.append('harga', harga);
-        formData.append('deskripsi', deskripsi);
-        formData.append('image', image);
+  let formData = new FormData();
+  formData.append('nama', nama);
+  formData.append('harga', harga);
+  formData.append('deskripsi', deskripsi);
+  formData.append('image', image);
 
-        $.ajax({
-           type: 'POST',
-           url: '/addProduk',
-           processData: false, 
-           contentType: false, 
-           success: function(response){
-            alert("Produk Baru telah berhasil ditambahkan!")
-            window.location.reload();
-           }
-        })
-
-      }
+  $.ajax({
+    type: 'POST',
+    url: '/addProduk',
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function(response){
+      alert("Produk Baru telah berhasil ditambahkan!")
+      window.location.reload();
+    }
+  })
+}
 
       </script>
     <style>
