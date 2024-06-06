@@ -21,6 +21,34 @@
       integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
       crossorigin="anonymous"
     ></script>
+    <script>
+      function AddProduct(){
+        let nama = $('#nama').val();
+        let harga = $('#harga').val();
+        let deskripsi = $('#deskripsi').val();
+        let image = $('#file')[0].files[0];
+      
+
+        let formData = new FormData();
+        formData.append('nama', nama);
+        formData.append('harga', harga);
+        formData.append('deskripsi', deskripsi);
+        formData.append('image', image);
+
+        $.ajax({
+           type: 'POST',
+           url: '/addProduk',
+           processData: false, 
+           contentType: false, 
+           success: function(response){
+            alert("Produk Baru telah berhasil ditambahkan!")
+            window.location.reload();
+           }
+        })
+
+      }
+
+      </script>
     <style>
          .container {
             margin-top: 70px; /* Adjust this value to lower the container */
@@ -75,7 +103,7 @@
         <div class="col-9"></div>
         <div class="col-auto">
           <button type="button" class="btn btn-outline-danger mx-2 px-4">Cancel</button>
-          <button type="button" class="btn btn-danger px-4">Save</button>
+          <button type="button" class="btn btn-danger px-4" onclick="AddProduct()">Save</button>
         </div>
       </div>
     </div>
