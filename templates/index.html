@@ -21,11 +21,10 @@
     <!-- Container for cards -->
   <!-- Container for cards -->
   <h1 style="padding-top:20px;">Products</h1>
-<div class="container" style="padding-top:30px;">
-  <div class="row">
-    {% for product in produk %}
-    <div class="column" style="margin-bottom: 20px;">
-      <div class="card" style="width: 22rem; height: 350px;"> <!-- Increased card size -->
+<div class="container px-3" style="padding-top:30px;">
+  <div class="d-flex justify-content-start flex-wrap">
+  {% for product in produk %}
+    <div class="card m-3" style="width: 20rem; height: 350px; "> <!-- Increased card size -->
         <img src="{{ url_for('static', filename='assets/productImage/' + product.image) }}" class="card-img-top" alt="Product Image" style="width: 100%; height: 200px; object-fit: cover;"> <!-- Increased image size -->
         <div class="card-body">
           <h5 class="card-title">{{ product.nama }}</h5>
@@ -38,7 +37,6 @@
             <i class="fa-regular fa-star" data-rating="5" style="color: #FFD43B;"></i>
           </div>
         </div>
-      </div>
     </div>
     {% endfor %}
   </div>
