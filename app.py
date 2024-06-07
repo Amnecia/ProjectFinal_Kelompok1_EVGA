@@ -30,6 +30,9 @@ TOKEN_KEY = 'mytoken'
 
 @app.route('/')
 def home():
+    produk = db.produk.find()
+    print(produk)  # Add this line to check the produk variable
+    return render_template('index.html', produk=produk)
     #token_receive = request.cookies.get("mytoken")
     #try:
      #   payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
@@ -37,7 +40,6 @@ def home():
      #   return redirect(url_for("login", msg = "Your token has expired"))
     #except jwt.exceptions.DecodeError:
      #   return redirect(url_for("login", msg="There was a problem logging you in"))
-    return render_template('index.html')
 
 
 @app.route('/login', methods=['GET'])
