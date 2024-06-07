@@ -11,6 +11,7 @@ import hashlib
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
+from bson import ObjectId
 
 
 app = Flask(__name__)
@@ -82,8 +83,27 @@ def tambah_produk():
     return render_template('tambah_produk.html')
 
 
-@app.route('/editProduk', methods=['GET'])
-def edit_produk():
+@app.route('/editProduk/<_id>', methods=['GET'])
+def edit_produk(_id):
+    if request.method=='POST':
+        nama = request.form['nama']
+        harga = request.form['harga']
+        deskripsi = request.form['deskripsi']
+        image = request.files['image']
+        extension=image.filename.split('.')[-1]
+        today=datetime.now()
+        mytime=today.strftime('%Y-%M-%d-%H-%m-%S') 
+        image_name=f'image-{mytime}.{extension}'
+        save_to=f'static/assets/productImage/{image_name}'
+        image.save(save_to)
+        doc={
+            'nama' :nama,
+            'harga':harga,
+            'deskripsi': deskripsi,
+            'image': image_name,
+        }
+        doc['gambar'] = image_name
+        db.produk.update_one({'_id':ObjectId(_id)}, {'$set':doc})
     return render_template('edit_produk.html')
 
 

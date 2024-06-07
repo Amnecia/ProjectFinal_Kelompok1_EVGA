@@ -46,6 +46,23 @@
     }
   })
 }
+const imageInput = document.getElementById('imageInput');
+  const imagePreview = document.getElementById('imagePreview');
+
+  imageInput.addEventListener('change', (e) => {
+    const file = imageInput.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      const imageData = event.target.result;
+      const image = document.createElement('img');
+      image.src = imageData;
+      imagePreview.innerHTML = '';
+      imagePreview.appendChild(image);
+    };
+
+    reader.readAsDataURL(file);
+  });
 
       </script>
     <style>
@@ -58,20 +75,11 @@
   <body>
     <div class="container border border-danger shadow rounded p-3">
       <div class="row">
-        <div
-          class="border border-danger col-3 mx-4 mt-4 mb-4"
-          style="height: 250px; width: 250px"
-        ></div>
+        <div id="imagePreview" style="width: 250px; height: 250px; border: 1px solid #ddd; margin-top: 10px;"></div>
         <div class="col-9 mt-4">
           <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label"
-              >Product Name</label
-            >
-            <input
-              type="text"
-              class="form-control border border-dark"
-              id="namaProduk"
-              placeholder="masukan nama produk"
+            <label for="exampleFormControlInput1" class="form-label">Product Name</label>
+            <input type="text" class="form-control border border-dark" id="namaProduk"  placeholder="masukan nama produk"
             />
           </div>
           <div class="mb-3">
