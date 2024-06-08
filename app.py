@@ -83,28 +83,10 @@ def tambah_produk():
     return render_template('tambah_produk.html')
 
 
-@app.route('/editProduk/<_id>', methods=['GET'])
-def edit_produk(_id):
-    if request.method=='POST':
-        nama = request.form['nama']
-        harga = request.form['harga']
-        deskripsi = request.form['deskripsi']
-        image = request.files['image']
-        extension=image.filename.split('.')[-1]
-        today=datetime.now()
-        mytime=today.strftime('%Y-%M-%d-%H-%m-%S') 
-        image_name=f'image-{mytime}.{extension}'
-        save_to=f'static/assets/productImage/{image_name}'
-        image.save(save_to)
-        doc={
-            'nama' :nama,
-            'harga':harga,
-            'deskripsi': deskripsi,
-            'image': image_name,
-        }
-        doc['gambar'] = image_name
-        db.produk.update_one({'_id':ObjectId(_id)}, {'$set':doc})
-    return render_template('edit_produk.html')
+
+@app.route('/editProduk', methods=['GET'])
+def edit_produk():
+        return render_template('edit_produk.html')
 
 
 
@@ -128,7 +110,8 @@ def status():
 
 @app.route('/list', methods=['GET'])
 def list():
-    return render_template('produk.html')
+    produk = db.produk.find()
+    return render_template('produk.html', produk=produk)
 
 
 
@@ -149,6 +132,11 @@ def SetStatus():
 def etalase():
     return render_template('edit_etalase.html')
 
+
+@app.route('/deleteproduk/<_id>', methods=['GET', 'POST'])
+def deleteProduk(_id):
+    db.produk.delete_one({'_id': ObjectId(_id)})
+    return jsonify({'message': 'Product deleted successfully'})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

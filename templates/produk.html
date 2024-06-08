@@ -18,6 +18,18 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <title>Document</title>
+    <script>
+        function deleteProduct(productId) {
+          $.ajax({
+            type: 'POST',
+            url: '/deleteproduk/' + productId,
+            success: function(data) {
+              alert(data.message); // display the success message
+              location.reload(); // reload the page after deletion
+            }
+          });
+        }
+      </script>
     <style>
         body {
     min-height: 100vh;
@@ -135,96 +147,28 @@
     </style>
 </head>
 <body>
-    <div class="container-order">
-        <div class="image-container">
-            <img src="https://www.pixelstalk.net/wp-content/uploads/2016/07/3840x2160-Images-Free-Download.jpg" class="product-image">
-        </div>
-        <div class="text-container">
-            <h1 style="font-size:28px;">Product Name</h1>
-            <p style="font-weight:normal; font-size:16px;">Jumlah   : </p>
-            <p style="font-weight:normal;font-size:16px;">Email    : </p>
-            <p style="font-weight:normal;font-size:16px;">Alamat  : </p>
-            <p style="font-weight:normal;font-size:16px;">Harga    : </p>
-            <p style="font-weight:normal;font-size:16px;">Tanggal   : </p>
-            <div class="button-container">
-                <button class="button-delete"><i class="fas fa-trash-alt"></i></button>               
-                <button class="button-edit">Edit</button>
+    <div class="container">
+        {% for product in produk %}
+        <div class="container-order">
+            <div class="image-container">
+                <img src="{{ url_for('static', filename='assets/productImage/' + product.image) }}" class="product-image">
+            </div>
+            <div class="text-container">
+                <h1 style="font-size:28px;">{{ product.nama }}</h1>
+                <p style="font-weight:normal; font-size:16px;">Jumlah: {{ product.jumlah }}</p>
+                <p style="font-weight:normal;font-size:16px;">Email: {{ product.email }}</p>
+                <p style="font-weight:normal;font-size:16px;">Alamat: {{ product.alamat }}</p>
+                <p style="font-weight:normal;font-size:16px;">Harga: {{ product.harga }}</p>
+                <p style="font-weight:normal;font-size:16px;">Tanggal: {{ product.tanggal }}</p>
+                <div class="button-container">
+                    <button class="button-delete" onclick="deleteProduct('{{ product._id }}')"><i class="fas fa-trash-alt"></i></button>                    <button class="button-edit">Edit</button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="container-order">
-        <div class="image-container">
-            <img src="https://www.pixelstalk.net/wp-content/uploads/2016/07/3840x2160-Images-Free-Download.jpg" class="product-image">
-        </div>
-        <div class="text-container">
-            <h1 style="font-size:28px;">Product Name</h1>
-            <p style="font-weight:normal; font-size:16px;">Jumlah   : </p>
-            <p style="font-weight:normal;font-size:16px;">Email    : </p>
-            <p style="font-weight:normal;font-size:16px;">Alamat  : </p>
-            <p style="font-weight:normal;font-size:16px;">Harga    : </p>
-            <p style="font-weight:normal;font-size:16px;">Tanggal   : </p>
-            <div class="button-container">
-                <button class="button-delete"><i class="fas fa-trash-alt"></i></button>               
-                <button class="button-edit">Edit</button>
-            </div>
+        {% endfor %}
+        <div class="button-container">
+            <button class="button-add"><i class="fa-solid fa-circle-plus">&nbsp; Add Product</i></button>
         </div>
     </div>
-    <div class="container-order">
-        <div class="image-container">
-            <img src="https://www.pixelstalk.net/wp-content/uploads/2016/07/3840x2160-Images-Free-Download.jpg" class="product-image">
-        </div>
-        <div class="text-container">
-            <h1 style="font-size:28px;">Product Name</h1>
-            <p style="font-weight:normal; font-size:16px;">Jumlah   : </p>
-            <p style="font-weight:normal;font-size:16px;">Email    : </p>
-            <p style="font-weight:normal;font-size:16px;">Alamat  : </p>
-            <p style="font-weight:normal;font-size:16px;">Harga    : </p>
-            <p style="font-weight:normal;font-size:16px;">Tanggal   : </p>
-            <div class="button-container">
-                <button class="button-delete"><i class="fas fa-trash-alt"></i></button>               
-                <button class="button-edit">Edit</button>
-            </div>
-        </div>
-    </div>
-    <div class="container-order">
-        <div class="image-container">
-            <img src="https://www.pixelstalk.net/wp-content/uploads/2016/07/3840x2160-Images-Free-Download.jpg" class="product-image">
-        </div>
-        <div class="text-container">
-            <h1 style="font-size:28px;">Product Name</h1>
-            <p style="font-weight:normal; font-size:16px;">Jumlah   : </p>
-            <p style="font-weight:normal;font-size:16px;">Email    : </p>
-            <p style="font-weight:normal;font-size:16px;">Alamat  : </p>
-            <p style="font-weight:normal;font-size:16px;">Harga    : </p>
-            <p style="font-weight:normal;font-size:16px;">Tanggal   : </p>
-            <div class="button-container">
-                <button class="button-delete"><i class="fas fa-trash-alt"></i></button>               
-                <button class="button-edit">Edit</button>
-            </div>
-        </div>
-    </div>
-    <div class="container-order">
-        <div class="image-container">
-            <img src="https://www.pixelstalk.net/wp-content/uploads/2016/07/3840x2160-Images-Free-Download.jpg" class="product-image">
-        </div>
-        <div class="text-container">
-            <h1 style="font-size:28px;">Product Name</h1>
-            <p style="font-weight:normal; font-size:16px;">Jumlah   : </p>
-            <p style="font-weight:normal;font-size:16px;">Email    : </p>
-            <p style="font-weight:normal;font-size:16px;">Alamat  : </p>
-            <p style="font-weight:normal;font-size:16px;">Harga    : </p>
-            <p style="font-weight:normal;font-size:16px;">Tanggal   : </p>
-            <div class="button-container">
-                <button class="button-delete"><i class="fas fa-trash-alt"></i></button>               
-                <button class="button-edit">Edit</button>
-            </div>
-        </div>
-    </div>
-    <div class="button-container">
-        <button class="button-add"><i class="fa-solid fa-circle-plus">&nbsp; Add Product</i></button>               
-        
-    </div>
-    
-</div>
 </body>
 </html>
