@@ -20,15 +20,17 @@
     <title>Document</title>
     <script>
         function deleteProduct(productId) {
-          $.ajax({
-            type: 'POST',
-            url: '/deleteproduk/' + productId,
-            success: function(data) {
-              alert(data.message); // display the success message
-              location.reload(); // reload the page after deletion
-            }
-          });
+            if (confirm("Are you sure you want to delete this product?")) {
+      $.ajax({
+        type: 'POST',
+        url: '/deleteproduk/' + productId,
+        success: function(data) {
+          alert(data.message); // display the success message
+          location.reload(); // reload the page after deletion
         }
+      });
+    }
+  }
       </script>
     <style>
         body {
@@ -167,8 +169,10 @@
         </div>
         {% endfor %}
         <div class="button-container">
-            <button class="button-add"><i class="fa-solid fa-circle-plus">&nbsp; Add Product</i></button>
-        </div>
+            <div class="button-container">
+                <button class="button-add" onclick="location.href='/addProduk'"><i class="fa-solid fa-circle-plus">&nbsp; Add Product</i></button>
+            </div>
+       </div>
     </div>
 </body>
 </html>
