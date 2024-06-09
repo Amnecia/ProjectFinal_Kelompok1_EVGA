@@ -62,37 +62,62 @@ def about():
 
 @app.route('/addProduk', methods=['GET', 'POST'])
 def tambah_produk():
-    if request.method=='POST':
+    if request.method == 'POST':
         nama = request.form['nama']
         harga = request.form['harga']
         deskripsi = request.form['deskripsi']
         image = request.files['image']
-        extension=image.filename.split('.')[-1]
-        today=datetime.now()
-        mytime=today.strftime('%Y-%M-%d-%H-%m-%S') 
-        image_name=f'image-{mytime}.{extension}'
-        save_to=f'static/assets/productImage/{image_name}'
+        extension = image.filename.split('.')[-1]
+        today = datetime.now()
+        mytime = today.strftime('%Y-%m-%d %H:%M')
+        image_name = f'image-{mytime}.{extension}'
+        save_to = f'static/assets/productImage/{image_name}'
         image.save(save_to)
-        doc={
-            'nama' :nama,
-            'harga':harga,
+        doc = {
+            'nama': nama,
+            'harga': harga,
             'deskripsi': deskripsi,
             'image': image_name,
+            'today': mytime,  # Add this line to record the creation date and time
         }
         db.produk.insert_one(doc)
     return render_template('tambah_produk.html')
 
 
+@app.route('/editProduk/<_id>', methods=['GET'])
+def edit_produk(_id):
+    produk = db.produk.find_one({'_id': ObjectId(_id)})
+    return render_template('edit_produk.html', produk=produk)
 
-@app.route('/editProduk', methods=['GET'])
-def edit_produk():
-        return render_template('edit_produk.html')
+@app.route('/updateProduk/<_id>', methods=['POST'])
+def update_produk(_id):
+    produk = db.produk.find_one({'_id': ObjectId(_id)})
+    if produk:
+        nama = request.form['nama']
+        harga = request.form['harga']
+        deskripsi = request.form['deskripsi']
+        image = request.files['image']
+        if image:
+            extension = image.filename.split('.')[-1]
+            today = datetime.now()
+            mytime = today.strftime('%Y-%M-%d-%H-%m-%S')
+            image_name = f'image-{mytime}.{extension}'
+            save_to = f'static/assets/productImage/{image_name}'
+            image.save(save_to)
+            produk['image'] = image_name
+        produk['nama'] = nama
+        produk['harga'] = harga
+        produk['deskripsi'] = deskripsi
+        produk['updated_at'] = datetime.now()  # Add this line to record the update date and time
+        db.produk.update_one({'_id': ObjectId(_id)}, {'$set': produk})
+        return jsonify({'message': 'Product updated successfully'})
+    return jsonify({'message': 'Product not found'}), 404
 
-
-
-@app.route('/detail', methods=['GET'])
-def detail_produk():
-    return render_template('detail_produk.html')
+    
+@app.route('/detail/<_id>', methods=['GET'])
+def detail_produk(_id):
+    produk = db.produk.find_one({'_id': ObjectId(_id)})
+    return render_template('detail_produk.html', produk=produk)
 
 
 @app.route('/order', methods=['GET'])

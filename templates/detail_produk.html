@@ -251,9 +251,9 @@
         </button>
     </div>
         <div class="product-info">
-            <h1 style="font-weight: bold;">Product Title</h1>
-            <div class="product-description">
-              <p style="font-weight: normal;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor, magna a laoreet auctor, ipsum nisi consectetur nisl, vel congue nisi nisi a nunc. Sed bibendum, nunc a volutpat elementum, nunc nisi vulputate nisl, vel aliquam nunc nisi a nunc.</p>
+          <h1>{{ produk.nama }}</h1> 
+              <div class="product-description">
+              <p style="font-weight: normal;">{{ produk.deskripsi }}</p>
               <div class="star-rating ms-2">
                   <i class="fa-regular fa-star" data-rating="1" style="color: #FFD43B;"></i>
                   <i class="fa-regular fa-star" data-rating="2" style="color: #FFD43B;"></i>
@@ -262,7 +262,7 @@
                   <i class="fa-regular fa-star" data-rating="5" style="color: #FFD43B;"></i>
               </div>
               <div class="price-container">
-                  <h2 style="font-weight: bold;">Price: $50</h2>
+                  <h2 style="font-weight: bold;">Rp. {{ produk.harga }}</h2>
                   <div class="quantity-input">
                       <button>-</button>
                       <input type="number" min="1" value="1">

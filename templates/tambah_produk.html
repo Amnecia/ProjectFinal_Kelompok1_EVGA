@@ -97,7 +97,7 @@
           contentType: false,
          success: function(response){
             alert("Produk Baru telah berhasil ditambahkan!")
-            window.location.reload();
+            location.href = '/list';
           }
         })
       }
@@ -121,11 +121,7 @@
       });
       
     </script>
-    <script
-      src="https://code.jquery.com/jquery-3.6.0.min.js"
-      integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5+5hb7ie1N6xnq7aP6eRA5PJ4LFpo5RR0M0Ez4Jk"
-      crossorigin="anonymous"
-    ></script>
+  
   </body>
 </html>
 {% include 'footer.html' %}

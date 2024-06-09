@@ -71,8 +71,8 @@
             flex-basis: 100%;
             display: flex;
             justify-content: flex-end;
-            margin-top: 90px;
-            margin-bottom:-90px;
+            margin-top: 160px;
+            margin-bottom:-110px;
             margin-right: 30px;
             color:red;
         }
@@ -113,7 +113,12 @@
     line-height: 40px;
 }
 
-
+.price-button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
 .button-delete {
     background-color: #2e2e2e;
     border: none;
@@ -157,14 +162,13 @@
             </div>
             <div class="text-container">
                 <h1 style="font-size:28px;">{{ product.nama }}</h1>
-                <p style="font-weight:normal; font-size:16px;">Jumlah: {{ product.jumlah }}</p>
-                <p style="font-weight:normal;font-size:16px;">Email: {{ product.email }}</p>
-                <p style="font-weight:normal;font-size:16px;">Alamat: {{ product.alamat }}</p>
-                <p style="font-weight:normal;font-size:16px;">Harga: {{ product.harga }}</p>
-                <p style="font-weight:normal;font-size:16px;">Tanggal: {{ product.tanggal }}</p>
+                <p style="font-weight:normal; font-size:20px;"> {{ product.deskripsi }}</p>
+                <p style="font-weight:normal;font-size:16px;">Date Added: {{ product.today }}</p>
+                <br>
+                <p style="font-weight:normal;font-size:24px; color:#d00000; font-weight:bold;">Rp. {{ product.harga }}</p>
                 <div class="button-container">
-                    <button class="button-delete" onclick="deleteProduct('{{ product._id }}')"><i class="fas fa-trash-alt"></i></button>                    <button class="button-edit">Edit</button>
-                </div>
+                    <button class="button-delete" onclick="deleteProduct('{{ product._id }}')"><i class="fas fa-trash-alt"></i></button>                   
+                    <button class = "button-edit" onclick="location.href='/editProduk/{{ product._id }}'">Edit</button>                </div>
             </div>
         </div>
         {% endfor %}
