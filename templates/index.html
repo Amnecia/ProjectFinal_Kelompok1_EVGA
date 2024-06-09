@@ -95,7 +95,7 @@
   <div class="product-container">
     {% for product in produk %}
       <div class="card m-3" style="width: 20rem; height: 350px;">
-        <img src="{{ url_for('static', filename='assets/productImage/' + product.image) }}" class="card-img-top" alt="Product Image">
+        <img src="{{ url_for('static', filename='assets/productImage/' + product.image1) }}" class="card-img-top" alt="Product Image">
         <div class="card-body">
           <h5 class="card-title">{{ product.nama }}</h5>
           <p class="card-text">Rp. {{ product.harga }}</p>

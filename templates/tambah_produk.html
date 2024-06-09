@@ -47,9 +47,15 @@
           </div>
           <div class="container px-0">
             <!-- Hidden input file, triggered by clicking the button -->
-            <input type="file" id="imageInput" style="display: none;" accept="image/*">
+            <input type="file" id="imageInput1" style="display: none;" accept="image/*">
             <!-- Button to trigger file input -->
-            <label for="imageInput" class="btn btn-danger">Select Image</label>
+            <label for="imageInput1" class="btn btn-danger">First Image</label>
+            <input type="file" id="imageInput2" style="display: none;" accept="image/*">
+            <!-- Button to trigger file input -->
+            <label for="imageInput2" class="btn btn-danger">Second Image</label>
+            <input type="file" id="imageInput3" style="display: none;" accept="image/*">
+            <!-- Button to trigger file input -->
+            <label for="imageInput3" class="btn btn-danger">Third Image</label>
           </div>
         </div>
         <div class="mb-4 mx-2" style="width: 97%;">
@@ -77,51 +83,88 @@
       crossorigin="anonymous"
     ></script>
     <script>
-      function AddProduct(){
-        let nama = $('#namaProduk').val();
-        let harga = $('#hargaProduk').val();
-        let deskripsi = $('#deskripsiProduk').val();
-        let image = $('#imageInput')[0].files[0];
+    // Get the file input elements
+    const imageInput1 = document.getElementById('imageInput1');
+const imageInput2 = document.getElementById('imageInput2');
+const imageInput3 = document.getElementById('imageInput3');
 
-        let formData = new FormData();
-        formData.append('nama', nama);
-        formData.append('harga', harga);
-        formData.append('deskripsi', deskripsi);
-        formData.append('image', image);
+const imagePreview1 = document.getElementById('imagePreview');
+const imagePreview2 = document.getElementById('imagePreview');
+const imagePreview3 = document.getElementById('imagePreview');
 
-        $.ajax({
-          type: 'POST',
-          url: '/addProduk',
-          data: formData,
-          processData: false,
-          contentType: false,
-         success: function(response){
-            alert("Produk Baru telah berhasil ditambahkan!")
-            location.href = '/list';
-          }
-        })
-      }
+imageInput1.addEventListener('change', (e) => {
+  const file = imageInput1.files[0];
+  const reader = new FileReader();
 
-      const imageInput = document.getElementById('imageInput');
-      const imagePreview = document.getElementById('imagePreview');
+  reader.onload = (event) => {
+    const imageData = event.target.result;
+    const image = document.createElement('img');
+    image.src = imageData;
+    imagePreview1.innerHTML = '';
+    imagePreview1.appendChild(image);
+  };
 
-      imageInput.addEventListener('change', (e) => {
-        const file = imageInput.files[0];
-        const reader = new FileReader();
+  reader.readAsDataURL(file);
+});
 
-        reader.onload = (event) => {
-          const imageData = event.target.result;
-          const image = document.createElement('img');
-          image.src = imageData;
-          imagePreview.innerHTML = '';
-          imagePreview.appendChild(image);
-        };
+imageInput2.addEventListener('change', (e) => {
+  const file = imageInput2.files[0];
+  const reader = new FileReader();
 
-        reader.readAsDataURL(file);
-      });
-      
+  reader.onload = (event) => {
+    const imageData = event.target.result;
+    const image = document.createElement('img');
+    image.src = imageData;
+    imagePreview2.innerHTML = '';
+    imagePreview2.appendChild(image);
+  };
+
+  reader.readAsDataURL(file);
+});
+
+imageInput3.addEventListener('change', (e) => {
+  const file = imageInput3.files[0];
+  const reader = new FileReader();
+
+  reader.onload = (event) => {
+    const imageData = event.target.result;
+    const image = document.createElement('img');
+    image.src = imageData;
+    imagePreview3.innerHTML = '';
+    imagePreview3.appendChild(image);
+  };
+
+  reader.readAsDataURL(file);
+});
+function AddProduct() {
+  let nama = $('#namaProduk').val();
+  let harga = $('#hargaProduk').val();
+  let deskripsi = $('#deskripsiProduk').val();
+  let image1 = $('#imageInput1')[0].files[0];
+  let image2 = $('#imageInput2')[0].files[0];
+  let image3 = $('#imageInput3')[0].files[0];
+
+  let formData = new FormData();
+  formData.append('nama', nama);
+  formData.append('harga', harga);
+  formData.append('deskripsi', deskripsi);
+  formData.append('image1', image1);
+  formData.append('image2', image2);
+  formData.append('image3', image3);
+
+  $.ajax({
+    type: 'POST',
+    url: '/addProduk',
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function(response) {
+      alert("Produk Baru telah berhasil ditambahkan!")
+      location.href = '/list';
+    }
+  });
+}
     </script>
   
   </body>
 </html>
-{% include 'footer.html' %}

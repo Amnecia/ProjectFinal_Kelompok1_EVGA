@@ -232,13 +232,13 @@
       <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="https://images.pexels.com/photos/1591447/pexels-photo-1591447.jpeg?cs=srgb&dl=color-depth-of-field-environment-1591447.jpg&fm=jpg" class="product-image" alt="...">
+              <img src="{{ url_for('static', filename='assets/productImage/' + produk.image1) }}" class="product-image">
             </div>
             <div class="carousel-item">
-                <img src="https://images.pexels.com/photos/22475982/pexels-photo-22475982/free-photo-of-historic-stone-house-with-a-roof-overgrown-with-grass-in-an-icelandic-fjord.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="product-image" alt="...">
+              <img src="{{ url_for('static', filename='assets/productImage/' + produk.image2) }}" class="product-image">
             </div>
             <div class="carousel-item">
-                <img src="https://images.pexels.com/photos/1591449/pexels-photo-1591449.jpeg?cs=srgb&dl=color-depth-of-field-environment-1591449.jpg&fm=jpg" class="product-image" alt="...">
+              <img src="{{ url_for('static', filename='assets/productImage/' + produk.image3) }}" class="product-image">
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
