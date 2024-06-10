@@ -21,23 +21,128 @@ SECRET_KEY='PLACEHOLDER_RANDOM'
 
 TOKEN_KEY = 'ytoken'
 
+
 @app.route('/')
 def home():
     produk = db.produk.find()
-    print(produk)  # Add this line to check the produk variable
     return render_template('index.html', produk=produk)
 
-
-
-    
-@app.route('/login', methods=['GET'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    msg = request.args.get("msg")
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        hashed_password = hashed_password(password)
+
+        user = db.users.find_one({'email': email, 'password': hashed_password})
+        if user:
+            token = jwt.encode({
+                'user_id': str(user['_id']),
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+            }, SECRET_KEY, algorithm='HS256')
+
+            response = response(redirect(url_for('home')))
+            response.set_cookie(TOKEN_KEY, token)
+            return response
+        else:
+            msg = 'Invalid email or password'
+            return render_template('login.html', msg=msg)
     return render_template('login.html')
 
-@app.route('/register', methods=['GET'])
+
+
+@app.route('/logout')
+def logout():
+    response = response(redirect(url_for('login')))
+    response.set_cookie(TOKEN_KEY, '', expires=0)
+    return response
+
+def token_required(f):
+    def decorated_function(args,):
+        token = request.cookies.get(TOKEN_KEY)
+        if not token:
+            return redirect(url_for('login', msg='Login required'))
+
+        try:
+            data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+            user_id = data['user_id']
+            current_user = db.users.find_one({'_id': ObjectId(user_id)})
+        except Exception as e:
+            return redirect(url_for('login', msg='Login required'))
+
+        return f(current_user, args, )
+    return decorated_function
+
+@app.route('/protected')
+@token_required
+def protected(current_user):
+    return f'Logged in as: {current_user["email"]}'
+   
+
+
+@app.route('/register', methods=['GET', 'POST'])
 def register():
+    if request.method == 'POST':
+        full_name = request.form['full_name']
+        username = request.form['username']
+        contact_number = request.form['contact_number']
+        email = request.form['email']
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
+        
+        if password != confirm_password:
+            return jsonify({'error': 'Passwords do not match'}), 400
+        
+        existing_user = db.users.find_one({"username": username})
+        if existing_user:
+            return jsonify({'error': 'Username already exists'}), 400
+        
+        hashed_password = hashlib.sha256(password.encode()).hexdigest()
+        
+        new_user = {
+            "full_name": full_name,
+            "username": username,
+            "contact_number": contact_number,
+            "email": email,
+            "password": hashed_password
+        }
+        
+        result = db.users.insert_one(new_user)
+        user_id = str(result.inserted_id)
+        
+        token = jwt.encode(
+            {'user_id': user_id, 'exp': datetime.utcnow() + timedelta(minutes=30)},
+            SECRET_KEY, algorithm='HS256')
+        
+        return jsonify({'token': token.decode('UTF-8')})
     return render_template('register.html')
+
+
+@app.route('/submit_registration', methods=['POST'])
+def submit_registration():
+    full_name = request.form.get('full_name')
+    username = request.form.get('username')
+    contact_number = request.form.get('contact_number')
+    email = request.form.get('email')
+    password = request.form.get('password')
+    confirm_password = request.form.get('confirm_password')
+
+    
+    if password != confirm_password:
+        return 'Passwords do not match', 400
+
+    
+    hashed_password = hashlib.sha256(password.encode()).hexdigest()
+
+    new_user = {
+        'full_name': full_name,
+        'username': username,
+        'contact_number': contact_number,
+        'email': email,
+        'password': hashed_password
+    }
+    db.users.insert_one(new_user)
+    return redirect(url_for('login'))
     
     
 
