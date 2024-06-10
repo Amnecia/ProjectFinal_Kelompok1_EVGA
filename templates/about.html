@@ -1,0 +1,106 @@
+{% include 'header.html' %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Satisfy&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"
+    ></script>
+    <link href="../static/assets/mystyle.css" rel="stylesheet">
+
+    <style>
+     
+    </style>
+    <title>About</title>
+    <script>
+        $(document).ready(function () {
+          $("#showmore").click(function () {
+            $("#more").toggle();
+            $("#showmore").hide();
+            $("#showless").show();
+          });
+          $("#showless").click(function () {
+            $("#more").toggle();
+            $("#showless").hide();
+            $("#showmore").show();
+          });
+        });
+      </script>
+  </head>
+  <body>
+    <div class="container text-center">
+      <div class="row align-items-center">
+        <div class="col-2"></div>
+        <div class="col-8">
+          <div class="container-xxl">
+            <h1 style="margin-top: 25%;">About Us</h1>
+            <p>
+              Selamat datang di Baso Aci Teh Kiki, destinasi kuliner yang
+              menawarkan cita rasa unik dan lezat di Kp. Kebarosan, RT 004 RW
+              003, Desa Teluk Terate, Kramatwatu, Kabupaten Serang, Banten. Baso
+              Aci Teh Kiki adalah tempat sempurna untuk menikmati hidangan
+              favorit yang penuh kenikmatan.
+            </p>
+            <div id="more" style="display: none">
+              <p>
+                Baso Aci Teh Kiki menghadirkan berbagai varian baso aci yang
+                dibuat dengan bahan-bahan berkualitas tinggi dan bumbu pilihan.
+                Setiap gigitan baso aci kami memberikan sensasi kenyal yang
+                memuaskan, dipadukan dengan kuah kaldu yang kaya rasa. Kami
+                berkomitmen untuk menghadirkan cita rasa yang tak hanya
+                memanjakan lidah, tetapi juga membuat Anda selalu ingin kembali.
+              </p>
+
+              <p>
+                Kami menciptakan suasana yang nyaman dan ramah, di mana Anda
+                dapat menikmati hidangan kami dengan tenang. Terletak di
+                lingkungan yang asri, Baso Aci Teh Kiki adalah tempat yang ideal
+                untuk berkumpul bersama keluarga dan teman-teman, atau sekadar
+                bersantai menikmati hidangan favorit Anda.
+              </p>
+
+              <p>
+                Teh Kiki dan timnya selalu berusaha memberikan yang terbaik bagi
+                setiap pelanggan. Mulai dari pemilihan bahan baku hingga proses
+                penyajian, setiap langkah kami lakukan dengan penuh perhatian
+                dan dedikasi. Kami juga selalu siap mendengarkan saran dan
+                masukan dari pelanggan untuk terus meningkatkan kualitas layanan
+                dan cita rasa hidangan kami.
+              </p>
+
+              <p>Selamat menikmati, dan sampai jumpa di Baso Aci Teh Kiki!</p>
+            </div>
+            <button id="showmore" type="button" class="btn btn-danger mx-3">
+              See More
+            </button>
+            <button id="showless" type="button" class="btn btn-danger mx-3" style="display: none;">
+                See Less
+            </button>
+          </div>
+        </div>
+        <div class="col-2"></div>
+      </div>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5+5hb7ie1N6xnq7aP6eRA5PJ4LFpo5RR0M0Ez4Jk"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
+{% include 'footer.html' %}

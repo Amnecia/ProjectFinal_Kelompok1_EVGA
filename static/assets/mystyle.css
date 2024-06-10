@@ -1,0 +1,182 @@
+:root {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Lalezar", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+.nav {
+background-color:  #cdcdcd ;
+}
+
+.offcanvas-header{
+background-color: #D00000;
+}
+
+.nav-link{
+color: black;
+}
+
+.navbar{
+background-color: #D00000;
+color : white;
+}
+
+.navbar-brand{
+color:white;
+font-size: 1.5rem;
+font-weight: bold;
+}
+
+.navbar-brand:hover{
+  color: #ccc; 
+}
+
+.navbar-toggler{
+  color: #D00000;
+}
+
+.btn-navbar{
+  color: #fff; 
+  font-size: 24px;
+  font-weight: bold;
+  text-decoration: none;
+  margin-right: 3rem; 
+}
+
+.btn-navbar:hover {
+  color: #ccc; 
+}
+
+.bi-pencil{
+  padding-right:4px;
+}
+
+.logout {
+  background-color: #000000;
+  font-size:16px;
+  color: white;
+  font-weight: bold;
+  max-width: 100%;
+  width: 500px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  display: flex;
+  align-items: center; 
+  justify-content: flex-start;
+  margin-left: auto; 
+  margin-right: auto; 
+}
+
+.logout svg {
+  margin-right: 10px; 
+}
+
+.footer {
+background-color: black; 
+}
+
+.nav-link-footer {
+background-color: transparent !important; 
+color: white; 
+}
+
+footer {
+display: flex;
+justify-content: space-around;
+background-color: #333;
+color: #fff;
+padding: 20px;
+}
+
+.column {
+width: 27%;
+}
+
+p {
+font-size: 20px;
+font-weight: bold;
+margin-bottom: 10px;
+}
+
+footer{
+margin-top: 50px;
+}
+
+.navbar .btn-checkout {
+  color: white;
+  position: absolute;
+  right: 4.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.card{
+  width: 350px;
+  
+  
+}
+
+.card-title{
+  font-weight: bold;
+}
+
+.card-text{
+  font-weight: normal;
+ color: red;
+
+}
+
+ .star-rating {
+  color: orange; 
+}
+
+
+.container {
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; 
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.column {
+  width: 18%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.card {
+  width: 100%;
+  margin: -5px 1px 10px -5px;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.navbar .btn-login {
+  text-align: center;
+  color: white;
+  background-color: black;
+  position: absolute;
+  width: 150px;
+  right: 6rem;
+  top: 50%;
+  font-size:25px;
+  transform: translateY(-50%);
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  border:none;
+}
