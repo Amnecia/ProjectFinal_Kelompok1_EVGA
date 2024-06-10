@@ -27,6 +27,9 @@ def home():
     print(produk)  # Add this line to check the produk variable
     return render_template('index.html', produk=produk)
 
+
+
+    
 @app.route('/login', methods=['GET'])
 def login():
     msg = request.args.get("msg")
@@ -35,6 +38,8 @@ def login():
 @app.route('/register', methods=['GET'])
 def register():
     return render_template('register.html')
+    
+    
 
 @app.route('/about', methods=['GET'])
 def about():
