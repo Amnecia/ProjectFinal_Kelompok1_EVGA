@@ -1,9 +1,6 @@
 import os
 from os.path import join, dirname
-
-
 from pymongo import MongoClient
-import requests
 import requests
 import jwt
 import datetime
@@ -37,6 +34,9 @@ def home():
     return render_template('index.html')
 
 
+
+
+    
 @app.route('/login', methods=['GET'])
 def login():
     msg = request.args.get("msg")
@@ -46,6 +46,8 @@ def login():
 @app.route('/register', methods=['GET'])
 def register():
     return render_template('register.html')
+    
+    
 
 
 @app.route('/about', methods=['GET'])
