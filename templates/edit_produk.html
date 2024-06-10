@@ -25,8 +25,26 @@
 <body>
     <div class="container border border-danger shadow rounded p-3">
         <div class="row">
-            <div class="col-3 mx-4 mt-4 mb-4">
-                <img src="{{ url_for('static', filename='assets/productImage/' + produk.image) }}" class="product-image" style="width: 350px; height: 350px; object-fit: cover;">
+            <div id="imagePreview" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active" id="carousel-item-1">
+                        <img src="{{ url_for('static', filename='assets/productImage/' + produk.image1) }}" alt="First slide" class="d-block w-100">
+                    </div>
+                    <div class="carousel-item" id="carousel-item-2">
+                        <img src="{{ url_for('static', filename='assets/productImage/' + produk.image2) }}" alt="Second slide" class="d-block w-100">
+                    </div>
+                    <div class="carousel-item" id="carousel-item-3">
+                        <img src="{{ url_for('static', filename='assets/productImage/' + produk.image3) }}" alt="Third slide" class="d-block w-100">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#imagePreview" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#imagePreview" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
             <div class="col-9 mt-4">
                 <div class="mb-3">
@@ -39,9 +57,15 @@
                 </div>
                 <div class="container px-0">
                     <!-- Hidden input file, triggered by clicking the button -->
-                    <input type="file" id="imageInput" style="display: none;" accept="image/*">
+                    <input type="file" id="imageInput1" style="display: none;" accept="image/*">
                     <!-- Button to trigger file input -->
-                    <label for="imageInput" class="btn btn-danger">Select Image</label>
+                    <label for="imageInput1" class="btn btn-danger">First Image</label>
+                    <input type="file" id="imageInput2" style="display: none;" accept="image/*">
+                    <!-- Button to trigger file input -->
+                    <label for="imageInput2" class="btn btn-danger">Second Image</label>
+                    <input type="file" id="imageInput3" style="display: none;" accept="image/*">
+                    <!-- Button to trigger file input -->
+                    <label for="imageInput3" class="btn btn-danger">Third Image</label>
                 </div>
             </div>
             <div class="mb-4 mx-2" style="width: 97%;">
@@ -59,47 +83,70 @@
     </div>
     <script>
         function updateProduk(_id) {
-            var formData = new FormData();
-            formData.append('nama', $('#namaProduk').val());
-            formData.append('harga', $('#hargaProduk').val());
-            formData.append('deskripsi', $('#deskripsiProduk').val());
-            formData.append('image', $('#imageInput')[0].files[0]);
-    
+            let nama = $('#namaProduk').val();
+            let harga = $('#hargaProduk').val();
+            let deskripsi = $('#deskripsiProduk').val();
+            let image1 = $('#imageInput1')[0].files[0];
+            let image2 = $('#imageInput2')[0].files[0];
+            let image3 = $('#imageInput3')[0].files[0];
+
+            let formData = new FormData();
+            formData.append('nama', nama);
+            formData.append('harga', harga);
+            formData.append('deskripsi', deskripsi);
+            formData.append('image1', image1);
+            formData.append('image2', image2);
+            formData.append('image3', image3);
+
             $.ajax({
-            url: '/updateProduk/' + _id,
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                if (response.message === 'Product updated successfully') {
-                    alert('Product updated successfully');
-                    location.href = '/list';
-                } else {
+                url: '/updateProduk/' + _id,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.message === 'Product updated successfully') {
+                        alert('Product updated successfully');
+                        location.href = '/list';
+                    } else {
+                        alert('Failed to update product');
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
                     alert('Failed to update product');
                 }
-            },
-            error: function(error) {
-                console.log(error);
-                alert('Failed to update product');
-            }
-        });
-    }
+            });
+        }
 
-    // Add this script to replace the existing image preview with the selected image
-    $(document).ready(function() {
-        $('#imageInput').change(function(event) {
-            var reader = new FileReader();
-            reader.onload = function(event) {
-                $('.product-image').attr('src', event.target.result);
-            }
-            reader.readAsDataURL(event.target.files[0]);
+        // Add this script to replace the existing image preview with the selected image
+        $(document).ready(function() {
+            $('#imageInput1').change(function(event) {
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    $('#carousel-item-1 img').attr('src', event.target.result);
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            });
+
+            $('#imageInput2').change(function(event) {
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    $('#carousel-item-2 img').attr('src', event.target.result);
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            });
+
+            $('#imageInput3').change(function(event) {
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    $('#carousel-item-3 img').attr('src', event.target.result);
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            });
         });
-    });
     </script>
 </body>
 </html>
 
 {% include 'footer.html' %}
-
-

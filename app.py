@@ -94,23 +94,42 @@ def update_produk(_id):
         nama = request.form['nama']
         harga = request.form['harga']
         deskripsi = request.form['deskripsi']
-        image = request.files['image']
-        if image:
-            extension = image.filename.split('.')[-1]
-            today = datetime.now()
-            mytime = today.strftime('%Y-%M-%d-%H-%m-%S')
-            image_name = f'image-{mytime}.{extension}'
-            save_to = f'static/assets/productImage/{image_name}'
-            image.save(save_to)
-            produk['image'] = image_name
-        produk['nama'] = nama
-        produk['harga'] = harga
-        produk['deskripsi'] = deskripsi
-        produk['updated_at'] = datetime.now()  # Add this line to record the update date and time
-        db.produk.update_one({'_id': ObjectId(_id)}, {'$set': produk})
+        image1 = request.files['image1']
+        image2 = request.files['image2']
+        image3 = request.files['image3']
+
+        extension1 = image1.filename.split('.')[-1]
+        extension2 = image2.filename.split('.')[-1]
+        extension3 = image3.filename.split('.')[-1]
+
+        today = datetime.now()
+        mytime = today.strftime('%Y-%m-%d %H:%M')
+
+        image_name1 = f'image1-{mytime}.{extension1}'
+        image_name2 = f'image2-{mytime}.{extension2}'
+        image_name3 = f'image3-{mytime}.{extension3}'
+
+        save_to1 = f'static/assets/productImage/{image_name1}'
+        save_to2 = f'static/assets/productImage/{image_name2}'
+        save_to3 = f'static/assets/productImage/{image_name3}'
+
+        image1.save(save_to1)
+        image2.save(save_to2)
+        image3.save(save_to3)
+
+        updated_fields = {
+            'nama': nama,
+            'harga': harga,
+            'deskripsi': deskripsi,
+            'image1': image_name1,
+            'image2': image_name2,
+            'image3': image_name3,
+            'updated_at': datetime.now()
+        }
+
+        db.produk.update_one({'_id': ObjectId(_id)}, {'$set': updated_fields})
         return jsonify({'message': 'Product updated successfully'})
     return jsonify({'message': 'Product not found'}), 404
-
 @app.route('/detail/<_id>', methods=['GET'])
 def detail_produk(_id):
     produk = db.produk.find_one({'_id': ObjectId(_id)})
