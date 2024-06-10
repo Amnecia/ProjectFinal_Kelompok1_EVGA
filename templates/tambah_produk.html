@@ -16,23 +16,49 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    
     <style>
-        .container {
-            margin-top: 70px; /* Adjust this value to lower the container */
-        }
-          #imagePreview img {
-        width: 250px; /* adjust the width to your desired size */
-        height: 250px; /* adjust the height to your desired size */
-        object-fit: cover; 
-        border-radius: 5px; 
-    }
-    </style>
+      .container {
+         margin-top: 70px; /* Adjust this value to lower the container */
+       }
+       #imagePreview {
+         margin: 0 auto; /* Add this to center the image preview horizontally */
+         text-align: center; /* Add this to center the image preview horizontally */
+       }
+       #imagePreview img {
+         width: 250px; /* adjust the width to your desired size */
+         height: 250px; /* adjust the height to your desired size */
+         object-fit: cover; 
+         border-radius: 5px; 
+       }
+     </style>
     <title>Tambah Produk</title>
   </head>
   <body>
     <div class="container border border-danger shadow rounded p-3">
       <div class="row">
-        <div id="imagePreview" style="width: 250px; height: 250px;  margin-top: 10px; margin-right:15px;"></div>
+        <div id="imagePreview" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active" id="carousel-item-1">
+              <img src="" alt="First slide" class="d-block w-100">
+            </div>
+            <div class="carousel-item" id="carousel-item-2">
+              <img src="" alt="Second slide" class="d-block w-100">
+            </div>
+            <div class="carousel-item" id="carousel-item-3">
+              <img src="" alt="Third slide" class="d-block w-100">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#imagePreview" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#imagePreview" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+        <!-- rest of your code -->
         <div class="col-9 mt-4">
           <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">Product Name</label>
@@ -85,85 +111,86 @@
     <script>
     // Get the file input elements
     const imageInput1 = document.getElementById('imageInput1');
-const imageInput2 = document.getElementById('imageInput2');
-const imageInput3 = document.getElementById('imageInput3');
+    const imageInput2 = document.getElementById('imageInput2');
+    const imageInput3 = document.getElementById('imageInput3');
 
-const imagePreview1 = document.getElementById('imagePreview');
-const imagePreview2 = document.getElementById('imagePreview');
-const imagePreview3 = document.getElementById('imagePreview');
+    const carouselItem1 = document.getElementById('carousel-item-1');
+    const carouselItem2 = document.getElementById('carousel-item-2');
+    const carouselItem3 = document.getElementById('carousel-item-3');
 
-imageInput1.addEventListener('change', (e) => {
-  const file = imageInput1.files[0];
-  const reader = new FileReader();
+    imageInput1.addEventListener('change', (e) => {
+      const file = imageInput1.files[0];
+      const reader = new FileReader();
 
-  reader.onload = (event) => {
-    const imageData = event.target.result;
-    const image = document.createElement('img');
-    image.src = imageData;
-    imagePreview1.innerHTML = '';
-    imagePreview1.appendChild(image);
-  };
+      reader.onload = (event) => {
+        const imageData = event.target.result;
+        const image = document.createElement('img');
+        image.src = imageData;
+        carouselItem1.innerHTML = '';
+        carouselItem1.appendChild(image);
+      };
 
-  reader.readAsDataURL(file);
-});
+      reader.readAsDataURL(file);
+    });
 
-imageInput2.addEventListener('change', (e) => {
-  const file = imageInput2.files[0];
-  const reader = new FileReader();
+    imageInput2.addEventListener('change', (e) => {
+      const file = imageInput2.files[0];
+      const reader = new FileReader();
 
-  reader.onload = (event) => {
-    const imageData = event.target.result;
-    const image = document.createElement('img');
-    image.src = imageData;
-    imagePreview2.innerHTML = '';
-    imagePreview2.appendChild(image);
-  };
+      reader.onload = (event) => {
+        const imageData = event.target.result;
+        const image = document.createElement('img');
+        image.src = imageData;
+        carouselItem2.innerHTML = '';
+        carouselItem2.appendChild(image);
+      };
 
-  reader.readAsDataURL(file);
-});
+      reader.readAsDataURL(file);
+    });
 
-imageInput3.addEventListener('change', (e) => {
-  const file = imageInput3.files[0];
-  const reader = new FileReader();
+    imageInput3.addEventListener('change', (e) => {
+      const file = imageInput3.files[0];
+      const reader = new FileReader();
 
-  reader.onload = (event) => {
-    const imageData = event.target.result;
-    const image = document.createElement('img');
-    image.src = imageData;
-    imagePreview3.innerHTML = '';
-    imagePreview3.appendChild(image);
-  };
+      reader.onload = (event) => {
+        const imageData = event.target.result;
+        const image = document.createElement('img');
+        image.src = imageData;
+        carouselItem3.innerHTML = '';
+        carouselItem3.appendChild(image);
+      };
 
-  reader.readAsDataURL(file);
-});
-function AddProduct() {
-  let nama = $('#namaProduk').val();
-  let harga = $('#hargaProduk').val();
-  let deskripsi = $('#deskripsiProduk').val();
-  let image1 = $('#imageInput1')[0].files[0];
-  let image2 = $('#imageInput2')[0].files[0];
-  let image3 = $('#imageInput3')[0].files[0];
+      reader.readAsDataURL(file);
+    });
 
-  let formData = new FormData();
-  formData.append('nama', nama);
-  formData.append('harga', harga);
-  formData.append('deskripsi', deskripsi);
-  formData.append('image1', image1);
-  formData.append('image2', image2);
-  formData.append('image3', image3);
+    function AddProduct() {
+      let nama = $('#namaProduk').val();
+      let harga = $('#hargaProduk').val();
+      let deskripsi = $('#deskripsiProduk').val();
+      let image1 = $('#imageInput1')[0].files[0];
+      let image2 = $('#imageInput2')[0].files[0];
+      let image3 = $('#imageInput3')[0].files[0];
 
-  $.ajax({
-    type: 'POST',
-    url: '/addProduk',
-    data: formData,
-    processData: false,
-    contentType: false,
-    success: function(response) {
-      alert("Produk Baru telah berhasil ditambahkan!")
-      location.href = '/list';
+      let formData = new FormData();
+      formData.append('nama', nama);
+      formData.append('harga', harga);
+      formData.append('deskripsi', deskripsi);
+      formData.append('image1', image1);
+      formData.append('image2', image2);
+      formData.append('image3', image3);
+
+      $.ajax({
+        type: 'POST',
+        url: '/addProduk',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+          alert("Produk Baru telah berhasil ditambahkan!")
+          location.href = '/list';
+        }
+      });
     }
-  });
-}
     </script>
   
   </body>

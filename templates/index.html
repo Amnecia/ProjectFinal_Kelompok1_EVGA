@@ -61,6 +61,12 @@
         font-size: 18px;
         color: #FFD43B;
     }
+    .btn btn-primary:hover{
+        background-color: #7a0000;
+    }
+    .btn-primary{
+        
+    }
     </style>
 </head>
 <body>
@@ -94,7 +100,7 @@
   <h1>Products</h1>
   <div class="product-container">
     {% for product in produk %}
-      <div class="card m-3" style="width: 20rem; height: 350px;">
+      <div class="card m-3" style="width: 20rem; height: 400px;">
         <img src="{{ url_for('static', filename='assets/productImage/' + product.image1) }}" class="card-img-top" alt="Product Image">
         <div class="card-body">
           <h5 class="card-title">{{ product.nama }}</h5>
@@ -106,7 +112,9 @@
             <i class="fa-regular fa-star" data-rating="4" style="color: #FFD43B;"></i>
             <i class="fa-regular fa-star" data-rating="5" style="color: #FFD43B;"></i>
           </div>
-          <a href="{{ url_for('detail_produk', _id=product._id) }}" class="btn btn-primary">View Details</a>
+          <div class="detail-container" style="padding-top:20px;">
+          <a href="{{ url_for('detail_produk', _id=product._id) }}" class="btn btn-primary" style="background-color: #D00000; border:none; ">View Details</a>
+        </div>
         </div>
       </div>
     {% endfor %}
