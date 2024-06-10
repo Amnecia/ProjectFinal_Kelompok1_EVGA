@@ -116,13 +116,20 @@ def detail_produk(_id):
     produk = db.produk.find_one({'_id': ObjectId(_id)})
     return render_template('detail_produk.html', produk=produk)
 
-@app.route('/order', methods=['GET'])
+@app.route('/order', methods=['GET', 'POST'])
 def order():
+    if request.method == 'POST':
+        nama = request.form['nama']
+        harga = request.form['harga']
+        address = request.form['address']
+        db.produk.find_one({'nama': nama, 'harga': harga, 'address': address})
+        return redirect(url_for('status'))
     return render_template('order.html')
 
-@app.route('/status', methods=['GET'])
-def status():
-    return render_template('status_pesanan.html')
+@app.route('/status/<_id>', methods=['GET'])
+def status(_id):
+    produk = db.produk.find_one({'_id': ObjectId(_id)})
+    return render_template('status_pesanan.html', produk=produk)
 
 @app.route('/list', methods=['GET'])
 def list():
@@ -133,9 +140,12 @@ def list():
 def guest():
     return render_template('guest.html')
 
-@app.route('/setstatus', methods=['GET'])
+@app.route('/setstatus', methods=['POST'])
 def SetStatus():
-    return render_template('set_status.html')
+    status = request.form['status']
+    _id = request.form['_id']
+    db.produk.update_one({'_id': ObjectId(_id)}, {'$set': {'status': status}})
+    return jsonify({'message': 'Status updated successfully'})
 
 @app.route('/etalase', methods=['GET'])
 def etalase():
@@ -145,6 +155,15 @@ def etalase():
 def deleteProduk(_id):
     db.produk.delete_one({'_id': ObjectId(_id)})
     return jsonify({'message': 'Product deleted successfully'})
+
+@app.route('/form_ulasan/<_id>', methods=['GET', 'POST'])
+def form_ulasan(_id):
+    if request.method == 'POST':
+        ulasan = request.form['ulasan']
+        rating = request.form['rating']
+        db.produk.update_one({'_id': ObjectId(_id)}, {'$set': {'ulasan': ulasan, 'rating': rating}})
+        return jsonify({'message': 'Ulasan berhasil dikirim'})
+    return render_template('form_ulasan.html')
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
