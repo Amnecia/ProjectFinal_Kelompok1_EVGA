@@ -47,12 +47,7 @@
       border: 1px solid #ccc;
       border-radius: 5px;
     }
-    .input-group input[type="email"] {
-      type: email;
-    }
-    .input-group input[type="password"] {
-      type: password;
-    }
+    
     .button-group {
       display: flex;
       justify-content: space-between;
@@ -79,29 +74,47 @@
   phoneNumber phoneNumber
 password password-->
 <script>
-  function edit_profile(){
-    var firstName = document.getElementById("firstName").value;
-    var lastName = document.getElementById("lastName").value;
-    var email = document.getElementById("email").value;
-    var address = document.getElementById("address").value;
-    var phoneNumber = document.getElementById("phoneNumber").value;
-    var password = document.getElementById("password").value;
-    $.ajax({
-      type: "POST",
-      url: "/edit_profile",
-      data: {
-        firstName_give: firstName,
-        lastName_give: lastName,
-        email_give: email,
-        adress_give: address,
-        phoneNumber_give: phoneNumber,
-        password_give: password
-      },
-      success: function(){
-        alert("Profile updated successfully");
+  $(document).ready(function() {
+      function edit_profile() {
+          var firstName = $('#firstName').val();
+          var lastName = $('#lastName').val();
+          var email = $('#email').val();
+          var address = $('#address').val();
+          var phoneNumber = $('#phoneNumber').val();
+          var password = $('#password').val();
+          
+          $.ajax({
+              type: "POST",
+              url: "/edit_profile",
+              data: {
+                  firstName_give: firstName,
+                  lastName_give: lastName,
+                  email_give: email,
+                  address_give: address,
+                  phoneNumber_give: phoneNumber,
+                  password_give: password
+              },
+              success: function(response) {
+                  if (response.result === 'success') {
+                      alert("Profile updated successfully");
+                  } else {
+                      alert("Failed to update profile: " + response.msg);
+                  }
+              },
+              error: function(response) {
+                  alert("An error occurred: " + response.responseJSON.msg);
+              }
+          });
       }
-    })
-  }
+
+      $('.save').on('click', function() {
+          edit_profile();
+      });
+
+      $('.cancel').on('click', function() {
+          window.location.href = '/profile'; // Change this to the appropriate URL for cancel action
+      });
+  });
 </script>
 </head>
 <body>
