@@ -29,7 +29,6 @@ def home():
 
 
 
-    
 @app.route('/login', methods=['GET'])
 def login():
     msg = request.args.get("msg")
@@ -135,6 +134,7 @@ def update_produk(_id):
         db.produk.update_one({'_id': ObjectId(_id)}, {'$set': updated_fields})
         return jsonify({'message': 'Product updated successfully'})
     return jsonify({'message': 'Product not found'}), 404
+
 @app.route('/detail/<_id>', methods=['GET'])
 def detail_produk(_id):
     produk = db.produk.find_one({'_id': ObjectId(_id)})
