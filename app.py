@@ -60,7 +60,13 @@ def list():
 def guest():
     return render_template('guest.html')
 
+@app.route('/profile', methods=['POST','GET'])
+def profile():
+    return render_template('edit_profile.html')
 
+@app.route('/edit_profile', methods=['POST','GET'])
+def edit_profile():
+    return render_template('edit_profile.html')
 
 
 @app.route('/register', methods=['GET'])
