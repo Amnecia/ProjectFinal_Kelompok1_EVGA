@@ -1,5 +1,5 @@
 import os
-from os.path import join, dirname, jsonify
+from os.path import join, dirname
 from pymongo import MongoClient
 import requests
 import jwt
@@ -10,12 +10,12 @@ from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 from bson import ObjectId
 from os.path import join, dirname
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 import hashlib
 import jwt
 
-dotenv_path = join(dirname(__file__), '.env')
-load_dotenv(dotenv_path)
+#dotenv_path = join(dirname(__file__), '.env')
+#load_dotenv(dotenv_path)
 
 app = Flask(__name__)
 
@@ -275,9 +275,7 @@ def update_produk(_id):
         db.produk.update_one({'_id': ObjectId(_id)}, {'$set': updated_fields})
         return jsonify({'message': 'Product updated successfully'})
     return jsonify({'message': 'Product not found'}), 404
-@app.route('/editEtalase', methods=['GET'])
-def edit_etalase():
-    return render_template('edit_etalase.html')
+
 
 
 @app.route('/detail/<_id>', methods=['GET'])
@@ -379,12 +377,6 @@ def edit_etalase():
         return jsonify({"result": "success", "msg": "Files successfully uploaded"})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
-
-@app.route('/register', methods=['GET'])
-def register():
-    return render_template('register.html')
-
-
 
 
 @app.route('/setstatus', methods=['POST'])
