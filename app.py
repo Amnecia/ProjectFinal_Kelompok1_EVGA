@@ -10,11 +10,11 @@ from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 from bson import ObjectId
 from os.path import join, dirname
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 import hashlib
 
-dotenv_path = join(dirname(__file__), '.env')
-load_dotenv(dotenv_path)
+#dotenv_path = join(dirname(__file__), '.env')
+#load_dotenv(dotenv_path)
 
 app = Flask(__name__)
 
@@ -52,7 +52,7 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 SECRET_KEY='PLACEHOLDER_RANDOM'
 
-TOKEN_KEY = 'ytoken'
+TOKEN_KEY = 'mytoken'
 
 
 @app.route('/')
@@ -60,6 +60,7 @@ def home():
     produk = db.produk.find()
     etalase_folder = 'static/assets/etalase/'
     etalase_images = [file for file in os.listdir(etalase_folder) if os.path.isfile(os.path.join(etalase_folder, file))]
+    print(produk)  
     return render_template('index.html', produk=produk, etalase_images=etalase_images)
 
 
