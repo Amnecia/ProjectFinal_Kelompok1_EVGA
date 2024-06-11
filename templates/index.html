@@ -64,34 +64,35 @@
     .btn btn-primary:hover{
         background-color: #7a0000;
     }
-    .btn-primary{
-        
-    }
     </style>
 </head>
 <body>
-    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="https://wallpaperaccess.com/full/8084017.jpg" class="d-block w-100" alt="...">
+    <div class="etalase">
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-inner">
+                    {% for image in etalase_images %}
+                        {% if loop.first %}
+                            <div class="carousel-item active">
+                        {% else %}
+                            <div class="carousel-item">
+                        {% endif %}
+                            <img src="{{ url_for('static', filename='assets/etalase/' + image) }}" class="d-block w-100" alt="Etalase Image">
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
-            <div class="carousel-item">
-                <img src="https://images.hdqwalls.com/download/water-through-rocks-4k-kl-2932x2932.jpg" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="https://photographylife.com/wp-content/uploads/2014/09/Nikon-D750-Image-Samples-2.jpg" class="d-block w-100" alt="...">
-            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
+        
     </div>
-    
     <!-- Container for cards -->
   <!-- Container for cards -->
    <hr>

@@ -67,12 +67,6 @@
       color: #fff;
     }
   </style>
-  <!-- firstName firstName
-      lastName  lastName
-      email email
-    address address
-  phoneNumber phoneNumber
-password password-->
 <script>
   $(document).ready(function() {
       function edit_profile() {
@@ -87,8 +81,8 @@ password password-->
               type: "POST",
               url: "/edit_profile",
               data: {
-                  firstName_give: firstName,
-                  lastName_give: lastName,
+                  fullName_give: firstName,
+                  username_give: lastName,
                   email_give: email,
                   address_give: address,
                   phoneNumber_give: phoneNumber,
@@ -122,11 +116,11 @@ password password-->
     <div class="card">
       <h2>Edit profile</h2>
       <div class="input-group">
-        <label for="firstName">First Name</label>
+        <label for="firstName">full name</label>
         <input type="text" id="firstName" placeholder="Mehrab">
       </div>
       <div class="input-group">
-        <label for="lastName">Last Name</label>
+        <label for="lastName">username</label>
         <input type="text" id="lastName" placeholder="Bozorgi">
       </div>
       <div class="input-group">

@@ -1,5 +1,5 @@
 import os
-from os.path import join, dirname, jsonify
+from os.path import join, dirname
 from pymongo import MongoClient
 import requests
 import jwt
@@ -12,7 +12,6 @@ from bson import ObjectId
 from os.path import join, dirname
 from dotenv import load_dotenv
 import hashlib
-import jwt
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
@@ -43,8 +42,11 @@ app = Flask(__name__)
 
 # TOKEN_KEY = 'mytoken'
 
-client = MongoClient('mongodb+srv://andreasrafaeltobing:ManhwaXL9LUL@cluster0.aajaqnf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-db = client.dbsandreasrafaeltobing
+# client = MongoClient('mongodb+srv://andreasrafaeltobing:ManhwaXL9LUL@cluster0.aajaqnf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+# db = client.dbsandreasrafaeltobing
+
+client = MongoClient('mongodb+srv://ade:adesaef@cluster0.lqterof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+db = client.projekTA
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
@@ -56,7 +58,9 @@ TOKEN_KEY = 'ytoken'
 @app.route('/')
 def home():
     produk = db.produk.find()
-    return render_template('index.html', produk=produk)
+    etalase_folder = 'static/assets/etalase/'
+    etalase_images = [file for file in os.listdir(etalase_folder) if os.path.isfile(os.path.join(etalase_folder, file))]
+    return render_template('index.html', produk=produk, etalase_images=etalase_images)
 
 
 
@@ -119,6 +123,7 @@ def register():
     if request.method == 'POST':
         full_name = request.form['full_name']
         username = request.form['username']
+        address = request.form['address']
         contact_number = request.form['contact_number']
         email = request.form['email']
         password = request.form['password']
@@ -136,7 +141,8 @@ def register():
         new_user = {
             "full_name": full_name,
             "username": username,
-            "contact_number": contact_number,
+            "address":address,
+            "phone_number": contact_number,
             "email": email,
             "password": hashed_password
         }
@@ -156,7 +162,8 @@ def register():
 def submit_registration():
     full_name = request.form.get('full_name')
     username = request.form.get('username')
-    contact_number = request.form.get('contact_number')
+    address = request.form.get('address')
+    contact_number = request.form.get('phoneNumber')
     email = request.form.get('email')
     password = request.form.get('password')
     confirm_password = request.form.get('confirm_password')
@@ -171,6 +178,7 @@ def submit_registration():
     new_user = {
         'full_name': full_name,
         'username': username,
+        'address':address,
         'contact_number': contact_number,
         'email': email,
         'password': hashed_password
@@ -274,8 +282,9 @@ def update_produk(_id):
         db.produk.update_one({'_id': ObjectId(_id)}, {'$set': updated_fields})
         return jsonify({'message': 'Product updated successfully'})
     return jsonify({'message': 'Product not found'}), 404
-@app.route('/editEtalase', methods=['GET'])
-def edit_etalase():
+
+@app.route('/Etalase', methods=['GET'])
+def Etalase():
     return render_template('edit_etalase.html')
 
 
@@ -314,22 +323,24 @@ def profile():
 
 @app.route("/edit_profile", methods=["POST"])
 def edit_profile():
-    token_receive = request.cookies.get("mytoken")
+    # token_receive = request.cookies.get("mytoken")
     try:
         # payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
         # username = payload["id"]
-        first_name_receive = request.form.get("firstName_give")
-        last_name_receive = request.form.get("lastName_give")
+        full_name_receive = request.form.get("fullName_give")
+        username_receive = request.form.get("username_give")
         email_receive = request.form.get("email_give")
         address_receive = request.form.get("address_give")
         phone_number_receive = request.form.get("phoneNumber_give")
         password_receive = request.form.get("password_give")
 
         new_doc = {}
-        if first_name_receive:
-            new_doc["first_name"] = first_name_receive
-        if last_name_receive:
-            new_doc["last_name"] = last_name_receive
+        if full_name_receive:
+            new_doc["full_name"] = full_name_receive
+        if username_receive:
+            new_doc["username"] = username_receive
+        if address_receive:
+            new_doc["address"] = address_receive
         if email_receive:
             new_doc["email"] = email_receive
         if address_receive:
@@ -341,49 +352,36 @@ def edit_profile():
             new_doc["password"] = password_hash
 
         if new_doc:
-            # db.users.update_one({"username": username}, {"$set": new_doc})
+            db.users.update_one({"username": username_receive}, {"$set": new_doc})
             return jsonify({"result": "success", "msg": "Profile updated!"})
         else:
             return jsonify({"result": "fail", "msg": "No data provided to update"})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return jsonify({"result": "fail", "msg": "Token expired or invalid"})
 
+from werkzeug.utils import secure_filename
+
+@app.route('/get_images', methods=['GET'])
+def get_images():
+    app.config['etalase_folder'] = 'static/assets/etalase/'
+    try:
+        image_files = os.listdir(app.config['etalase_folder'])
+        image_urls = [f'/static/assets/etalase/{file}' for file in image_files]
+        return jsonify(image_urls=image_urls)
+    except Exception as e:
+        return jsonify(error=str(e))
+    
+
 @app.route('/edit_etalase', methods=['POST'])
 def edit_etalase():
-    token_receive = request.cookies.get("mytoken")
-    try:
-        # payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
-        # username = payload["id"]
-
-        upload_folder = app.config['UPLOAD_FOLDER']
-        if not os.path.exists(upload_folder):
-            os.makedirs(upload_folder)
-
-        new_doc = {}
-        for i in range(1, 4):  # Loop through image1, image2, image3
-            key = f'image{i}'
-            if key in request.files:
-                file = request.files[key]
-                # if file and allowed_file(file.filename):
-                if file:
-                    filename = secure_filename(file.filename)
-                    extension = filename.split(".")[-1]
-                    file_path = f"etalase_{i}.{extension}"
-                    file.save(os.path.join(upload_folder, file_path))
-                    new_doc[f'image{i}'] = filename
-                    new_doc[f'image{i}_real'] = os.path.join(upload_folder, file_path)
-
-        # Here you can save new_doc to the database if needed
-
-        return jsonify({"result": "success", "msg": "Files successfully uploaded"})
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for("home"))
-
-@app.route('/register', methods=['GET'])
-def register():
-    return render_template('register.html')
-
-
+    etalase_folder = 'static/assets/etalase/'
+    uploaded_files = request.files
+    for i, file in enumerate(uploaded_files.values()):
+        if file:
+            filename = f'etalase{i + 1}.{secure_filename(file.filename).split(".")[-1]}'
+            file_path = os.path.join(etalase_folder, filename)
+            file.save(file_path)
+    return jsonify({"message": "Images uploaded successfully"})
 
 
 @app.route('/setstatus', methods=['POST'])
