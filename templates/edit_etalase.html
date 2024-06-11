@@ -33,26 +33,22 @@ body {
   padding: 20px;
   box-sizing: border-box;
 }
-
 .card {
   background-color: #fff;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
-
 .title {
   font-size: 24px;
   font-weight: bold;
 }
-
 .preview {
   width: 100%;
   height: 500px; /* Diperbesar lagi untuk menyesuaikan layar */
@@ -87,18 +83,15 @@ body {
   border-bottom: 3px solid #ccc; /* Garis bawah */
   width: 80%; /* Panjang garis bawah */
 }
-
 .image-upload {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
 }
-
 .image-upload-label {
   font-weight: bold;
 }
-
 .image-upload-button {
   padding: 8px 16px;
   background-color: #ff0000; /* Warna merah */
@@ -107,13 +100,11 @@ body {
   border-radius: 5px;
   cursor: pointer;
 }
-
 .buttons {
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
 }
-
 .button {
   padding: 10px 20px;
   background-color: #ccc;
@@ -136,6 +127,45 @@ body {
   background-color: #999;
 }
 </style>
+<script>
+  // sementara script ini akan dibuat agar nantinya disesuaikan dengan form input dari halaman
+  $(document).ready(function() {
+    // fungsi agar tombol input disabled jika tidak ada inputan sama sekali
+  function checkInputs() {
+    if ($('#imageUpload1').val() || $('#imageUpload2').val() || $('#imageUpload3').val()) {
+      $('.button.set').prop('disabled', false);
+    } else {
+      $('.button.set').prop('disabled', true);
+    }
+  }
+    // mengambil image dan mengirim ke backend
+   $('.set').on('click', function() {
+    var formData = new FormData();
+    var image1 = $('#imageUpload1')[0].files[0];
+    var image2 = $('#imageUpload2')[0].files[0];
+    var image3 = $('#imageUpload3')[0].files[0];
+
+    if (image1) formData.append('image1', image1);
+    if (image2) formData.append('image2', image2);
+    if (image3) formData.append('image3', image3);
+
+    $.ajax({
+      type: 'POST',
+      url: '/edit_etalase',
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function(response) {
+        alert('Images uploaded successfully');
+      },
+      error: function(error) {
+        alert('Failed to upload images');
+      }
+    });
+  });
+});
+
+</script>
 <body>
 <div class="container">
   <div class="card">
@@ -164,17 +194,17 @@ body {
     <div class="image-upload">
       <div class="image-upload-label">Gambar 1:</div>
       <input type="file" id="imageUpload1" accept="image/*">
-      <button class="image-upload-button" onclick="selectImage(1)">Select Image</button>
+      <button class="image-upload-button" data-index="1">Select Image</button>
     </div>
     <div class="image-upload">
       <div class="image-upload-label">Gambar 2:</div>
       <input type="file" id="imageUpload2" accept="image/*">
-      <button class="image-upload-button" onclick="selectImage(2)">Select Image</button>
+      <button class="image-upload-button" data-index="2">Select Image</button>
     </div>
     <div class="image-upload">
       <div class="image-upload-label">Gambar 3:</div>
       <input type="file" id="imageUpload3" accept="image/*">
-      <button class="image-upload-button" onclick="selectImage(3)">Select Image</button>
+      <button class="image-upload-button" data-index="3">Select Image</button>
     </div>
     <div class="buttons">
       <button class="button" onclick="cancel()">Cancel</button>
@@ -182,10 +212,15 @@ body {
     </div>
   </div>
 </div>
+
+<!-- 
+  ---- script dibawah saya jadikan comment dulu, karena kurang faham juga----
 <script>
-function selectImage(index) {
-  const imageUpload = document.getElementById(`imageUpload${index}`);
-  const imageFile = imageUpload.files[0];
+$(document).ready(function() {
+  $('.image-upload-button').on('click', function() {
+    var index = $(this).data('index');
+    var imageUpload = $('#imageUpload' + index)[0];
+    var imageFile = imageUpload.files[0];
 
   if (imageFile) {
     const reader = new FileReader();
