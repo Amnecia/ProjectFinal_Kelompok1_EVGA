@@ -19,12 +19,12 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 SECRET_KEY='PLACEHOLDER_RANDOM'
 
-TOKEN_KEY = 'ytoken'
+TOKEN_KEY = 'mytoken'
 
 @app.route('/')
 def home():
     produk = db.produk.find()
-    print(produk)  # Add this line to check the produk variable
+    print(produk)  
     return render_template('index.html', produk=produk)
 
 
