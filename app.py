@@ -50,7 +50,8 @@ db = client.projekTA
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
-SECRET_KEY='PLACEHOLDER_RANDOM'
+SECRET_KEY='EVGA'
+ADMIN_KEY='ADMIN'
 
 TOKEN_KEY = 'mytoken'
 
@@ -68,31 +69,50 @@ def home():
     
 @app.route('/login', methods=['GET'])
 def login():
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-        hashed_password = hashed_password(password)
+    msg = request.args.get('msg')
+    return render_template('login.html', msg=msg)
 
-        user = db.users.find_one({'email': email, 'password': hashed_password})
-        if user:
-            token = jwt.encode({
-                'user_id': str(user['_id']),
-                'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)
-            }, SECRET_KEY, algorithm='HS256')
-
-            response = response(redirect(url_for('home')))
-            response.set_cookie(TOKEN_KEY, token)
-            return response
-        else:
-            msg = 'Invalid email or password'
-            return render_template('login.html', msg=msg)
-    return render_template('login.html')
-
-
+@app.route("/sign_in", methods=["POST"])
+def sign_in():
+    email_receive = request.form["email_give"]
+    password_receive = request.form["password_give"]
+    pw_hash = hashlib.sha256(password_receive.encode("utf-8")).hexdigest()
+    
+    result = db.admin.find_one(
+        {
+            "username": email_receive,
+            "password": pw_hash,
+        }
+    )
+    
+    if not result:
+        result = db.users.find_one(
+            {
+                "username": email_receive,
+                "password": pw_hash,
+            }
+        )
+        payload = {
+            "id": email_receive,
+            "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
+        }
+        token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+        return jsonify({"result": "success", "token": token})
+    
+    if result:
+        payload = {
+            "id": email_receive,
+            "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
+        }
+        token = jwt.encode(payload, ADMIN_KEY, algorithm="HS256")
+        admin_info = db.users.find_one({"email": email_receive}, {"_id": False})
+        return jsonify({"result": "success", "token": token}, admin_info=admin_info)
+    
+    return jsonify({"result": "fail", "msg": "Login gagal, email atau password invalid"})
 
 @app.route('/logout')
 def logout():
-    response = response(redirect(url_for('login')))
+    response = redirect(url_for('home'))
     response.set_cookie(TOKEN_KEY, '', expires=0)
     return response
 
@@ -284,9 +304,25 @@ def update_produk(_id):
         return jsonify({'message': 'Product updated successfully'})
     return jsonify({'message': 'Product not found'}), 404
 
-@app.route('/Etalase', methods=['GET'])
+@app.route('/etalase', methods=['GET'])
 def Etalase():
-    return render_template('edit_etalase.html')
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(token_receive, ADMIN_KEY, algorithms=["HS256"])
+        admin_info = db.admin.find_one({'email': payload.get('id')})
+        return render_template('edit_etalase.html', admin_info=admin_info)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
+@app.route("/secret")
+def secret():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        return render_template("secret.html")
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
 
 
 @app.route('/detail/<_id>', methods=['GET'])
@@ -391,10 +427,6 @@ def SetStatus():
     _id = request.form['_id']
     db.produk.update_one({'_id': ObjectId(_id)}, {'$set': {'status': status}})
     return jsonify({'message': 'Status updated successfully'})
-
-@app.route('/etalase', methods=['GET'])
-def etalase():
-    return render_template('edit_etalase.html')
 
 @app.route('/deleteproduk/<_id>', methods=['GET', 'POST'])
 def deleteProduk(_id):
