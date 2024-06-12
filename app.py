@@ -333,17 +333,41 @@ def detail_produk(_id):
 @app.route('/order', methods=['GET', 'POST'])
 def order():
     if request.method == 'POST':
-        nama = request.form['nama']
-        harga = request.form['harga']
+        # Simulasi data checkout dari halaman order
+        product_id = request.form['product_id']
+        quantity = request.form['quantity']
+        email = request.form['email']
         address = request.form['address']
-        db.produk.find_one({'nama': nama, 'harga': harga, 'address': address})
-        return redirect(url_for('status'))
+        price = request.form['price']
+        date = request.form['date']
+
+        # Simpan data ke sesi
+        session['order_data'] = {
+            'product_id': product_id,
+            'quantity': quantity,
+            'email': email,
+            'address': address,
+            'price': price,
+            'date': date
+        }
+
+        # Redirect ke halaman status pesanan
+        return redirect(url_for('status_pesanan'))
+    
+    # Jika metode GET, tampilkan halaman order
     return render_template('order.html')
 
-@app.route('/status/<_id>', methods=['GET'])
-def status(_id):
-    produk = db.produk.find_one({'_id': ObjectId(_id)})
-    return render_template('status_pesanan.html', produk=produk)
+@app.route('/status_pesanan/<order_id>', methods=['GET'])
+def status_pesanan(order_id):
+    # Query database untuk mendapatkan informasi pesanan berdasarkan ID
+    order = db.orders.find_one({'_id': ObjectId(order_id)})
+
+    if order:
+        # Jika pesanan ditemukan, tampilkan informasi pesanan
+        return render_template('status_pesanan.html', order=order)
+    else:
+        # Jika pesanan tidak ditemukan, berikan respons sesuai kebutuhan aplikasi Anda
+        return "Pesanan tidak ditemukan", 404  # Contoh respons jika pesanan tidak ditemukan
 
 @app.route('/list', methods=['GET'])
 def list():
