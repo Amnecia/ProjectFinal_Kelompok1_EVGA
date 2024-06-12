@@ -12,8 +12,8 @@ from bson import ObjectId
 
 app = Flask(__name__)
 
-client = MongoClient('mongodb+srv://andreasrafaeltobing:ManhwaXL9LUL@cluster0.aajaqnf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-db = client.dbsandreasrafaeltobing
+client = MongoClient('mongodb+srv://grace:sparta@cluster0.r4fnst4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+db = client.dbgrace
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
