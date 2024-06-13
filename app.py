@@ -334,21 +334,23 @@ def order():
     if request.method == 'POST':
         # Simulasi data checkout dari halaman order
         product_id = request.form['product_id']
-        quantity = request.form['quantity']
+        quantity = int(request.form['quantity'])
         email = request.form['email']
         address = request.form['address']
-        price = request.form['price']
+        price = int(request.form['price'])
         date = request.form['date']
 
-        # Simpan data ke sesi
-        # session['order_data'] = {
-        #     'product_id': product_id,
-        #     'quantity': quantity,
-        #     'email': email,
-        #     'address': address,
-        #     'price': price,
-        #     'date': date
-        # }
+        # Simpan data ke database
+        order_data = {
+            'product_id': ObjectId(product_id),
+            'quantity': quantity,
+            'email': email,
+            'address': address,
+            'price': price * quantity,  # Hitung total harga berdasarkan quantity
+            'date': datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+        }
+
+        db.orders.insert_one(order_data)
 
         # Redirect ke halaman status pesanan
         return redirect(url_for('status_pesanan'))
@@ -443,7 +445,6 @@ def edit_etalase():
             file.save(file_path)
     return jsonify({"message": "Images uploaded successfully"})
 
-
 @app.route('/setstatus', methods=['POST'])
 def SetStatus():
     status = request.form['status']
@@ -465,6 +466,12 @@ def form_ulasan():
         # db.produk.update_one({'_id': ObjectId(_id)}, {'$set': {'ulasan': ulasan, 'rating': rating}})
         # return jsonify({'message': 'Ulasan berhasil dikirim'})
     return render_template('form_ulasan.html')
+
+@app.route('/logout')
+def logout():
+    # Lakukan operasi logout di sini (jika diperlukan)
+    # Setelah logout, arahkan pengguna ke halaman lain atau tindakan lain yang diperlukan
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
