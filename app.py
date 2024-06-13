@@ -141,41 +141,41 @@ def protected(current_user):
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == 'POST':
-        full_name = request.form['full_name']
-        username = request.form['username']
-        address = request.form['address']
-        contact_number = request.form['contact_number']
-        email = request.form['email']
-        password = request.form['password']
-        confirm_password = request.form['confirm_password']
+    # if request.method == 'POST':
+    #     full_name = request.form['full_name']
+    #     username = request.form['username']
+    #     address = request.form['address']
+    #     contact_number = request.form['contact_number']
+    #     email = request.form['email']
+    #     password = request.form['password']
+    #     confirm_password = request.form['confirm_password']
         
-        if password != confirm_password:
-            return jsonify({'error': 'Passwords do not match'}), 400
+    #     if password != confirm_password:
+    #         return jsonify({'error': 'Passwords do not match'}), 400
         
-        existing_user = db.users.find_one({"username": username})
-        if existing_user:
-            return jsonify({'error': 'Username already exists'}), 400
+    #     existing_user = db.users.find_one({"username": username})
+    #     if existing_user:
+    #         return jsonify({'error': 'Username already exists'}), 400
         
-        hashed_password = hashlib.sha256(password.encode()).hexdigest()
+    #     hashed_password = hashlib.sha256(password.encode()).hexdigest()
         
-        new_user = {
-            "full_name": full_name,
-            "username": username,
-            "address":address,
-            "phone_number": contact_number,
-            "email": email,
-            "password": hashed_password
-        }
+    #     new_user = {
+    #         "full_name": full_name,
+    #         "username": username,
+    #         "address":address,
+    #         "phone_number": contact_number,
+    #         "email": email,
+    #         "password": hashed_password
+    #     }
         
-        result = db.users.insert_one(new_user)
-        user_id = str(result.inserted_id)
+    #     result = db.users.insert_one(new_user)
+    #     user_id = str(result.inserted_id)
         
-        token = jwt.encode(
-            {'user_id': user_id, 'exp': datetime.utcnow() + timedelta(minutes=30)},
-            SECRET_KEY, algorithm='HS256')
+    #     token = jwt.encode(
+    #         {'user_id': user_id, 'exp': datetime.utcnow() + timedelta(minutes=30)},
+    #         SECRET_KEY, algorithm='HS256')
         
-        return jsonify({'token': token.decode('UTF-8')})
+    #     return jsonify({'token': token.decode('UTF-8')})
     return render_template('register.html')
 
 
@@ -306,13 +306,12 @@ def update_produk(_id):
 
 @app.route('/etalase', methods=['GET'])
 def Etalase():
-    token_receive = request.cookies.get(TOKEN_KEY)
-    try:
-        payload = jwt.decode(token_receive, ADMIN_KEY, algorithms=["HS256"])
-        admin_info = db.admin.find_one({'email': payload.get('id')})
-        return render_template('edit_etalase.html', admin_info=admin_info)
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for("home"))
+    # token_receive = request.cookies.get(TOKEN_KEY)
+    # try:
+        # payload = jwt.decode(token_receive, ADMIN_KEY, algorithms=["HS256"])
+        return render_template('edit_etalase.html')
+    # except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+    #     return redirect(url_for("home"))
 
 @app.route("/secret")
 def secret():
@@ -342,14 +341,14 @@ def order():
         date = request.form['date']
 
         # Simpan data ke sesi
-        session['order_data'] = {
-            'product_id': product_id,
-            'quantity': quantity,
-            'email': email,
-            'address': address,
-            'price': price,
-            'date': date
-        }
+        # session['order_data'] = {
+        #     'product_id': product_id,
+        #     'quantity': quantity,
+        #     'email': email,
+        #     'address': address,
+        #     'price': price,
+        #     'date': date
+        # }
 
         # Redirect ke halaman status pesanan
         return redirect(url_for('status_pesanan'))
@@ -360,7 +359,7 @@ def order():
 @app.route('/status_pesanan/<order_id>', methods=['GET'])
 def status_pesanan(order_id):
     # Query database untuk mendapatkan informasi pesanan berdasarkan ID
-    order = db.orders.find_one({'_id': ObjectId(order_id)})
+    # order = db.orders.find_one({'email': payload["id"]})
 
     if order:
         # Jika pesanan ditemukan, tampilkan informasi pesanan
@@ -454,16 +453,17 @@ def SetStatus():
 
 @app.route('/deleteproduk/<_id>', methods=['GET', 'POST'])
 def deleteProduk(_id):
+    id_receive = request.get("id_give")
     db.produk.delete_one({'_id': ObjectId(_id)})
     return jsonify({'message': 'Product deleted successfully'})
 
-@app.route('/form_ulasan/<_id>', methods=['GET', 'POST'])
-def form_ulasan(_id):
+@app.route('/form_ulasan', methods=['GET', 'POST'])
+def form_ulasan():
     if request.method == 'POST':
         ulasan = request.form['ulasan']
         rating = request.form['rating']
-        db.produk.update_one({'_id': ObjectId(_id)}, {'$set': {'ulasan': ulasan, 'rating': rating}})
-        return jsonify({'message': 'Ulasan berhasil dikirim'})
+        # db.produk.update_one({'_id': ObjectId(_id)}, {'$set': {'ulasan': ulasan, 'rating': rating}})
+        # return jsonify({'message': 'Ulasan berhasil dikirim'})
     return render_template('form_ulasan.html')
 
 if __name__ == '__main__':

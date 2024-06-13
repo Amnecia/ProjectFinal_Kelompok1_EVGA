@@ -22,7 +22,7 @@
         function deleteProduct(productId) {
             if (confirm("Are you sure you want to delete this product?")) {
       $.ajax({
-        type: 'POST',
+        type: 'GET',
         url: '/deleteproduk/' + productId,
         success: function(data) {
           alert(data.message); // display the success message
