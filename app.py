@@ -467,11 +467,6 @@ def form_ulasan():
         # return jsonify({'message': 'Ulasan berhasil dikirim'})
     return render_template('form_ulasan.html')
 
-@app.route('/logout')
-def logout():
-    # Lakukan operasi logout di sini (jika diperlukan)
-    # Setelah logout, arahkan pengguna ke halaman lain atau tindakan lain yang diperlukan
-    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
