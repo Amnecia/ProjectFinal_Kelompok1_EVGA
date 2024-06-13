@@ -358,17 +358,13 @@ def order():
     # Jika metode GET, tampilkan halaman order
     return render_template('order.html')
 
-@app.route('/status_pesanan/<order_id>', methods=['GET'])
-def status_pesanan(order_id):
-    # Query database untuk mendapatkan informasi pesanan berdasarkan ID
-    # order = db.orders.find_one({'email': payload["id"]})
+@app.route('/status_pesanan')
+def status_pesanan():
+    # Ambil data pesanan dari database
+    orders = db.orders.find()  # Ganti 'orders' dengan nama koleksi di database Anda
 
-    if order:
-        # Jika pesanan ditemukan, tampilkan informasi pesanan
-        return render_template('status_pesanan.html', order=order)
-    else:
-        # Jika pesanan tidak ditemukan, berikan respons sesuai kebutuhan aplikasi Anda
-        return "Pesanan tidak ditemukan", 404  # Contoh respons jika pesanan tidak ditemukan
+    # Render template HTML sambil mengirimkan data pesanan
+    return render_template('status_pesanan.html', orders=orders)
 
 @app.route('/list', methods=['GET'])
 def list():
