@@ -4,255 +4,215 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<<<<<<< HEAD
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Sedan+SC&display=swap"
-      rel="stylesheet"
-    />
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-      crossorigin="anonymous"
-    ></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css"
-      integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/1L_dstPt3HV5HzF6Gvk/e3s4Wz6iJgD/+ub2oU"
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-    />
-    <style>
-      .navbar {
-  background-color: #ff4500; /* red background */
-  border-bottom: 1px solid #444; /* dark gray border */
-  padding: 1rem 0;
-}
-
-.container-fluid {
-  position: relative; /* Add this line */
-}
-
-.navbar-brand {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #FFFFFF; /* white text */
-}
-.navbar-brand:hover{
-  color: #9c9c9c;
-}
-
-.btn-navbar {
-  background-color: #ff4500; /* green background */
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  margin-right: 1rem;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-}
-
-.btn-navbar:hover {
-  color: #ffffff;
-  background-color: #D00000; /* darker green on hover */
-}
-
-.btn-login {
-  background-color: #100c08; /* purple background */
-  color: white;
-  border: none;
-  padding: 0.7rem 1.5rem; /* Increase padding to make the button larger */
-  margin-right: 1rem;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-  position: absolute; /* Add this line */
-  right: 120px; /* Adjust the value to position the button correctly */
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.2rem; /* Increase font size */
-  text-align: center; /* Center the text */
-}
-
-.btn-login:hover {
-  color: rgb(255, 255, 255);
-  background-color: #585858; /* darker purple on hover */
-}
-
-.btn-checkout {
-  background-color:  #ff4500; /* orange background */
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  margin-right: 1rem;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-  position: absolute; /* Add this line */
-  right: 60px; /* Adjust the value to position the button correctly */
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.btn-checkout:hover {
-  background-color: #D00000; /* darker orange on hover */
-}
-
-.navbar-toggler {
-  border: none;
-  background-color: transparent;
-}
-
-.navbar-toggler:hover {
-  border: none;
-  background-color: #D00000;
-}
-
-.navbar-toggler:focus {
-  box-shadow: none;
-  border: none;
-}
-
-.offcanvas-header {
-  background-color: #D00000; /* green background */
-  color: white;
-}
-
-.offcanvas-title {
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-.btn-close-white {
-  background-color: white;
-}
-
-.logout {
-  background-color: #FFC107; /* orange background */
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  margin-right: 1rem;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-}
-
-.logout:hover {
-  background-color: #FFA07A; /* darker orange on hover */
-}
-
-/* Additional styles for mobile navigation */
-@media (max-width: 768px) {
-  .navbar-brand {
-    font-size: 1.2rem;
-  }
-  .btn-navbar {
-    padding: 0.4rem 0.8rem;
-    margin-right: 0.5rem;
-  }
-  .btn-login {
-    padding: 0.4rem 0.8rem;
-    margin-right: 0.5rem;
-  }
-  .btn-checkout {
-    padding: 0.4rem 0.8rem;
-    margin-right: 0.5rem;
-  }
-  .btn-login,
-  .btn-checkout {
-    position: static; /* Remove absolute positioning */
-    top: auto;
-    transform: none;
-  }
-  .btn-checkout {
-    margin-right: 1rem;
-  }
-}
-
-.btn-navbar,
-.btn-login,
-.btn-checkout {
-  text-decoration: none;
-}
-    </style>
-  </head>
-  <script>
-    function logout() {
-      window.location.href = "{{ url_for('logout') }}";
-    }
-  </script>
-  <body>
-    <nav class="navbar fixed-top navbar">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/">Website Name</a>
-        <div class="d-flex flex-row">
-          <a class="btn-navbar" href="/">Home</a>
-          <a class="btn-navbar" href="/about">About</a>
-=======
+  <!-- Bootstrap and font awesome links -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Sedan+SC&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Sedan+SC&display=swap"
+    rel="stylesheet"
+  />
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"
+  ></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
-  <link href="../static/assets/mystyle.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/1L_dstPt3HV5HzF6Gvk/e3s4Wz6iJgD/+ub2oU" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css"
+    integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/1L_dstPt3HV5HzF6Gvk/e3s4Wz6iJgD/+ub2oU"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+  />
+  <script src="https://kit.fontawesome.com/d46734533e.js" crossorigin="anonymous"></script>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <style>
+   .navbar {
+      background-color: #ff4500; /* red background */
+      border-bottom: 1px solid #444; /* dark gray border */
+      padding: 1rem 0;
+    }
+
+   .container-fluid {
+      position: relative; /* Add this line */
+    }
+
+   .navbar-brand {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #FFFFFF; /* white text */
+    }
+   .navbar-brand:hover{
+      color: #9c9c9c;
+    }
+
+   .btn-navbar {
+      background-color: #ff4500; /* green background */
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      margin-right: 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+   .btn-navbar:hover {
+      color: #ffffff;
+      background-color: #D00000; /* darker green on hover */
+    }
+
+   .btn-login {
+      background-color: #100c08; /* purple background */
+      color: white;
+      border: none;
+      padding: 0.7rem 1.5rem; /* Increase padding to make the button larger */
+      margin-right: 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+      position: absolute; /* Add this line */
+      right: 120px; /* Adjust the value to position the button correctly */
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem; /* Increase font size */
+      text-align: center; /* Center the text */
+    }
+
+   .btn-login:hover {
+      color: rgb(255, 255, 255);
+      background-color: #585858; /* darker purple on hover */
+    }
+
+   .btn-checkout {
+      background-color:  #ff4500; /* orange background */
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      margin-right: 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+      position: absolute; /* Add this line */
+      right: 60px; /* Adjust the value to position the button correctly */
+      top:50%;
+      transform: translateY(-50%);
+    }
+
+  .btn-checkout:hover {
+      background-color: #D00000; /* darker orange on hover */
+    }
+
+  .navbar-toggler {
+      border: none;
+      background-color: transparent;
+    }
+
+  .navbar-toggler:hover {
+      border: none;
+      background-color: #D00000;
+    }
+
+  .navbar-toggler:focus {
+      box-shadow: none;
+      border: none;
+    }
+
+  .offcanvas-header {
+      background-color: #ff4500; /* green background */
+      color: white;
+    }
+
+  .offcanvas-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+  .btn-close-white {
+      background-color: white;
+    }
+
+  .logout {
+      background-color: #FFC107; /* orange background */
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      margin-right: 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+  .logout:hover {
+      background-color: #FFA07A; /* darker orange on hover */
+    }
+
+   /* Additional styles for mobile navigation */
+   @media (max-width: 768px) {
+     .navbar-brand {
+        font-size: 1.2rem;
+      }
+     .btn-navbar {
+        padding: 0.4rem 0.8rem;
+        margin-right: 0.5rem;
+      }
+     .btn-login {
+        padding: 0.4rem 0.8rem;
+        margin-right: 0.5rem;
+      }
+     .btn-checkout {
+        padding: 0.4rem 0.8rem;
+        margin-right: 0.5rem;
+      }
+     .btn-login,
+     .btn-checkout {
+        position: static; /* Remove absolute positioning */
+        top: auto;
+        transform: none;
+      }
+     .btn-checkout {
+        margin-right: 1rem;
+      }
+    }
+
+  .btn-navbar,
+  .btn-login,
+  .btn-checkout {
+      text-decoration: none;
+    }
+  </style>
 </head>
+
 <script>
   function logout() {
     window.location.href = "{{ url_for('logout') }}";
   }
 </script>
+
 <body>
   <nav class="navbar fixed-top navbar">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">Website Name</a>
-      <div class="d-flex flex-row">
+      <div class="d-flext flex-row">
         <a class="btn-navbar" href="/">Home</a>
         <a class="btn-navbar" href="/about">About</a>
       </div>
-      <a class="btn-navbar btn-login" href="/login">Login</a>
-      <!-- Tautan Keranjang di Sini -->
-      <a class="btn btn-checkout" href="/order" type="button">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="28"
-          height="28"
-          fill="currentColor"
-          viewBox="0 0 16 16"
-        >
-          <path
-            d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"
-          />
-        </svg>
-        <span class="visually-hidden">Checkout</span>
-      </a>
-      <!-- Akhir Tautan Keranjang -->
       <button
         class="navbar-toggler"
         type="button"
         data-bs-toggle="offcanvas"
         data-bs-target="#offcanvasNavbar"
         aria-controls="offcanvasNavbar"
-        aria-label="Toggle navigation"
       >
-        <span class="navbar-toggler-icon navbar-dark"></span>
+        <span class="navbar-toggler-icon"></span>
       </button>
       <div
         class="offcanvas offcanvas-end"
@@ -261,53 +221,32 @@
         aria-labelledby="offcanvasNavbarLabel"
       >
         <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+          <h5 class="offcanvas-title" id="offcanvasNavbarLabel">User Menu</h5>
+          
           <button
             type="button"
             class="btn-close btn-close-white"
+            data-bs-dismiss="offcanvas"
             aria-label="Close"
           ></button>
->>>>>>> 78325dce9db7bae2d1dd11855e70e5cbab832ec9
         </div>
-        <a
-          href="#"
-          class="d-flex text-black text-decoration-none"
-          id="profile"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-          style="padding-top: 15px; padding-left: 10px"
-        >
-          <img
-            src="https://github.com/mdo.png"
-            alt=""
-            width="48"
-            height="48"
-            class="rounded-circle me-2"
-          />
-          <strong style="display: block; padding-top: 10px">User</strong>
-        </a>
         <div class="offcanvas-body">
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="#">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  fill="currentColor"
-                  class="bi bi-pencil"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"
-                  />
-                </svg>
-                Edit Profile
+              <div style="display: flex; align-items: center;">
+                  <img src="https://github.com/mdo.png" alt="" width="48" height="48" class="rounded-circle me-2" />
+                  <div>
+                      <strong style="padding-top: 10px">User</strong>
+                  </div>
+              </div>
+              <a class="nav-link" aria-current="page" href="#" style="padding-top: 30px;">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                  Edit Profile
               </a>
-            </li>
+          </li>
+          
           </ul>
           <hr style="color: black" />
-
           <button class="logout" onclick="logout()">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -320,23 +259,18 @@
             >
               <path
                 fill-rule="evenodd"
-                d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1. 5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"
-                />
-                <path
-                  fill-rule="evenodd"
-                  d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"
-                />
-              </svg>
-              Logout
-            </button>
-          </div>
+                d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 .5-.5V11h-.5a.5.5 0 0 1-.468-.325"
+              />
+              <path
+                fill-rule="evenodd"
+                d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"
+              />
+            </svg>
+            Logout
+          </button>
         </div>
       </div>
-    </nav>
-  </body>
-<<<<<<< HEAD
+    </div>
+  </nav>
+</body>
 </html>
-=======
-  </html>
-  
->>>>>>> 78325dce9db7bae2d1dd11855e70e5cbab832ec9
