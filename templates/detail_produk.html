@@ -373,19 +373,19 @@ body {
         let quantityBtn = document.querySelectorAll('.quantity-input button');
     
         quantityBtn.forEach(function(btn) {
-  btn.addEventListener('click', function(e) {
-    let input = e.target.previousElementSibling;
-    let quantity = parseInt(input.value);
+          btn.addEventListener('click', function(e) {
+            let input = e.target.closest('.quantity-input').querySelector('input');
+            let quantity = parseInt(input.value);
 
-    if (e.target.textContent === '-') {
-      if (quantity > 1) {
-        input.value = quantity - 1;
-      }
-    } else if (e.target.textContent === '+') {
-      input.value = quantity + 1;
-    }
-  });
-});
+            if (e.target.textContent === '-') {
+              if (quantity > 1) {
+                input.value = quantity - 1;
+              }
+            } else if (e.target.textContent === '+') {
+              input.value = quantity + 1;
+            }
+          });
+        });
 
 document.getElementById('carouselExample').addEventListener('slide.bs.carousel', function (event) {
             var img = event.relatedTarget.querySelector('img');
@@ -393,7 +393,7 @@ document.getElementById('carouselExample').addEventListener('slide.bs.carousel',
         });
         document.getElementById('add-to-cart').addEventListener('click', function () {
             var quantity = document.getElementById('quantity').value;
-            alert('You added 'uantity + 'tems to your cart.');
+            alert('You added ' + quantity + 'tems to your cart.');
         });
         </script>
 </body>
