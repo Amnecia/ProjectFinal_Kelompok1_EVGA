@@ -7,15 +7,46 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Adjust position of container to the left */
-        .footer-container {
-            justify-content: flex-start !important; /* Align items to the start */
+      .footer-container {
+            justify-content: flex-start!important; /* Align items to the start */
+        }
+
+        /* Add styles to the footer */
+        footer {
+            background-color: #1d1d1d; /* Dark gray background */
+            padding: 20px; /* Add some padding */
+            border-top: 1px solid #ddd; /* Add a top border */
+        }
+
+        footer h5 {
+            color: #fff; /* White text */
+            margin-top: 0; /* Remove margin top */
+        }
+
+        footer ul {
+            list-style: none; /* Remove bullet points */
+            padding: 0; /* Remove padding */
+            margin: 0; /* Remove margin */
+        }
+
+        footer li {
+            margin-bottom: 10px; /* Add some space between list items */
+        }
+
+        footer a {
+            color: #337ab7; /* Blue text */
+            text-decoration: none; /* Remove underline */
+        }
+
+        footer a:hover {
+            color: #23527c; /* Darker blue on hover */
         }
     </style>
 </head>
 <body>
   <footer>
     <br>
-    <div class="container">
+    <div class="container footer-container">
       <div class="row">
         <div class="col-md-4">
           <h5>Contact Us</h5>
