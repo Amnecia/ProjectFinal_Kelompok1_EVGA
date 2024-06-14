@@ -39,18 +39,20 @@
   </head>
   <body>
     <br>
+    <br>
+    <br>
     <div class="container border border-danger shadow rounded p-3">
       <div class="row">  
         <div id="imagePreview" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-inner">
             <div class="carousel-item active" id="carousel-item-1">
-              <img src="" alt="First slide" class="d-block w-100">
+              <img src="" alt="First slide" class="d-block w-100 carousel-img">
             </div>
             <div class="carousel-item" id="carousel-item-2">
-              <img src="" alt="Second slide" class="d-block w-100">
+              <img src="" alt="Second slide" class="d-block w-100 carousel-img">
             </div>
             <div class="carousel-item" id="carousel-item-3">
-              <img src="" alt="Third slide" class="d-block w-100">
+              <img src="" alt="Third slide" class="d-block w-100 carousel-img">
             </div>
           </div>
           <button class="carousel-control-prev" type="button" data-bs-target="#imagePreview" data-bs-slide="prev">
@@ -113,6 +115,11 @@
       crossorigin="anonymous"
     ></script>
     <script>
+       $(document).ready(function() {
+    $(".carousel-img").each(function(index) {
+      $(this).attr("src", "https://via.placeholder.com/600x300");
+    });
+  });
     // Get the file input elements
     const imageInput1 = document.getElementById('imageInput1');
     const imageInput2 = document.getElementById('imageInput2');
