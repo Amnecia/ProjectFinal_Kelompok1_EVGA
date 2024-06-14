@@ -9,54 +9,83 @@ from flask import Flask, render_template, jsonify, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 from bson import ObjectId
+from os.path import join, dirname
+#from dotenv import load_dotenv
+import hashlib
+
+#dotenv_path = join(dirname(__file__), '.env')
+#load_dotenv(dotenv_path)
 
 app = Flask(__name__)
 
-client = MongoClient('mongodb+srv://grace:sparta@cluster0.r4fnst4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-db = client.dbgrace
+client = MongoClient('mongodb+srv://andreasrafaeltobing:ManhwaXL9LUL@cluster0.aajaqnf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+db = client.dbsandreasrafaeltobing
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
-SECRET_KEY='PLACEHOLDER_RANDOM'
+SECRET_KEY='EVGA'
+ADMIN_KEY='ADMIN'
 
-TOKEN_KEY = 'ytoken'
+TOKEN_KEY = 'mytoken'
 
 
 @app.route('/')
 def home():
     produk = db.produk.find()
-    return render_template('index.html', produk=produk)
+    etalase_folder = 'static/assets/etalase/'
+    etalase_images = [file for file in os.listdir(etalase_folder) if os.path.isfile(os.path.join(etalase_folder, file))]
+    print(produk)  
+    return render_template('index.html', produk=produk, etalase_images=etalase_images)
 
 
 
     
 @app.route('/login', methods=['GET'])
 def login():
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-        hashed_password = hashed_password(password)
+    msg = request.args.get('msg')
+    return render_template('login.html', msg=msg)
 
-        user = db.users.find_one({'email': email, 'password': hashed_password})
-        if user:
-            token = jwt.encode({
-                'user_id': str(user['_id']),
-                'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)
-            }, SECRET_KEY, algorithm='HS256')
-
-            response = response(redirect(url_for('home')))
-            response.set_cookie(TOKEN_KEY, token)
-            return response
-        else:
-            msg = 'Invalid email or password'
-            return render_template('login.html', msg=msg)
-    return render_template('login.html')
-
-
+@app.route("/sign_in", methods=["POST"])
+def sign_in():
+    email_receive = request.form["email_give"]
+    password_receive = request.form["password_give"]
+    pw_hash = hashlib.sha256(password_receive.encode("utf-8")).hexdigest()
+    
+    result = db.admin.find_one(
+        {
+            "username": email_receive,
+            "password": pw_hash,
+        }
+    )
+    
+    if not result:
+        result = db.users.find_one(
+            {
+                "username": email_receive,
+                "password": pw_hash,
+            }
+        )
+        payload = {
+            "id": email_receive,
+            "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
+        }
+        token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+        return jsonify({"result": "success", "token": token})
+    
+    if result:
+        payload = {
+            "id": email_receive,
+            "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
+        }
+        token = jwt.encode(payload, ADMIN_KEY, algorithm="HS256")
+        admin_info = db.users.find_one({"email": email_receive}, {"_id": False})
+        return jsonify({"result": "success", "token": token}, admin_info=admin_info)
+    
+    return jsonify({"result": "fail", "msg": "Login gagal, email atau password invalid"})
 
 @app.route('/logout')
 def logout():
-    response = response(redirect(url_for('login')))
+    response = redirect(url_for('home'))
     response.set_cookie(TOKEN_KEY, '', expires=0)
     return response
 
@@ -88,6 +117,7 @@ def register():
     if request.method == 'POST':
         full_name = request.form['full_name']
         username = request.form['username']
+        address = request.form['address']
         contact_number = request.form['contact_number']
         email = request.form['email']
         password = request.form['password']
@@ -105,7 +135,8 @@ def register():
         new_user = {
             "full_name": full_name,
             "username": username,
-            "contact_number": contact_number,
+            "address":address,
+            "phone_number": contact_number,
             "email": email,
             "password": hashed_password
         }
@@ -125,7 +156,8 @@ def register():
 def submit_registration():
     full_name = request.form.get('full_name')
     username = request.form.get('username')
-    contact_number = request.form.get('contact_number')
+    address = request.form.get('address')
+    contact_number = request.form.get('phoneNumber')
     email = request.form.get('email')
     password = request.form.get('password')
     confirm_password = request.form.get('confirm_password')
@@ -140,6 +172,7 @@ def submit_registration():
     new_user = {
         'full_name': full_name,
         'username': username,
+        'address':address,
         'contact_number': contact_number,
         'email': email,
         'password': hashed_password
@@ -244,6 +277,27 @@ def update_produk(_id):
         return jsonify({'message': 'Product updated successfully'})
     return jsonify({'message': 'Product not found'}), 404
 
+@app.route('/etalase', methods=['GET'])
+def Etalase():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(token_receive, ADMIN_KEY, algorithms=["HS256"])
+        admin_info = db.admin.find_one({'email': payload.get('id')})
+        return render_template('edit_etalase.html', admin_info=admin_info)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
+@app.route("/secret")
+def secret():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        return render_template("secret.html")
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
+
+
 @app.route('/detail/<_id>', methods=['GET'])
 def detail_produk(_id):
     produk = db.produk.find_one({'_id': ObjectId(_id)})
@@ -252,17 +306,41 @@ def detail_produk(_id):
 @app.route('/order', methods=['GET', 'POST'])
 def order():
     if request.method == 'POST':
-        nama = request.form['nama']
-        harga = request.form['harga']
+        # Simulasi data checkout dari halaman order
+        product_id = request.form['product_id']
+        quantity = request.form['quantity']
+        email = request.form['email']
         address = request.form['address']
-        db.produk.find_one({'nama': nama, 'harga': harga, 'address': address})
-        return redirect(url_for('status'))
+        price = request.form['price']
+        date = request.form['date']
+
+        # Simpan data ke sesi
+        session['order_data'] = {
+            'product_id': product_id,
+            'quantity': quantity,
+            'email': email,
+            'address': address,
+            'price': price,
+            'date': date
+        }
+
+        # Redirect ke halaman status pesanan
+        return redirect(url_for('status_pesanan'))
+    
+    # Jika metode GET, tampilkan halaman order
     return render_template('order.html')
 
-@app.route('/status/<_id>', methods=['GET'])
-def status(_id):
-    produk = db.produk.find_one({'_id': ObjectId(_id)})
-    return render_template('status_pesanan.html', produk=produk)
+@app.route('/status_pesanan/<order_id>', methods=['GET'])
+def status_pesanan(order_id):
+    # Query database untuk mendapatkan informasi pesanan berdasarkan ID
+    order = db.orders.find_one({'_id': ObjectId(order_id)})
+
+    if order:
+        # Jika pesanan ditemukan, tampilkan informasi pesanan
+        return render_template('status_pesanan.html', order=order)
+    else:
+        # Jika pesanan tidak ditemukan, berikan respons sesuai kebutuhan aplikasi Anda
+        return "Pesanan tidak ditemukan", 404  # Contoh respons jika pesanan tidak ditemukan
 
 @app.route('/list', methods=['GET'])
 def list():
@@ -273,16 +351,79 @@ def list():
 def guest():
     return render_template('guest.html')
 
+@app.route('/profile', methods=['POST','GET'])
+def profile():
+    return render_template('edit_profile.html')
+
+@app.route("/edit_profile", methods=["POST"])
+def edit_profile():
+    # token_receive = request.cookies.get("mytoken")
+    try:
+        # payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        # username = payload["id"]
+        full_name_receive = request.form.get("fullName_give")
+        username_receive = request.form.get("username_give")
+        email_receive = request.form.get("email_give")
+        address_receive = request.form.get("address_give")
+        phone_number_receive = request.form.get("phoneNumber_give")
+        password_receive = request.form.get("password_give")
+
+        new_doc = {}
+        if full_name_receive:
+            new_doc["full_name"] = full_name_receive
+        if username_receive:
+            new_doc["username"] = username_receive
+        if address_receive:
+            new_doc["address"] = address_receive
+        if email_receive:
+            new_doc["email"] = email_receive
+        if address_receive:
+            new_doc["address"] = address_receive
+        if phone_number_receive:
+            new_doc["phone_number"] = phone_number_receive
+        if password_receive:
+            password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+            new_doc["password"] = password_hash
+
+        if new_doc:
+            db.users.update_one({"username": username_receive}, {"$set": new_doc})
+            return jsonify({"result": "success", "msg": "Profile updated!"})
+        else:
+            return jsonify({"result": "fail", "msg": "No data provided to update"})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return jsonify({"result": "fail", "msg": "Token expired or invalid"})
+
+from werkzeug.utils import secure_filename
+
+@app.route('/get_images', methods=['GET'])
+def get_images():
+    app.config['etalase_folder'] = 'static/assets/etalase/'
+    try:
+        image_files = os.listdir(app.config['etalase_folder'])
+        image_urls = [f'/static/assets/etalase/{file}' for file in image_files]
+        return jsonify(image_urls=image_urls)
+    except Exception as e:
+        return jsonify(error=str(e))
+    
+
+@app.route('/edit_etalase', methods=['POST'])
+def edit_etalase():
+    etalase_folder = 'static/assets/etalase/'
+    uploaded_files = request.files
+    for i, file in enumerate(uploaded_files.values()):
+        if file:
+            filename = f'etalase{i + 1}.{secure_filename(file.filename).split(".")[-1]}'
+            file_path = os.path.join(etalase_folder, filename)
+            file.save(file_path)
+    return jsonify({"message": "Images uploaded successfully"})
+
+
 @app.route('/setstatus', methods=['POST'])
 def SetStatus():
     status = request.form['status']
     _id = request.form['_id']
     db.produk.update_one({'_id': ObjectId(_id)}, {'$set': {'status': status}})
     return jsonify({'message': 'Status updated successfully'})
-
-@app.route('/etalase', methods=['GET'])
-def etalase():
-    return render_template('edit_etalase.html')
 
 @app.route('/deleteproduk/<_id>', methods=['GET', 'POST'])
 def deleteProduk(_id):

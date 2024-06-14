@@ -47,12 +47,7 @@
       border: 1px solid #ccc;
       border-radius: 5px;
     }
-    .input-group input[type="email"] {
-      type: email;
-    }
-    .input-group input[type="password"] {
-      type: password;
-    }
+    
     .button-group {
       display: flex;
       justify-content: space-between;
@@ -72,17 +67,60 @@
       color: #fff;
     }
   </style>
+<script>
+  $(document).ready(function() {
+      function edit_profile() {
+          var firstName = $('#firstName').val();
+          var lastName = $('#lastName').val();
+          var email = $('#email').val();
+          var address = $('#address').val();
+          var phoneNumber = $('#phoneNumber').val();
+          var password = $('#password').val();
+          
+          $.ajax({
+              type: "POST",
+              url: "/edit_profile",
+              data: {
+                  fullName_give: firstName,
+                  username_give: lastName,
+                  email_give: email,
+                  address_give: address,
+                  phoneNumber_give: phoneNumber,
+                  password_give: password
+              },
+              success: function(response) {
+                  if (response.result === 'success') {
+                      alert("Profile updated successfully");
+                  } else {
+                      alert("Failed to update profile: " + response.msg);
+                  }
+              },
+              error: function(response) {
+                  alert("An error occurred: " + response.responseJSON.msg);
+              }
+          });
+      }
+
+      $('.save').on('click', function() {
+          edit_profile();
+      });
+
+      $('.cancel').on('click', function() {
+          window.location.href = '/profile'; // Change this to the appropriate URL for cancel action
+      });
+  });
+</script>
 </head>
 <body>
   <div class="container">
     <div class="card">
       <h2>Edit profile</h2>
       <div class="input-group">
-        <label for="firstName">First Name</label>
+        <label for="firstName">full name</label>
         <input type="text" id="firstName" placeholder="Mehrab">
       </div>
       <div class="input-group">
-        <label for="lastName">Last Name</label>
+        <label for="lastName">username</label>
         <input type="text" id="lastName" placeholder="Bozorgi">
       </div>
       <div class="input-group">
