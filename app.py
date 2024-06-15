@@ -474,12 +474,20 @@ def deleteProduk(_id):
     return jsonify({'message': 'Product deleted successfully'})
 
 @app.route('/form_ulasan', methods=['GET', 'POST'])
-def form_ulasan():
+def form_ulasan_without_product():
     if request.method == 'POST':
-        ulasan = request.form['ulasan']
-        rating = request.form['rating']
-        # db.produk.update_one({'_id': ObjectId(_id)}, {'$set': {'ulasan': ulasan, 'rating': rating}})
-        # return jsonify({'message': 'Ulasan berhasil dikirim'})
+        rating = request.form.get('rating')
+        deskripsi = request.form.get('deskripsiProduk')
+
+        # Simpan ulasan ke dalam database
+        new_review = {
+            'rating': rating,
+            'deskripsi': deskripsi
+        }
+        db.produk.insert_one(new_review)  # Menyimpan ulasan ke dalam database
+
+        return 'Ulasan berhasil disimpan'
+
     return render_template('form_ulasan.html')
 
 
