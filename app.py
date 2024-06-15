@@ -105,8 +105,7 @@ def sign_in():
             "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
         }
         token = jwt.encode(payload, ADMIN_KEY, algorithm="HS256")
-        admin_info = db.users.find_one({"email": email_receive}, {"_id": False})
-        return jsonify({"result": "success", "token": token}, admin_info=admin_info)
+        return jsonify({"result": "success", "token": token})
     
     return jsonify({"result": "fail", "msg": "Login gagal, email atau password invalid"})
 
@@ -317,10 +316,30 @@ def Etalase():
 def secret():
     token_receive = request.cookies.get(TOKEN_KEY)
     try:
+        # Decode token dengan SECRET_KEY
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
-        return render_template("secret.html")
+        email = payload["id"]
+
+        # Coba mencari di db.users
+        user = db.users.find_one({"email": email})
+
+        # Jika tidak ditemukan di db.users, coba decode token dengan ADMIN_KEY dan mencari di db.admin
+        if not user:
+            payload = jwt.decode(token_receive, ADMIN_KEY, algorithms=["HS256"])
+            email = payload["id"]
+            user = db.admin.find_one({"email": email})
+
+        if user:
+            return render_template("secret.html", email=email)
+        else:
+            # Jika tidak ditemukan di kedua koleksi
+            return redirect(url_for("home"))
+
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        # Jika token kadaluarsa atau tidak valid
         return redirect(url_for("home"))
+
+
 
 
 
