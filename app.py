@@ -382,8 +382,26 @@ def status_pesanan():
     # Ambil data pesanan dari database
     orders = db.orders.find()  # Ganti 'orders' dengan nama koleksi di database Anda
 
-    # Render template HTML sambil mengirimkan data pesanan
-    return render_template('status_pesanan.html', orders=orders)
+    # Buat daftar untuk menyimpan data pesanan beserta email pengguna
+    orders_with_email = []
+
+    # Loop melalui setiap pesanan dan ambil email pengguna
+    for order in orders:
+        # Asumsikan setiap dokumen pesanan memiliki field 'user_email'
+        email = order.get('user_email')
+        orders_with_email.append({
+            'order_id': order.get('_id'),
+            'email': email,
+            'product_name': order.get('product_name'),
+            'quantity': order.get('quantity'),
+            'address': order.get('address'),
+            'price': order.get('price'),
+            'date': order.get('date'),
+            'status': order.get('status')
+        })
+
+    # Render template HTML sambil mengirimkan data pesanan dengan email pengguna
+    return render_template('status_pesanan.html', orders=orders_with_email)
 
 @app.route('/list', methods=['GET'])
 def list():
