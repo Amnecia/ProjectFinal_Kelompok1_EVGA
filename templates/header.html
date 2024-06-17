@@ -1,283 +1,331 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Bootstrap and font awesome links -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Concert+One&family=Jaro:opsz@6..72&display=swap" rel="stylesheet">
+    <!-- Bootstrap and font awesome links -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Concert+One&family=Jaro:opsz@6..72&display=swap"
+      rel="stylesheet"
+    />
 
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/1L_dstPt3HV5HzF6Gvk/e3s4Wz6iJgD/+ub2oU"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <script
+      src="https://kit.fontawesome.com/d46734533e.js"
+      crossorigin="anonymous"
+    ></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/1L_dstPt3HV5HzF6Gvk/e3s4Wz6iJgD/+ub2oU" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-  <script src="https://kit.fontawesome.com/d46734533e.js" crossorigin="anonymous"></script>
+    <style>
+      * {
+        font-family: "Concert One", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+      }
+      .navbar {
+        background-color: #ff4500; /* red background */
+        border-bottom: 1px solid #444; /* dark gray border */
+        padding: 1rem 0;
+      }
 
-  <style>
-    
+      .container-fluid {
+        position: relative; /* Add this line */
+      }
 
-    *{
-      font-family: "Concert One", sans-serif;
-      font-weight: 400;
-      font-style: normal;
-    }
-    .navbar {
-      background-color: #ff4500; /* red background */
-      border-bottom: 1px solid #444; /* dark gray border */
-      padding: 1rem 0;
-    }
-
-    .container-fluid {
-      position: relative; /* Add this line */
-    }
-
-    .navbar-brand {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #FFFFFF; /* white text */
-    }
-    .navbar-brand:hover{
-      color: #9c9c9c;
-    }
-
-    .btn-navbar {
-      font-size: 18px;
-      font-weight: bold;
-      background-color: #ff4500; /* green background */
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      margin-right: 1rem;
-      border-radius: 5px;
-      transition: background-color 0.3s ease;
-    }
-
-    .btn-navbar:hover {
-      color: #ffffff;
-      background-color: #D00000; /* darker green on hover */
-    }
-
-    .btn-login {
-      width:125px;
-      background-color: #100c08; /* purple background */
-      color: white;
-      border: none;
-      padding: 0.7rem 1.5rem; /* Increase padding to make the button larger */
-      margin-right: 1rem;
-      border-radius: 5px;
-      transition: background-color 0.3s ease;
-      position: absolute; /* Add this line */
-      right: 120px; /* Adjust the value to position the button correctly */
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.2rem; /* Increase font size */
-      text-align: center; /* Center the text */
-    }
-
-    .btn-login:hover {
-      color: rgb(255, 255, 255);
-      background-color: #585858; /* darker purple on hover */
-    }
-
-    .btn-checkout {
-      width: 375px;
-background-color:  #ff4500; /* orange background */
-color: white;
-border: none;
-padding: 0.5rem 1rem;
-margin-right: 1rem;
-border-radius: 5px;
-transition: background-color 0.3s ease;
-}
-
-.btn-checkout:hover {
-color: white;
-background-color: #D00000; /* darker orange on hover */
-}
-
-
-    /* Additional styles for mobile navigation */
-    @media (max-width: 768px) {
       .navbar-brand {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #ffffff; /* white text */
       }
+      .navbar-brand:hover {
+        color: #9c9c9c;
+      }
+
       .btn-navbar {
-        padding: 0.4rem 0.8rem;
-        margin-right: 0.5rem;
+        font-size: 18px;
+        font-weight: bold;
+        background-color: #ff4500; /* green background */
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        margin-right: 1rem;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
       }
+
+      .btn-navbar:hover {
+        color: #ffffff;
+        background-color: #d00000; /* darker green on hover */
+      }
+
       .btn-login {
-        padding: 0.4rem 0.8rem;
-        margin-right: 0.5rem;
+        width: 125px;
+        background-color: #100c08; /* purple background */
+        color: white;
+        border: none;
+        padding: 0.7rem 1.5rem; /* Increase padding to make the button larger */
+        margin-right: 1rem;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        position: absolute; /* Add this line */
+        right: 120px; /* Adjust the value to position the button correctly */
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.2rem; /* Increase font size */
+        text-align: center; /* Center the text */
       }
+
+      .btn-login:hover {
+        color: rgb(255, 255, 255);
+        background-color: #585858; /* darker purple on hover */
+      }
+
       .btn-checkout {
-        padding: 0.4rem 0.8rem;
-        margin-right: 0.5rem;
+        width: 375px;
+        background-color: #ff4500; /* orange background */
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        margin-right: 1rem;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
       }
+
+      .btn-checkout:hover {
+        color: white;
+        background-color: #d00000; /* darker orange on hover */
+      }
+
+      /* Additional styles for mobile navigation */
+      @media (max-width: 768px) {
+        .navbar-brand {
+          font-size: 1.2rem;
+        }
+        .btn-navbar {
+          padding: 0.4rem 0.8rem;
+          margin-right: 0.5rem;
+        }
+        .btn-login {
+          padding: 0.4rem 0.8rem;
+          margin-right: 0.5rem;
+        }
+        .btn-checkout {
+          padding: 0.4rem 0.8rem;
+          margin-right: 0.5rem;
+        }
+        .btn-login,
+        .btn-checkout {
+          position: static; /* Remove absolute positioning */
+          top: auto;
+          transform: none;
+        }
+        .btn-checkout {
+          margin-right: 1rem;
+        }
+      }
+
+      .navbar-toggler {
+        border: none;
+        background-color: transparent;
+      }
+
+      .navbar-toggler:hover {
+        border: none;
+        background-color: #d00000;
+      }
+
+      .navbar-toggler:focus {
+        box-shadow: none;
+        border: none;
+      }
+
+      .offcanvas-header {
+        background-color: #ff4500; /* green background */
+        color: white;
+      }
+
+      .offcanvas-title {
+        font-family: "Oswald", sans-serif;
+        font-size: 1.2rem;
+        font-weight: 700;
+      }
+
+      .btn-close-white {
+        background-color: white;
+      }
+
+      .logout {
+        font-size: 20px;
+        width: 375px;
+        text-align: left;
+        background-color: #ffc107; /* orange background */
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        margin-right: 1rem;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      .logout:hover {
+        background-color: #ffa07a; /* darker orange on hover */
+      }
+
+      /* Additional styles for mobile navigation */
+      @media (max-width: 768px) {
+        .navbar-brand {
+          font-size: 1.2rem;
+        }
+        .btn-navbar {
+          padding: 0.4rem 0.8rem;
+          margin-right: 0.5rem;
+        }
+        .btn-login {
+          padding: 0.4rem 0.8rem;
+          margin-right: 0.5rem;
+        }
+        .btn-checkout {
+          padding: 0.4rem 0.8rem;
+          margin-right: 0.5rem;
+        }
+        .btn-login,
+        .btn-checkout {
+          position: static; /* Remove absolute positioning */
+          top: auto;
+          transform: none;
+        }
+        .btn-checkout {
+          margin-right: 1rem;
+        }
+      }
+
+      .btn-navbar,
       .btn-login,
       .btn-checkout {
-        position: static; /* Remove absolute positioning */
-        top: auto;
-        transform: none;
+        text-decoration: none;
       }
+
+      /* Add styles to align checkout button */
+      .nav-item .nav-link {
+        display: block;
+        margin-bottom: 10px;
+      }
+
       .btn-checkout {
-        margin-right: 1rem;
+        display: block;
       }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="{{ url_for('static', filename='myjs.js') }}"></script>
+  </head>
+
+  <script>
+    function sign_out() {
+      $.removeCookie("mytoken", { path: "/" });
+      alert("Signed out!");
+      window.location.href = "/login";
     }
+  </script>
 
-    .navbar-toggler {
-      border: none;
-      background-color: transparent;
-    }
-
-    .navbar-toggler:hover {
-      border: none;
-      background-color: #D00000;
-    }
-
-    .navbar-toggler:focus {
-      box-shadow: none;
-      border: none;
-    }
-
-    .offcanvas-header {
-      background-color: #ff4500; /* green background */
-      color: white;
-    }
-
-    .offcanvas-title {
-      font-family: 'Oswald', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 700;
-    }
-
-    .btn-close-white {
-      background-color: white;
-    }
-
-    .logout {
-      font-size: 20px;
-      width: 375px;
-      text-align: left;
-      background-color: #FFC107; /* orange background */
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      margin-right: 1rem;
-      border-radius: 5px;
-      transition: background-color 0.3s ease;
-    }
-
-    .logout:hover {
-      background-color: #FFA07A; /* darker orange on hover */
-    }
-
-    /* Additional styles for mobile navigation */
-    @media (max-width: 768px) {
-      .navbar-brand {
-        font-size: 1.2rem;
-      }
-      .btn-navbar {
-        padding: 0.4rem 0.8rem;
-        margin-right: 0.5rem;
-      }
-      .btn-login {
-        padding: 0.4rem 0.8rem;
-        margin-right: 0.5rem;
-      }
-      .btn-checkout {
-        padding: 0.4rem 0.8rem;
-        margin-right: 0.5rem;
-      }
-      .btn-login,
-      .btn-checkout {
-        position: static; /* Remove absolute positioning */
-        top: auto;
-        transform: none;
-      }
-      .btn-checkout {
-        margin-right: 1rem;
-      }
-    }
-
-    .btn-navbar,
-    .btn-login,
-    .btn-checkout {
-      text-decoration: none;
-    }
-
-    /* Add styles to align checkout button */
-    .nav-item .nav-link {
-      display: block;
-      margin-bottom: 10px;
-    }
-
-    .btn-checkout {
-      display: block;
-    }
-  </style>
-</head>
-
-<script>
-  function logout() {
-    window.location.href = "{{ url_for('logout') }}";
-  }
-</script>
-
-<body>
-  <nav class="navbar fixed-top navbar">
-    <div class="container-fluid">
-      <a class="navbar-brand" style="font-size: 30px;" href="/">Website Name</a>
-      <div class="d-flex flex-row">
-        <a class="btn-navbar" style="font-size: 20px;" href="/">Home</a>
-        <a class="btn-navbar" style="font-size: 20px;" href="/about">About</a>
-        <a class="btn-login" style="font-size: 20px;" href="/login">Login</a>
-      </div>
-      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-        aria-controls="offcanvasNavbar">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title">User Menu</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  <body>
+    <nav class="navbar fixed-top navbar">
+      <div class="container-fluid">
+        <a class="navbar-brand" style="font-size: 30px" href="/"
+          >Website Name</a
+        >
+        <div class="d-flex flex-row">
+          <a class="btn-navbar" style="font-size: 20px" href="/">Home</a>
+          <a class="btn-navbar" style="font-size: 20px" href="/about">About</a>
+          <a class="btn-login" style="font-size: 20px" href="/login">Login</a>
         </div>
-        <div class="offcanvas-body">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <div class="d-flex align-items-center">
-                <img src="https://github.com/mdo.png" alt="" width="48" height="48" class="rounded-circle me-2" />
-                <div>
-                  <strong>User</strong>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasNavbar"
+          aria-controls="offcanvasNavbar"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="offcanvas offcanvas-end"
+          tabindex="-1"
+          id="offcanvasNavbar"
+          aria-labelledby="offcanvasNavbarLabel"
+        >
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title">User Menu</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <div class="d-flex align-items-center">
+                  <img
+                    src="https://github.com/mdo.png"
+                    alt=""
+                    width="48"
+                    height="48"
+                    class="rounded-circle me-2"
+                  />
+                  <div>
+                    <strong>User</strong>
+                  </div>
                 </div>
-              </div>
-              <a class="nav-link" href="#" style="padding-bottom: 10px;">
-                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                Edit Profile
-              </a>
-              <a class="nav-link" href="#" style="padding-top: 10px;">
-                <i class="fa fa-check-square-o" aria-hidden="true"></i>
-                Status Pesanan
-              </a>
-            </li>
-          </ul>
-          <!-- Move Checkout button here -->
-          <a class="btn btn-checkout" href="/order" type="button">
-            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-            Checkout
-          </a>
-          <hr />
-          <button class="logout" onclick="logout()">
-            <i class="fa fa-sign-out" aria-hidden="true"></i>
-            Logout
-          </button>
+                <a class="nav-link" href="#" style="padding-bottom: 10px">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                  Edit Profile
+                </a>
+                <a class="nav-link" href="#" style="padding-top: 10px">
+                  <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                  Status Pesanan
+                </a>
+              </li>
+            </ul>
+            <!-- Move Checkout button here -->
+            <a class="btn btn-checkout" href="/order" type="button">
+              <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+              Checkout
+            </a>
+            <hr />
+            <button class="logout" onclick="sign_out()">
+              <i class="fa fa-sign-out" aria-hidden="true"></i>
+              Logout
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  </nav>
-</body>
+    </nav>
+  </body>
 </html>

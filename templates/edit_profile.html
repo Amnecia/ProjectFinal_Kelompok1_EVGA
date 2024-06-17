@@ -69,6 +69,21 @@
   </style>
 <script>
   $(document).ready(function() {
+      function get_profile() {
+        $.ajax({
+          type: "GET",
+          url: "/get_profile",
+          data:{},
+          success: function(data){
+            console.log(data);
+            $('#fullName').val(data.name);
+            $('#username').val(data.username);
+            $('#email').val(data.email);
+            $('#phone').val(data.phone);
+            $('#address').val(data.address);
+            }
+          })
+      }
       function edit_profile() {
           var firstName = $('#firstName').val();
           var lastName = $('#lastName').val();
@@ -116,12 +131,12 @@
     <div class="card">
       <h2>Edit profile</h2>
       <div class="input-group">
-        <label for="firstName">full name</label>
-        <input type="text" id="firstName" placeholder="Mehrab">
+        <label for="fullName">full name</label>
+        <input type="text" id="fullName" placeholder="Mehrab">
       </div>
       <div class="input-group">
-        <label for="lastName">username</label>
-        <input type="text" id="lastName" placeholder="Bozorgi">
+        <label for="username">username</label>
+        <input type="text" id="username" placeholder="Bozorgi">
       </div>
       <div class="input-group">
         <label for="email">Email</label>
@@ -137,7 +152,7 @@
       </div>
       <div class="input-group">
         <label for="password">Password</label>
-        <input type="password" id="password" placeholder="sbdfbnd65sfdvb s">
+        <input type="password" id="password">
       </div>
       <div class="button-group">
         <button class="cancel">Cancel</button>

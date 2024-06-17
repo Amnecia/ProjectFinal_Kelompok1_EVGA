@@ -51,7 +51,7 @@ db = client.projekTA
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 SECRET_KEY='EVGA'
-ADMIN_KEY='ADMIN'
+
 
 TOKEN_KEY = 'mytoken'
 
@@ -80,7 +80,7 @@ def sign_in():
     
     result = db.admin.find_one(
         {
-            "username": email_receive,
+            "email": email_receive,
             "password": pw_hash,
         }
     )
@@ -88,53 +88,58 @@ def sign_in():
     if not result:
         result = db.users.find_one(
             {
-                "username": email_receive,
+                "email": email_receive,
                 "password": pw_hash,
             }
         )
-        payload = {
-            "id": email_receive,
-            "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
-        }
-        token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
-        return jsonify({"result": "success", "token": token})
+        # payload = {
+        #     "id": email_receive,
+        #     "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
+        # }
+        # # user_info = db.users.find_one({"email": email_receive}, {"_id": False})
+        # token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+        # return jsonify({"result": "success", "token": token})
     
     if result:
         payload = {
             "id": email_receive,
             "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
         }
-        token = jwt.encode(payload, ADMIN_KEY, algorithm="HS256")
-        return jsonify({"result": "success", "token": token})
+        # user_info = db.users.find_one({"email": email_receive}, {"_id": False})
+        user_info = db.admin.find_one({"email": email_receive}, {"_id": False})
+        if not user_info:
+            user_info = db.users.find_one({"email": email_receive}, {"_id": False})
+        token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+        return jsonify({"result": "success", "token": token, "user_info": user_info})
     
     return jsonify({"result": "fail", "msg": "Login gagal, email atau password invalid"})
 
-@app.route('/logout')
-def logout():
-    response = redirect(url_for('home'))
-    response.set_cookie(TOKEN_KEY, '', expires=0)
-    return response
+# @app.route('/logout')
+# def logout():
+#     response = redirect(url_for('home'))
+#     response.set_cookie(TOKEN_KEY, '', expires=0)
+#     return response
 
-def token_required(f):
-    def decorated_function(args,):
-        token = request.cookies.get(TOKEN_KEY)
-        if not token:
-            return redirect(url_for('login', msg='Login required'))
+# def token_required(f):
+#     def decorated_function(args,):
+#         token = request.cookies.get(TOKEN_KEY)
+#         if not token:
+#             return redirect(url_for('login', msg='Login required'))
 
-        try:
-            data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-            user_id = data['user_id']
-            current_user = db.users.find_one({'_id': ObjectId(user_id)})
-        except Exception as e:
-            return redirect(url_for('login', msg='Login required'))
+#         try:
+#             data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+#             user_id = data['user_id']
+#             current_user = db.users.find_one({'_id': ObjectId(user_id)})
+#         except Exception as e:
+#             return redirect(url_for('login', msg='Login required'))
 
-        return f(current_user, args, )
-    return decorated_function
+#         return f(current_user, args, )
+#     return decorated_function
 
-@app.route('/protected')
-@token_required
-def protected(current_user):
-    return f'Logged in as: {current_user["email"]}'
+# @app.route('/protected')
+# @token_required
+# def protected(current_user):
+#     return f'Logged in as: {current_user["email"]}'
    
 
 
@@ -305,39 +310,44 @@ def update_produk(_id):
 
 @app.route('/etalase', methods=['GET'])
 def Etalase():
-    # token_receive = request.cookies.get(TOKEN_KEY)
-    # try:
-        # payload = jwt.decode(token_receive, ADMIN_KEY, algorithms=["HS256"])
-        return render_template('edit_etalase.html')
-    # except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-    #     return redirect(url_for("home"))
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        email = payload["id"]
+
+        validasi = db.admin.find_one({"email": email}, {"_id": False})
+
+        if validasi:
+            user_info = db.admin.find_one({"email": email}, {"_id": False})
+
+            return render_template("edit_etalase.html", user_info=user_info)
+        else :
+            return redirect(url_for("home"))
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
 
 @app.route("/secret")
 def secret():
     token_receive = request.cookies.get(TOKEN_KEY)
     try:
-        # Decode token dengan SECRET_KEY
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
         email = payload["id"]
-
-        # Coba mencari di db.users
-        user = db.users.find_one({"email": email})
-
-        # Jika tidak ditemukan di db.users, coba decode token dengan ADMIN_KEY dan mencari di db.admin
+        user = db.users.find_one({"email": email}, {"_id": False})
         if not user:
-            payload = jwt.decode(token_receive, ADMIN_KEY, algorithms=["HS256"])
-            email = payload["id"]
-            user = db.admin.find_one({"email": email})
+            user = db.admin.find_one({"email": email}, {"_id": False})
 
         if user:
-            return render_template("secret.html", email=email)
+            user_info = db.users.find_one({"email": email}, {"_id": False})
+            if not user_info:
+                user_info = db.admin.find_one({"email": email}, {"_id": False})
+
+            return render_template("secret.html", user_info=user_info)
         else:
-            # Jika tidak ditemukan di kedua koleksi
             return redirect(url_for("home"))
 
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        # Jika token kadaluarsa atau tidak valid
         return redirect(url_for("home"))
+
 
 
 
@@ -387,8 +397,21 @@ def status_pesanan():
 
 @app.route('/list', methods=['GET'])
 def list():
-    produk = db.produk.find()
-    return render_template('produk.html', produk=produk)
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        email = payload["id"]
+
+        validasi = db.admin.find_one({"email": email}, {"_id": False})
+
+        if validasi:
+            produk = db.produk.find()
+
+            return render_template('produk.html', produk=produk)
+        else :
+            return redirect(url_for("home"))
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
 
 @app.route('/guest', methods=['GET'])
 def guest():
@@ -396,14 +419,31 @@ def guest():
 
 @app.route('/profile', methods=['POST','GET'])
 def profile():
-    return render_template('edit_profile.html')
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        email = payload["id"]
+        user = db.users.find_one({"email": email}, {"_id": False})
+        if not user:
+            user = db.admin.find_one({"email": email}, {"_id": False})
+
+        if user:
+            user_info = db.users.find_one({"email": email}, {"_id": False})
+            if not user_info:
+                user_info = db.admin.find_one({"email": email}, {"_id": False})
+
+            return render_template("edit_profile.html", user_info=user_info)
+        else:
+            return redirect(url_for("home"))
+
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
 
 @app.route("/edit_profile", methods=["POST"])
 def edit_profile():
-    # token_receive = request.cookies.get("mytoken")
-    try:
-        # payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
-        # username = payload["id"]
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        email = payload["id"]
+        validasi = db.admin.find_one()
         full_name_receive = request.form.get("fullName_give")
         username_receive = request.form.get("username_give")
         email_receive = request.form.get("email_give")
