@@ -19,15 +19,15 @@
     <title>Document</title>
     <style>
         body {
-    min-height: 100vh;
-    overflow-y: auto;
-}
-       .product-image{
+            min-height: 100vh;
+            overflow-y: auto;
+        }
+        .product-image{
             width:350px;
             height:350px;
             margin-top:20px;
         }
-       .container-order {
+        .container-order {
             border: 1px solid #ccc;
             width: 1800px;
             margin: 0 20px;
@@ -42,17 +42,17 @@
             border-radius: 10px;
             background-color: #fff;
         }
-       .image-container {
+        .image-container {
             flex-basis: 200px;
         }
-       .text-container {
+        .text-container {
             flex: 1;
             padding-left: 20px;
             margin-top: -60px;
             display: flex;
             flex-direction: column;
         }
-       .button-container {
+        .button-container {
             flex-basis: 100%;
             display: flex;
             justify-content: flex-end;
@@ -62,199 +62,189 @@
             color:red;
         }
         .button-ulasan-cancelled {
-    background-color: #5e5e5e;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-
-.button-cancel-cancelled {
-    background-color: #2e2e2e;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-
-
-.button-delete-cancelled {
-    background-color: #2e2e2e;
-    border: none;
-    width:40px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    padding: 0;
-}
-
-.button-delete-cancelled i {
-    font-size: 20px;
-    line-height: 40px;
-}
-
-.button-cancel-success {
-    background-color: #2e2e2e;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-.button-delete-success {
-    background-color: #2e2e2e;
-    border: none;
-    width:40px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    padding: 0;
-}
-
-.button-ulasan-success {
-    background-color: #D00000;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-.button-ulasan-preparing {
-    background-color: #5e5e5e;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-
-.button-cancel-preparing {
-    background-color: #D00000;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-.button-delete-preparing {
-    background-color: #2e2e2e;
-    border: none;
-    width:40px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    padding: 0;
-}
-.button-ulasan-delivery {
-    background-color: #5e5e5e;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-
-.button-cancel-delivery {
-    background-color: #2e2e2e;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-.button-delete-delivery {
-    background-color: #2e2e2e;
-    border: none;
-    width:40px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    padding: 0;
-}
-
-.button-ulasan-not-confirmed {
-    background-color: #5e5e5e;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-
-.button-cancel-not-confirmed {
-    background-color: #2e2e2e;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-.button-delete-not-confirmed {
-    background-color: #D00000;
-    border: none;
-    width:40px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    padding: 0;
-}
+            background-color: #5e5e5e;
+            border: none;
+            width:200px;
+            height:40px;
+            color:white;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .button-cancel-cancelled {
+            background-color: #2e2e2e;
+            border: none;
+            width:200px;
+            height:40px;
+            color:white;
+            margin-right: 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .button-delete-cancelled {
+            background-color: #2e2e2e;
+            border: none;
+            width:40px;
+            height:40px;
+            color:white;
+            margin-right: 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            padding: 0;
+        }
+        .button-delete-cancelled i {
+            font-size: 20px;
+            line-height: 40px;
+        }
+        .button-cancel-success {
+            background-color: #2e2e2e;
+            border: none;
+            width:200px;
+            height:40px;
+            color:white;
+            margin-right: 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .button-delete-success {
+            background-color: #2e2e2e;
+            border: none;
+            width:40px;
+            height:40px;
+            color:white;
+            margin-right: 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            padding: 0;
+        }
+        .button-ulasan-success {
+            background-color: #D00000;
+            border: none;
+            width:200px;
+            height:40px;
+            color:white;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .button-ulasan-preparing {
+            background-color: #5e5e5e;
+            border: none;
+            width:200px;
+            height:40px;
+            color:white;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .button-cancel-preparing {
+            background-color: #D00000;
+            border: none;
+            width:200px;
+            height:40px;
+            color:white;
+            margin-right: 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .button-delete-preparing {
+            background-color: #2e2e2e;
+            border: none;
+            width:40px;
+            height:40px;
+            color:white;
+            margin-right: 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            padding: 0;
+        }
+        .button-ulasan-delivery {
+            background-color: #5e5e5e;
+            border: none;
+            width:200px;
+            height:40px;
+            color:white;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .button-cancel-delivery {
+            background-color: #2e2e2e;
+            border: none;
+            width:200px;
+            height:40px;
+            color:white;
+            margin-right: 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .button-delete-delivery {
+            background-color: #2e2e2e;
+            border: none;
+            width:40px;
+            height:40px;
+            color:white;
+            margin-right: 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            padding: 0;
+        }
+        .button-ulasan-not-confirmed {
+            background-color: #5e5e5e;
+            border: none;
+            width:200px;
+            height:40px;
+            color:white;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .button-cancel-not-confirmed {
+            background-color: #2e2e2e;
+            border: none;
+            width:200px;
+            height:40px;
+            color:white;
+            margin-right: 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .button-delete-not-confirmed {
+            background-color: #D00000;
+            border: none;
+            width:40px;
+            height:40px;
+            color:white;
+            margin-right: 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            padding: 0;
+        }
     </style>
 </head>
 <body>
