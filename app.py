@@ -200,45 +200,57 @@ def about():
 
 @app.route('/addProduk', methods=['GET', 'POST'])
 def tambah_produk():
-    if request.method == 'POST':
-        nama = request.form['nama']
-        harga = request.form['harga']
-        deskripsi = request.form['deskripsi']
-        image1 = request.files['image1']
-        image2 = request.files['image2']
-        image3 = request.files['image3']
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        id = payload["id"]
+        validasi = db.admin.find_one({"_id": ObjectId(id)}, {"_id": False})
 
-        extension1 = image1.filename.split('.')[-1]
-        extension2 = image2.filename.split('.')[-1]
-        extension3 = image3.filename.split('.')[-1]
+        if validasi:
+            if request.method == 'POST':
+                nama = request.form['nama']
+                harga = request.form['harga']
+                deskripsi = request.form['deskripsi']
+                image1 = request.files['image1']
+                image2 = request.files['image2']
+                image3 = request.files['image3']
 
-        today = datetime.now()
-        mytime = today.strftime('%Y-%m-%d %H:%M')
+                extension1 = image1.filename.split('.')[-1]
+                extension2 = image2.filename.split('.')[-1]
+                extension3 = image3.filename.split('.')[-1]
 
-        image_name1 = f'image1-{mytime}.{extension1}'
-        image_name2 = f'image2-{mytime}.{extension2}'
-        image_name3 = f'image3-{mytime}.{extension3}'
+                today = datetime.now()
+                mytime = today.strftime('%Y-%m-%d %H:%M')
 
-        save_to1 = f'static/assets/productImage/{image_name1}'
-        save_to2 = f'static/assets/productImage/{image_name2}'
-        save_to3 = f'static/assets/productImage/{image_name3}'
+                image_name1 = f'image1-{mytime}.{extension1}'
+                image_name2 = f'image2-{mytime}.{extension2}'
+                image_name3 = f'image3-{mytime}.{extension3}'
 
-        image1.save(save_to1)
-        image2.save(save_to2)
-        image3.save(save_to3)
+                save_to1 = f'static/assets/productImage/{image_name1}'
+                save_to2 = f'static/assets/productImage/{image_name2}'
+                save_to3 = f'static/assets/productImage/{image_name3}'
 
-        doc = {
-            'nama': nama,
-            'harga': harga,
-            'deskripsi': deskripsi,
-            'image1': image_name1,
-            'image2': image_name2,
-            'image3': image_name3,
-            'today': mytime,  # Add this line to record the creation date and time
-        }
-        db.produk.insert_one(doc)
-        return jsonify({'message': 'Product added successfully'})
-    return render_template('tambah_produk.html')
+                image1.save(save_to1)
+                image2.save(save_to2)
+                image3.save(save_to3)
+
+                doc = {
+                    'nama': nama,
+                    'harga': harga,
+                    'deskripsi': deskripsi,
+                    'image1': image_name1,
+                    'image2': image_name2,
+                    'image3': image_name3,
+                    'today': mytime,
+                }
+                db.produk.insert_one(doc)
+                return jsonify({'message': 'Product added successfully'})
+            return render_template('tambah_produk.html')
+        else:
+            return redirect(url_for("home"))
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
 
 @app.route('/editProduk/<_id>', methods=['GET'])
 def edit_produk(_id):
@@ -483,8 +495,6 @@ def edit_profile():
             new_doc["full_name"] = full_name_receive
         if username_receive:
             new_doc["username"] = username_receive
-        if address_receive:
-            new_doc["address"] = address_receive
         if email_receive:
             new_doc["email"] = email_receive
         if address_receive:
@@ -496,14 +506,18 @@ def edit_profile():
             new_doc["password"] = password_hash
 
         if new_doc:
-            db.users.update_one({"_id": ObjectId(id)}, {"$set": new_doc})
-        if not new_doc:
-            db.admin.update_one({"_id": ObjectId(id)}, {"$set": new_doc})
-            return jsonify({"result": "success", "msg": "Profile updated!"})
+            update_user = db.users.update_one({"_id": ObjectId(id)}, {"$set": new_doc})
+            update_admin = db.admin.update_one({"_id": ObjectId(id)}, {"$set": new_doc})
+            
+            if update_user.modified_count > 0 or update_admin.modified_count > 0:
+                return jsonify({"result": "success", "msg": "Profile updated!"})
+            else:
+                return jsonify({"result": "fail", "msg": "No data provided to update or data unchanged"})
         else:
             return jsonify({"result": "fail", "msg": "No data provided to update"})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
+
 
 
 @app.route('/get_images', methods=['GET'])

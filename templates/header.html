@@ -258,9 +258,11 @@
             $("#edit-produk").hide();
             $("#edit-etalase").hide();
             $("#list-pesanan").hide();
+            $(".btn-login").hide();
           } else if (data.role === "admin") {
             $("#status-pesanan").hide();
             $("#checkout-btn").hide();
+            $(".btn-login").hide();
           }
         },
         error: function () {
@@ -272,6 +274,7 @@
     $(document).ready(function () {
       get_role();
     });
+    
     function sign_out() {
       $.removeCookie("mytoken", { path: "/" });
       alert("Signed out!");
@@ -337,7 +340,6 @@
                 >
                   <i
                     class="fa-regular fa-user"
-                    style="color: #000000"
                     aria-hidden="true"
                   ></i>
                   Edit Profile
