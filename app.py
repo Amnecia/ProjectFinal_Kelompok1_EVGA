@@ -92,20 +92,13 @@ def sign_in():
                 "password": pw_hash,
             }
         )
-        # payload = {
-        #     "id": email_receive,
-        #     "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
-        # }
-        # # user_info = db.users.find_one({"email": email_receive}, {"_id": False})
-        # token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
-        # return jsonify({"result": "success", "token": token})
     
     if result:
+        user_id = str(result["_id"])
         payload = {
-            "id": email_receive,
+            "id": user_id,
             "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
         }
-        # user_info = db.users.find_one({"email": email_receive}, {"_id": False})
         user_info = db.admin.find_one({"email": email_receive}, {"_id": False})
         if not user_info:
             user_info = db.users.find_one({"email": email_receive}, {"_id": False})
@@ -114,11 +107,6 @@ def sign_in():
     
     return jsonify({"result": "fail", "msg": "Login gagal, email atau password invalid"})
 
-# @app.route('/logout')
-# def logout():
-#     response = redirect(url_for('home'))
-#     response.set_cookie(TOKEN_KEY, '', expires=0)
-#     return response
 
 # def token_required(f):
 #     def decorated_function(args,):
@@ -145,41 +133,6 @@ def sign_in():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    # if request.method == 'POST':
-    #     full_name = request.form['full_name']
-    #     username = request.form['username']
-    #     address = request.form['address']
-    #     contact_number = request.form['contact_number']
-    #     email = request.form['email']
-    #     password = request.form['password']
-    #     confirm_password = request.form['confirm_password']
-        
-    #     if password != confirm_password:
-    #         return jsonify({'error': 'Passwords do not match'}), 400
-        
-    #     existing_user = db.users.find_one({"username": username})
-    #     if existing_user:
-    #         return jsonify({'error': 'Username already exists'}), 400
-        
-    #     hashed_password = hashlib.sha256(password.encode()).hexdigest()
-        
-    #     new_user = {
-    #         "full_name": full_name,
-    #         "username": username,
-    #         "address":address,
-    #         "phone_number": contact_number,
-    #         "email": email,
-    #         "password": hashed_password
-    #     }
-        
-    #     result = db.users.insert_one(new_user)
-    #     user_id = str(result.inserted_id)
-        
-    #     token = jwt.encode(
-    #         {'user_id': user_id, 'exp': datetime.utcnow() + timedelta(minutes=30)},
-    #         SECRET_KEY, algorithm='HS256')
-        
-    #     return jsonify({'token': token.decode('UTF-8')})
     return render_template('register.html')
 
 
@@ -313,12 +266,12 @@ def Etalase():
     token_receive = request.cookies.get(TOKEN_KEY)
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
-        email = payload["id"]
+        id = payload["id"]
 
-        validasi = db.admin.find_one({"email": email}, {"_id": False})
+        validasi = db.admin.find_one({"_id": ObjectId(id)}, {"_id": False})
 
         if validasi:
-            user_info = db.admin.find_one({"email": email}, {"_id": False})
+            user_info = db.admin.find_one({"_id": ObjectId(id)}, {"_id": False})
 
             return render_template("edit_etalase.html", user_info=user_info)
         else :
@@ -418,9 +371,9 @@ def list():
     token_receive = request.cookies.get(TOKEN_KEY)
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
-        email = payload["id"]
+        id = payload["id"]
 
-        validasi = db.admin.find_one({"email": email}, {"_id": False})
+        validasi = db.admin.find_one({"_id": ObjectId(id)}, {"_id": False})
 
         if validasi:
             produk = db.produk.find()
@@ -440,15 +393,15 @@ def profile():
     token_receive = request.cookies.get(TOKEN_KEY)
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
-        email = payload["id"]
-        user = db.users.find_one({"email": email}, {"_id": False})
+        id = payload["id"]
+        user = db.users.find_one({"_id": ObjectId(id)}, {"_id": False})
         if not user:
-            user = db.admin.find_one({"email": email}, {"_id": False})
+            user = db.admin.find_one({"_id": ObjectId(id)}, {"_id": False})
 
         if user:
-            user_info = db.users.find_one({"email": email}, {"_id": False})
+            user_info = db.users.find_one({"_id": ObjectId(id)}, {"_id": False})
             if not user_info:
-                user_info = db.admin.find_one({"email": email}, {"_id": False})
+                user_info = db.admin.find_one({"_id": ObjectId(id)}, {"_id": False})
 
             return render_template("edit_profile.html", user_info=user_info)
         else:
@@ -457,11 +410,39 @@ def profile():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
+@app.route("/get_profile")
+def get_profile():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        id = payload["id"]
+        
+        user = db.users.find_one({"_id": ObjectId(id)}, {"_id": False})
+        
+        if not user:
+            user = db.admin.find_one({"_id": ObjectId(id)}, {"_id": False})
+        
+        # If user is found, return the user information
+        if user:
+            return jsonify({
+                "fullname": user.get("full_name"),
+                "username": user.get("username"),
+                "email": user.get("email"),
+                "phone": user.get("contact_number"),
+                "address": user.get("address")
+            })
+        else:
+            return jsonify({"error": "User not found"}), 404
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return jsonify({"error": "Invalid token"}), 401
+
+
 @app.route("/edit_profile", methods=["POST"])
 def edit_profile():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
-        email = payload["id"]
-        validasi = db.admin.find_one()
+        id = payload["id"]
         full_name_receive = request.form.get("fullName_give")
         username_receive = request.form.get("username_give")
         email_receive = request.form.get("email_give")
@@ -487,14 +468,15 @@ def edit_profile():
             new_doc["password"] = password_hash
 
         if new_doc:
-            db.users.update_one({"username": username_receive}, {"$set": new_doc})
+            db.users.update_one({"_id": ObjectId(id)}, {"$set": new_doc})
+        if not new_doc:
+            db.admin.update_one({"_id": ObjectId(id)}, {"$set": new_doc})
             return jsonify({"result": "success", "msg": "Profile updated!"})
         else:
             return jsonify({"result": "fail", "msg": "No data provided to update"})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return jsonify({"result": "fail", "msg": "Token expired or invalid"})
+        return redirect(url_for("home"))
 
-from werkzeug.utils import secure_filename
 
 @app.route('/get_images', methods=['GET'])
 def get_images():

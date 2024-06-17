@@ -68,22 +68,26 @@
     }
   </style>
 <script>
-  $(document).ready(function() {
-      function get_profile() {
-        $.ajax({
-          type: "GET",
-          url: "/get_profile",
-          data:{},
-          success: function(data){
+function get_profile() {
+    $.ajax({
+        type: "GET",
+        url: "/get_profile",
+        data: {},
+        success: function(data) {
             console.log(data);
             $('#fullName').val(data.name);
             $('#username').val(data.username);
             $('#email').val(data.email);
             $('#phone').val(data.phone);
             $('#address').val(data.address);
-            }
-          })
-      }
+        },
+        error: function(xhr, status, error) {
+            window.location.replace("/login");
+            alert("gagal menerima data, mohon login kembali");
+        }
+    });
+}
+
       function edit_profile() {
           var firstName = $('#firstName').val();
           var lastName = $('#lastName').val();
@@ -121,9 +125,8 @@
       });
 
       $('.cancel').on('click', function() {
-          window.location.href = '/profile'; // Change this to the appropriate URL for cancel action
+          window.location.href = '/profile';
       });
-  });
 </script>
 </head>
 <body>
