@@ -72,6 +72,34 @@ def login():
     msg = request.args.get('msg')
     return render_template('login.html', msg=msg)
 
+@app.route("/get_role")
+def get_role():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    if not token_receive:
+        return jsonify({"role": "guest"}), 200
+
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        id = payload["id"]
+        
+        user = db.users.find_one({"_id": ObjectId(id)}, {"_id": False})
+        role = "user"
+        if not user:
+            user = db.admin.find_one({"_id": ObjectId(id)}, {"_id": False})
+            role = "admin"
+
+        if user:
+            return jsonify({ 
+                "role":role,
+                "username" : user.get("username", "")
+            })
+        else:
+            return jsonify({"role": "guest"}), 200
+    except jwt.ExpiredSignatureError:
+        return jsonify({"role": "guest"}), 200
+    except jwt.exceptions.DecodeError:
+        return jsonify({"role": "guest"}), 200
+
 @app.route("/sign_in", methods=["POST"])
 def sign_in():
     email_receive = request.form["email_give"]

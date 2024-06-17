@@ -246,6 +246,32 @@
   </head>
 
   <script>
+    function get_role() {
+      $.ajax({
+        type: "GET",
+        url: "/get_role",
+        success: function (data) {
+          $(".username-view").text(data.username)
+          if (data.role === "guest") {
+            $("#more-menu").hide();
+          } else if (data.role === "user") {
+            $("#edit-produk").hide();
+            $("#edit-etalase").hide();
+            $("#list-pesanan").hide();
+          } else if (data.role === "admin") {
+            $("#status-pesanan").hide();
+            $("#checkout-btn").hide();
+          }
+        },
+        error: function () {
+          window.location.href = "/";
+        },
+      });
+    }
+
+    $(document).ready(function () {
+      get_role();
+    });
     function sign_out() {
       $.removeCookie("mytoken", { path: "/" });
       alert("Signed out!");
@@ -267,6 +293,7 @@
         <button
           class="navbar-toggler"
           type="button"
+          id="more-menu"
           data-bs-toggle="offcanvas"
           data-bs-target="#offcanvasNavbar"
           aria-controls="offcanvasNavbar"
@@ -280,7 +307,7 @@
           aria-labelledby="offcanvasNavbarLabel"
         >
           <div class="offcanvas-header">
-            <h5 class="offcanvas-title">User Menu</h5>
+            <h5 class="offcanvas-title">Menu</h5>
             <button
               type="button"
               class="btn-close"
@@ -299,24 +326,69 @@
                     height="48"
                     class="rounded-circle me-2"
                   />
-                  <div>
+                  <div class="mx-2 username-view">
                     <strong>User</strong>
                   </div>
                 </div>
-                <a class="nav-link" href="#" style="padding-bottom: 10px">
-                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                <a
+                  class="nav-link mt-3"
+                  href="/profile"
+                  style="padding-bottom: 10px"
+                >
+                  <i
+                    class="fa-regular fa-user"
+                    style="color: #000000"
+                    aria-hidden="true"
+                  ></i>
                   Edit Profile
                 </a>
-                <a class="nav-link" href="#" style="padding-top: 10px">
+                <a
+                  id="edit-produk"
+                  class="nav-link"
+                  href="/list"
+                  style="padding-top: 10px"
+                >
                   <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                  Edit Produk
+                </a>
+                <a
+                  id="edit-etalase"
+                  class="nav-link"
+                  href="/etalase"
+                  style="padding-bottom: 10px"
+                >
+                  <i class="fa-regular fa-image" aria-hidden="true"></i>
+                  Edit Etalase
+                </a>
+                <a
+                  class="nav-link"
+                  id="status-pesanan"
+                  href="/status_pemesanan"
+                  style="padding-top: 10px"
+                >
+                  <i class="fa-solid fa-list-check" aria-hidden="true"></i>
                   Status Pesanan
+                </a>
+                <a
+                  class="nav-link"
+                  id="list-pesanan"
+                  href="/list_order"
+                  style="padding-top: 10px"
+                >
+                  <i class="fa-solid fa-list-check" aria-hidden="true"></i>
+                  Daftar Pesanan
                 </a>
               </li>
             </ul>
             <!-- Move Checkout button here -->
-            <a class="btn btn-checkout" href="/order" type="button">
+            <a
+              id="checkout-btn"
+              class="btn btn-checkout"
+              href="/order"
+              type="button"
+            >
               <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-              Checkout
+              Keranjang
             </a>
             <hr />
             <button class="logout" onclick="sign_out()">
