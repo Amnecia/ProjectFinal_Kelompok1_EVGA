@@ -3,39 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css" rel="stylesheet">
+    <title>Footer Example</title>
+
     <style>
-        /* Adjust position of container to the left */
-        .footer-container {
-            justify-content: flex-start !important; /* Align items to the start */
-        }
+      /* Global Styles */
+
+* {
+      font-family: "Concert One", sans-serif;
+      font-weight: 400;
+      font-style: normal;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.col-md-4 {
+    flex-basis: 33.33%;
+    margin: 20px;
+}
+
+/* Footer Styles */
+
+.footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    clear: both;
+    position: relative;
+    z-index: 1;
+}
+
+.footer h3 {
+    margin-top: 0;
+    color: #fff;
+}
+
+.footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+
+.footer li {
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: #ccc;
+}
+
+.footer .container {
+    margin-left: 0;
+    margin-top: 0;
+}
+
+.footer h3 {
+    margin: 0;
+    text-align: left;
+}
+
+
+.footer h3 {
+    margin: 0;
+    text-align: left;
+}
+/* Responsive Styles */
+
+@media (max-width: 768px) {
+  .col-md-4 {
+        flex-basis: 100%;
+        margin: 20px 0;
+    }
+}
     </style>
 </head>
 <body>
-  <footer>
-    <br>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4">
-          <h5>Contact Us</h5>
-          <ul>
-            <li><a href="mailto:info@example.com">info@example.com</a></li>
-            <li><a href="tel:+1234567890">+1234567890</a></li>
-            <li><div>Location</div></li> 
-            <li><div>Working Hours</div></li>
-          </ul>
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3>Contact Us</h3>
+                    <ul class="list-unstyled">
+                        <li><a href="mailto:info@example.com" style="color:aqua;">info@example.com</a></li>
+                        <li><a href="tel:+1234567890 " style="color:aqua;">+1234567890</a></li>
+                        <li><a href="#">Location</a></li>
+                        <li><a href="#">Working Hours</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h3>Links</h3>
+                    <ul class="list-unstyled">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about">About Us</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-      
-        <div class="col-md-4">
-          <h5>Links</h5>
-          <ul>
-            <li><a href="https://www.example.com/about">Home</a></li>
-            <li><a href="https://www.example.com/terms">About Us</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </footer>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>

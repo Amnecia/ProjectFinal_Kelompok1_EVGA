@@ -82,6 +82,44 @@
     height:50px;
     
 }
+
+    @media only screen and (max-width: 768px) {
+        .form-container {
+            margin-top: 40px;
+        }
+        .image-container {
+            width: 100%;
+            height: 50vh;
+        }
+        .big-image {
+            width: 100%;
+            height: 50vh;
+            object-fit: cover;
+        }
+        .btn {
+            width: 100%;
+            height: 40px;
+        }
+    }
+
+    @media only screen and (max-width: 480px) {
+        .form-container {
+            margin-top: 20px;
+        }
+        .image-container {
+            width: 100%;
+            height: 30vh;
+        }
+        .big-image {
+            width: 100%;
+            height: 30vh;
+            object-fit: cover;
+        }
+        .btn {
+            width: 100%;
+            height: 30px;
+        }
+    }
     </style>
 </head>
 
@@ -101,7 +139,7 @@
                     </div>
                     <div class="form-group">
                         <label for="address">Address</label>
-                        <input type="text" class="form-control" id="address" name="adress" required placeholder="Enter Your adress">
+                        <input type="text" class="form-control" id="address" name="address" required placeholder="Enter Your adress">
                     </div>
                     <div class="form-group">
                         <label for="phoneNumber">Contact Number</label>

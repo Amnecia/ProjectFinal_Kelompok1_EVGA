@@ -2,6 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Sedan+SC&display=swap" rel="stylesheet">
@@ -15,182 +17,240 @@
   <script src="https://kit.fontawesome.com/d46734533e.js" crossorigin="anonymous"></script>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-</head>
-<style>
+  <style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  .container-product {
-    border: 1px solid #ccc;
-        width: 1800px;
-        margin: 0 20px;
-        margin-top: 80px;
-        padding-left: 30px;
-        padding-bottom: 40px;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        border-radius: 10px;
-        background-color: #fff;
-    }
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f9f9f9;
+}
 
-  .main-image-container {
-        display: flex;
-        align-items: center;
-    }
+.container-product {
+  text-align: left;
+  height: 600px;
+  max-width: 1500px; /* increased max-width */
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.main-image-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 500px;
+}
+
 .product-image {
-  width: 300px; /* Set the width of the carousel images */
-  height: 200px; /* Set the height of the carousel images */
-  object-fit: cover; /* Make the images cover the entire container */
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
 }
 
 #main-image {
+  width: 600px;
+  height: 500px;
+  object-fit: cover;
+  border-top-left-radius: 20px;
+border-bottom-right-radius: 20px;
+border-bottom-right-radius: 20px;
+  border-top-right-radius: 20px;}
+
+.product-info {
+  padding-left: 30px;
+  float: left;
+  width: 50%;
+  vertical-align: top;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.carousel {
+  width: 700px; /* set a fixed width */
+  margin: 0 auto; /* center the carousel horizontally */
+  overflow: hidden; /* prevent overflow */
+}
+
+.carousel-inner {
+  height: 500px; /* reduced height */
+}
+
+.carousel-item img {
+  width: 700px; /* reduced width */
+  height: 600px; /* reduced height */
+  object-fit: cover;
+  border-top-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.carousel-control-prev,.carousel-control-next {
+  top: 40%;
+}
+
+.product-description {
   margin-top: 20px;
-  width: 700px; /* Set the width of the main image */
-  height: 500px; /* Set the height of the main image */
-  object-fit: cover; /* Make the main image cover the entire container */
-}
-  .product-info {
-        margin-left: 50px;
-        font-size: 20px;
-        margin-right:80px;
-    }
-
-   .carousel {
-        width: 600px;
-        margin: 40px auto;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        border-radius: 10px;
-    }
-
-   .carousel-inner {
-        height: 500px;
-        border-radius: 10px;
-    }
-   .carousel-item img {
-        width: 600px;
-        height: 500px;
-        object-fit: cover;
-        border-radius: 10px;
-    }
-
-  .carousel-control-prev,.carousel-control-next {
-        top: 40%;
-    }
-
-  .product-description {
-        margin-top: 20px;
-    }
-
-  .price-container {
-        margin-top: 10px;
-        padding-top: 90px;
-    }
-
-  .add-to-cart-btn {
-        background-color: black;
-        width: 900px;
-        height: 70px;
-        color: #fff;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 50px;
-        cursor: pointer;
-        margin-top: 20px;
-    }
-
-  .add-to-cart-btn:hover {
-        background-color: #3e8e41;
-    }
-
-  .quantity-input {
-        display: flex;
-        align-items: center;
-        margin-top: 20px;
-    }
-
-  .quantity-input button {
-        width: 25px;
-        height: 25px;
-        border: none;
-        border-radius: 50%;
-        background-color: #fff;
-        cursor: pointer;
-        font-size: 18px;
-        font-weight: bold;
-        padding: 0;
-    }
-
-  .quantity-input button:hover {
-        background-color: #f7f7f7;
-    }
-
-  .quantity-input button:first-child {
-        margin-right: 10px;
-    }
-
-  .quantity-input button:last-child {
-        margin-left: 10px;
-    }
-
-  .quantity-input input {
-        width: 50px;
-        height: 30px;
-        border: none;
-        border-radius: 10px;
-        text-align: center;
-        font-size: 18px;
-        margin: 0 10px;
-    }
-
-  .quantity-input input::-webkit-inner-spin-button,
-  .quantity-input input::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-    .carousel-control-prev,.carousel-control-next {
-        top: 50%;
-        transform: translateY(-50%);
-        background-color: #333;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        font-size: 20px;
-        color: #fff;
-        cursor: pointer;
-    }
-
-.carousel-control-prev {
-  color: #f63d3d;
-  font-size: 24px;
 }
 
-.carousel-control-prev i {
-  color: #D00000;
+.price-container {
+  margin-top: 10px;
+  padding-top: 90px;
 }
 
-.carousel-control-next {
-  color: #D00000;
-  font-size: 24px;
+.quantity-input {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
 }
 
-.carousel-control-next i {
-  color: #D00000;
+.quantity-input button {
+  width: 25px;
+  height: 25px;
+  border: none;
+  border-radius: 50%;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 0;
 }
+
+.quantity-input button:hover {
+  background-color: #f7f7f7;
+}
+
+.quantity-input button:first-child {
+  margin-right: 10px;
+}
+
+.quantity-input button:last-child {
+  margin-left: 10px;
+}
+
+.quantity-input input {
+  width: 50px;
+  height: 30px;
+  border: none;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 18px;
+  margin: 0 10px;
+}
+
+.quantity-input input::-webkit-inner-spin-button,
+.quantity-input input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.add-to-cart-btn {
+  background-color: black;
+  width: 100%;
+  height: 70px;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #333;
+}
+
+/* Media queries for mobile screens */
+@media (max-width: 768px) {
+ .carousel {
+    width: 300px; /* reduced width for mobile screens */
+  }
+ .carousel-inner {
+    height: 200px; /* reduced height for mobile screens */
+  }
+ .carousel-item img {
+    width: 300px; /* reduced width for mobile screens */
+    height: 200px; /* reduced height for mobile screens */
+  }
+ .product-image {
+    width: 200px;
+    height: 150px;
+  }
+  #main-image {
+    width: 400px;
+    height: 300px;
+  }
+ .product-info {
+    margin-left: 20px;
+    font-size: 16px;
+    margin-right: 40px;
+  }
+ .price-container {
+    padding-top: 40px;
+  }
+ .add-to-cart-btn {
+    height: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+ .carousel {
+    width: 200px; /* further reduced width for smaller mobile screens */
+  }
+ .carousel-inner {
+    height: 150px; /* further reduced height for smaller mobile screens */
+  }
+ .carousel-item img {
+    width: 200px; /* further reduced width for smaller mobile screens */
+    height: 150px; /* further reduced height for smaller mobile screens */
+  }
+ .product-image {
+    width: 150px;
+    height: 100px;
+  }
+  #main-image {
+    width: 300px;
+    height: 200px;
+  }
+ .product-info {
+    margin-left: 10px;
+    font-size: 14px;
+    margin-right: 20px;
+  }
+ .price-container {
+    padding-top: 20px;
+  }
+ .add-to-cart-btn {
+    height: 40px;
+  }
+}
+
 
 .reviews-container {
-  border: 1px solid #ccc;
-        width: 1800px;
-        margin: 0 20px;
-        margin-top: 80px;
-        padding-left: 30px;
-        padding-bottom: 40px;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        border-radius: 10px;
-        background-color: #fff;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
 }
+
 .review-item {
   display: flex;
   align-items: center;
@@ -201,7 +261,7 @@
 .review-item img {
   width: 50px;
   height: 50px;
-  border-radius: 50%;
+ border-radius: 50%;
   margin-right: 20px;
 }
 
@@ -224,9 +284,12 @@
   color: #666;
   margin-top: 10px;
 }
-</style>
-
+  </style>
+</head>
 <body>
+  <br>
+  <br>
+  <br>
   <div class="container-product">
     <div class="main-image-container">
       <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
@@ -304,7 +367,7 @@
               <i class="fas fa-star" aria-hidden="true"></i>
               <i class="fas fa-star" aria-hidden="true"></i>
           </div>
-          <p class="review-description">These headphones are amazing! The sound quality is incredible and the noise-cancelling feature is so effective. I highly recommend them!</p>
+          <p class="review-description">These headphones are amazing! The sound quality is incredible and the noise-cancelling feature isso effective. I highly recommend them!</p>
       </div>
     </div>
     </div>
@@ -327,20 +390,20 @@
     
         let quantityBtn = document.querySelectorAll('.quantity-input button');
     
-        quantityBtn.forEach(function(btn) {
-  btn.addEventListener('click', function(e) {
-    let input = e.target.previousElementSibling;
-    let quantity = parseInt(input.value);
+      quantityBtn.forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          let input = e.target.closest('.quantity-input').querySelector('input');
+          let quantity = parseInt(input.value);
 
-    if (e.target.textContent === '-') {
-      if (quantity > 1) {
-        input.value = quantity - 1;
-      }
-    } else if (e.target.textContent === '+') {
-      input.value = quantity + 1;
-    }
-  });
-});
+          if (e.target.textContent === '-') {
+            if (quantity > 1) {
+              input.value = quantity - 1;
+            }
+          } else if (e.target.textContent === '+') {
+            input.value = quantity + 1;
+          }
+        });
+      });
 
 document.getElementById('carouselExample').addEventListener('slide.bs.carousel', function (event) {
             var img = event.relatedTarget.querySelector('img');
@@ -348,7 +411,7 @@ document.getElementById('carouselExample').addEventListener('slide.bs.carousel',
         });
         document.getElementById('add-to-cart').addEventListener('click', function () {
             var quantity = document.getElementById('quantity').value;
-            alert('You added ' + quantity + ' items to your cart.');
+            alert('You added ' + quantity + 'tems to your cart.');
         });
         </script>
 </body>

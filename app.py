@@ -25,7 +25,7 @@ db = client.dbgrace
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 SECRET_KEY='EVGA'
-ADMIN_KEY='ADMIN'
+
 
 TOKEN_KEY = 'mytoken'
 
@@ -46,6 +46,34 @@ def login():
     msg = request.args.get('msg')
     return render_template('login.html', msg=msg)
 
+@app.route("/get_role")
+def get_role():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    if not token_receive:
+        return jsonify({"role": "guest"}), 200
+
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        id = payload["id"]
+        
+        user = db.users.find_one({"_id": ObjectId(id)}, {"_id": False})
+        role = "user"
+        if not user:
+            user = db.admin.find_one({"_id": ObjectId(id)}, {"_id": False})
+            role = "admin"
+
+        if user:
+            return jsonify({ 
+                "role":role,
+                "username" : user.get("username", "")
+            })
+        else:
+            return jsonify({"role": "guest"}), 200
+    except jwt.ExpiredSignatureError:
+        return jsonify({"role": "guest"}), 200
+    except jwt.exceptions.DecodeError:
+        return jsonify({"role": "guest"}), 200
+
 @app.route("/sign_in", methods=["POST"])
 def sign_in():
     email_receive = request.form["email_give"]
@@ -54,7 +82,7 @@ def sign_in():
     
     result = db.admin.find_one(
         {
-            "username": email_receive,
+            "email": email_receive,
             "password": pw_hash,
         }
     )
@@ -62,94 +90,97 @@ def sign_in():
     if not result:
         result = db.users.find_one(
             {
-                "username": email_receive,
+                "email": email_receive,
                 "password": pw_hash,
             }
         )
-        payload = {
-            "id": email_receive,
-            "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
-        }
-        token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
-        return jsonify({"result": "success", "token": token})
     
     if result:
+        user_id = str(result["_id"])
         payload = {
-            "id": email_receive,
+            "id": user_id,
             "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
         }
-        token = jwt.encode(payload, ADMIN_KEY, algorithm="HS256")
-        admin_info = db.users.find_one({"email": email_receive}, {"_id": False})
-        return jsonify({"result": "success", "token": token}, admin_info=admin_info)
+        user_info = db.admin.find_one({"email": email_receive}, {"_id": False})
+        if not user_info:
+            user_info = db.users.find_one({"email": email_receive}, {"_id": False})
+        token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+        return jsonify({"result": "success", "token": token, "user_info": user_info})
     
     return jsonify({"result": "fail", "msg": "Login gagal, email atau password invalid"})
 
-@app.route('/logout')
-def logout():
-    response = redirect(url_for('home'))
-    response.set_cookie(TOKEN_KEY, '', expires=0)
-    return response
 
-def token_required(f):
-    def decorated_function(args,):
-        token = request.cookies.get(TOKEN_KEY)
-        if not token:
-            return redirect(url_for('login', msg='Login required'))
 
-        try:
-            data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-            user_id = data['user_id']
-            current_user = db.users.find_one({'_id': ObjectId(user_id)})
-        except Exception as e:
-            return redirect(url_for('login', msg='Login required'))
+@app.route('/forget_password', methods=['POST'])
+def forgot_password():
+    email_receive = request.form["email_give"]
+    user = db.users.find_one({
+        "email": email_receive
+        })
+    if user:
+        token = secret.token_hex(16)
+        user.update({
+            "password_reset_token": token
+            })
+        db.users.save(user)
+        send_password_reset_email(
+             email_receive, 
+             token,
+            )
+        return jsonify({
+            "result": "success", 
+            "msg": "Password reset link sent to your email"
+            })
+    else:
+        return jsonify({"result": "fail", "msg": "Email not found."})
 
-        return f(current_user, args, )
-    return decorated_function
+@app.route('/reset_password', methods=['POST'])
+def reset_password():
+    token_receive = request.form["token_give"]
+    new_password_receive = request.form["new_password_give"]
+    user = db.users.find_one({"password_reset_token": token_receive})
+    if user:
+        pw_hash = hashlib.sha256(new_password_receive.encode("utf-8")).hexdigest()
+        user.update({"password": pw_hash, "password_reset_token": ""})
+        db.users.save(user)
+        return jsonify({
+            "result": "success", 
+            "msg": "Password reset successfully"
+            })
+    else:
+        return jsonify({"result": "fail", "msg": "Invalid token."})
 
-@app.route('/protected')
-@token_required
-def protected(current_user):
-    return f'Logged in as: {current_user["email"]}'
+def send_password_reset_email(email, token):
+    # Implement your email sending logic here
+    pass
+
+
+
+# def token_required(f):
+#     def decorated_function(args,):
+#         token = request.cookies.get(TOKEN_KEY)
+#         if not token:
+#             return redirect(url_for('login', msg='Login required'))
+
+#         try:
+#             data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+#             user_id = data['user_id']
+#             current_user = db.users.find_one({'_id': ObjectId(user_id)})
+#         except Exception as e:
+#             return redirect(url_for('login', msg='Login required'))
+
+#         return f(current_user, args, )
+#     return decorated_function
+
+# @app.route('/protected')
+# @token_required
+# def protected(current_user):
+#     return f'Logged in as: {current_user["email"]}'
    
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == 'POST':
-        full_name = request.form['full_name']
-        username = request.form['username']
-        address = request.form['address']
-        contact_number = request.form['contact_number']
-        email = request.form['email']
-        password = request.form['password']
-        confirm_password = request.form['confirm_password']
-        
-        if password != confirm_password:
-            return jsonify({'error': 'Passwords do not match'}), 400
-        
-        existing_user = db.users.find_one({"username": username})
-        if existing_user:
-            return jsonify({'error': 'Username already exists'}), 400
-        
-        hashed_password = hashlib.sha256(password.encode()).hexdigest()
-        
-        new_user = {
-            "full_name": full_name,
-            "username": username,
-            "address":address,
-            "phone_number": contact_number,
-            "email": email,
-            "password": hashed_password
-        }
-        
-        result = db.users.insert_one(new_user)
-        user_id = str(result.inserted_id)
-        
-        token = jwt.encode(
-            {'user_id': user_id, 'exp': datetime.utcnow() + timedelta(minutes=30)},
-            SECRET_KEY, algorithm='HS256')
-        
-        return jsonify({'token': token.decode('UTF-8')})
     return render_template('register.html')
 
 
@@ -189,45 +220,57 @@ def about():
 
 @app.route('/addProduk', methods=['GET', 'POST'])
 def tambah_produk():
-    if request.method == 'POST':
-        nama = request.form['nama']
-        harga = request.form['harga']
-        deskripsi = request.form['deskripsi']
-        image1 = request.files['image1']
-        image2 = request.files['image2']
-        image3 = request.files['image3']
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        id = payload["id"]
+        validasi = db.admin.find_one({"_id": ObjectId(id)}, {"_id": False})
 
-        extension1 = image1.filename.split('.')[-1]
-        extension2 = image2.filename.split('.')[-1]
-        extension3 = image3.filename.split('.')[-1]
+        if validasi:
+            if request.method == 'POST':
+                nama = request.form['nama']
+                harga = request.form['harga']
+                deskripsi = request.form['deskripsi']
+                image1 = request.files['image1']
+                image2 = request.files['image2']
+                image3 = request.files['image3']
 
-        today = datetime.now()
-        mytime = today.strftime('%Y-%m-%d %H:%M')
+                extension1 = image1.filename.split('.')[-1]
+                extension2 = image2.filename.split('.')[-1]
+                extension3 = image3.filename.split('.')[-1]
 
-        image_name1 = f'image1-{mytime}.{extension1}'
-        image_name2 = f'image2-{mytime}.{extension2}'
-        image_name3 = f'image3-{mytime}.{extension3}'
+                today = datetime.now()
+                mytime = today.strftime('%Y-%m-%d %H:%M')
 
-        save_to1 = f'static/assets/productImage/{image_name1}'
-        save_to2 = f'static/assets/productImage/{image_name2}'
-        save_to3 = f'static/assets/productImage/{image_name3}'
+                image_name1 = f'image1-{mytime}.{extension1}'
+                image_name2 = f'image2-{mytime}.{extension2}'
+                image_name3 = f'image3-{mytime}.{extension3}'
 
-        image1.save(save_to1)
-        image2.save(save_to2)
-        image3.save(save_to3)
+                save_to1 = f'static/assets/productImage/{image_name1}'
+                save_to2 = f'static/assets/productImage/{image_name2}'
+                save_to3 = f'static/assets/productImage/{image_name3}'
 
-        doc = {
-            'nama': nama,
-            'harga': harga,
-            'deskripsi': deskripsi,
-            'image1': image_name1,
-            'image2': image_name2,
-            'image3': image_name3,
-            'today': mytime,  # Add this line to record the creation date and time
-        }
-        db.produk.insert_one(doc)
-        return jsonify({'message': 'Product added successfully'})
-    return render_template('tambah_produk.html')
+                image1.save(save_to1)
+                image2.save(save_to2)
+                image3.save(save_to3)
+
+                doc = {
+                    'nama': nama,
+                    'harga': harga,
+                    'deskripsi': deskripsi,
+                    'image1': image_name1,
+                    'image2': image_name2,
+                    'image3': image_name3,
+                    'today': mytime,
+                }
+                db.produk.insert_one(doc)
+                return jsonify({'message': 'Product added successfully'})
+            return render_template('tambah_produk.html')
+        else:
+            return redirect(url_for("home"))
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
 
 @app.route('/editProduk/<_id>', methods=['GET'])
 def edit_produk(_id):
@@ -282,9 +325,17 @@ def update_produk(_id):
 def Etalase():
     token_receive = request.cookies.get(TOKEN_KEY)
     try:
-        payload = jwt.decode(token_receive, ADMIN_KEY, algorithms=["HS256"])
-        admin_info = db.admin.find_one({'email': payload.get('id')})
-        return render_template('edit_etalase.html', admin_info=admin_info)
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        id = payload["id"]
+
+        validasi = db.admin.find_one({"_id": ObjectId(id)}, {"_id": False})
+
+        if validasi:
+            user_info = db.admin.find_one({"_id": ObjectId(id)}, {"_id": False})
+
+            return render_template("edit_etalase.html", user_info=user_info)
+        else :
+            return redirect(url_for("home"))
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
@@ -293,9 +344,25 @@ def secret():
     token_receive = request.cookies.get(TOKEN_KEY)
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
-        return render_template("secret.html")
+        email = payload["id"]
+        user = db.users.find_one({"email": email}, {"_id": False})
+        if not user:
+            user = db.admin.find_one({"email": email}, {"_id": False})
+
+        if user:
+            user_info = db.users.find_one({"email": email}, {"_id": False})
+            if not user_info:
+                user_info = db.admin.find_one({"email": email}, {"_id": False})
+
+            return render_template("secret.html", user_info=user_info)
+        else:
+            return redirect(url_for("home"))
+
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
+
+
+
 
 
 
@@ -309,21 +376,23 @@ def order():
     if request.method == 'POST':
         # Simulasi data checkout dari halaman order
         product_id = request.form['product_id']
-        quantity = request.form['quantity']
+        quantity = int(request.form['quantity'])
         email = request.form['email']
         address = request.form['address']
-        price = request.form['price']
+        price = int(request.form['price'])
         date = request.form['date']
 
-        # Simpan data ke sesi
-        session['order_data'] = {
-            'product_id': product_id,
+        # Simpan data ke database
+        order_data = {
+            'product_id': ObjectId(product_id),
             'quantity': quantity,
             'email': email,
             'address': address,
-            'price': price,
-            'date': date
+            'price': price * quantity,  # Hitung total harga berdasarkan quantity
+            'date': datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
         }
+
+        db.orders.insert_one(order_data)
 
         # Redirect ke halaman status pesanan
         return redirect(url_for('status_pesanan'))
@@ -331,22 +400,49 @@ def order():
     # Jika metode GET, tampilkan halaman order
     return render_template('order.html')
 
-@app.route('/status_pesanan/<order_id>', methods=['GET'])
-def status_pesanan(order_id):
-    # Query database untuk mendapatkan informasi pesanan berdasarkan ID
-    order = db.orders.find_one({'_id': ObjectId(order_id)})
+@app.route('/status_pesanan')
+def status_pesanan():
+    # Ambil data pesanan dari database
+    orders = db.orders.find()  # Ganti 'orders' dengan nama koleksi di database Anda
 
-    if order:
-        # Jika pesanan ditemukan, tampilkan informasi pesanan
-        return render_template('status_pesanan.html', order=order)
-    else:
-        # Jika pesanan tidak ditemukan, berikan respons sesuai kebutuhan aplikasi Anda
-        return "Pesanan tidak ditemukan", 404  # Contoh respons jika pesanan tidak ditemukan
+    # Buat daftar untuk menyimpan data pesanan beserta email pengguna
+    orders_with_email = []
+
+    # Loop melalui setiap pesanan dan ambil email pengguna
+    for order in orders:
+        # Asumsikan setiap dokumen pesanan memiliki field 'user_email'
+        email = order.get('user_email')
+        orders_with_email.append({
+            'order_id': order.get('_id'),
+            'email': email,
+            'product_name': order.get('product_name'),
+            'quantity': order.get('quantity'),
+            'address': order.get('address'),
+            'price': order.get('price'),
+            'date': order.get('date'),
+            'status': order.get('status')
+        })
+
+    # Render template HTML sambil mengirimkan data pesanan dengan email pengguna
+    return render_template('status_pesanan.html', orders=orders_with_email)
 
 @app.route('/list', methods=['GET'])
 def list():
-    produk = db.produk.find()
-    return render_template('produk.html', produk=produk)
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        id = payload["id"]
+
+        validasi = db.admin.find_one({"_id": ObjectId(id)}, {"_id": False})
+
+        if validasi:
+            produk = db.produk.find()
+
+            return render_template('produk.html', produk=produk)
+        else :
+            return redirect(url_for("home"))
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
 
 @app.route('/guest', methods=['GET'])
 def guest():
@@ -354,14 +450,59 @@ def guest():
 
 @app.route('/profile', methods=['POST','GET'])
 def profile():
-    return render_template('edit_profile.html')
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        id = payload["id"]
+        user = db.users.find_one({"_id": ObjectId(id)}, {"_id": False})
+        if not user:
+            user = db.admin.find_one({"_id": ObjectId(id)}, {"_id": False})
+
+        if user:
+            user_info = db.users.find_one({"_id": ObjectId(id)}, {"_id": False})
+            if not user_info:
+                user_info = db.admin.find_one({"_id": ObjectId(id)}, {"_id": False})
+
+            return render_template("edit_profile.html", user_info=user_info)
+        else:
+            return redirect(url_for("home"))
+
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
+@app.route("/get_profile")
+def get_profile():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        id = payload["id"]
+        
+        user = db.users.find_one({"_id": ObjectId(id)}, {"_id": False})
+        
+        if not user:
+            user = db.admin.find_one({"_id": ObjectId(id)}, {"_id": False})
+        
+        # If user is found, return the user information
+        if user:
+            return jsonify({
+                "fullname": user.get("full_name"),
+                "username": user.get("username"),
+                "email": user.get("email"),
+                "phone": user.get("contact_number"),
+                "address": user.get("address")
+            })
+        else:
+            return jsonify({"error": "User not found"}), 404
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return jsonify({"error": "Invalid token"}), 401
+
 
 @app.route("/edit_profile", methods=["POST"])
 def edit_profile():
-    # token_receive = request.cookies.get("mytoken")
+    token_receive = request.cookies.get(TOKEN_KEY)
     try:
-        # payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
-        # username = payload["id"]
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        id = payload["id"]
         full_name_receive = request.form.get("fullName_give")
         username_receive = request.form.get("username_give")
         email_receive = request.form.get("email_give")
@@ -374,8 +515,6 @@ def edit_profile():
             new_doc["full_name"] = full_name_receive
         if username_receive:
             new_doc["username"] = username_receive
-        if address_receive:
-            new_doc["address"] = address_receive
         if email_receive:
             new_doc["email"] = email_receive
         if address_receive:
@@ -387,14 +526,19 @@ def edit_profile():
             new_doc["password"] = password_hash
 
         if new_doc:
-            db.users.update_one({"username": username_receive}, {"$set": new_doc})
-            return jsonify({"result": "success", "msg": "Profile updated!"})
+            update_user = db.users.update_one({"_id": ObjectId(id)}, {"$set": new_doc})
+            update_admin = db.admin.update_one({"_id": ObjectId(id)}, {"$set": new_doc})
+            
+            if update_user.modified_count > 0 or update_admin.modified_count > 0:
+                return jsonify({"result": "success", "msg": "Profile updated!"})
+            else:
+                return jsonify({"result": "fail", "msg": "No data provided to update or data unchanged"})
         else:
             return jsonify({"result": "fail", "msg": "No data provided to update"})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return jsonify({"result": "fail", "msg": "Token expired or invalid"})
+        return redirect(url_for("home"))
 
-from werkzeug.utils import secure_filename
+
 
 @app.route('/get_images', methods=['GET'])
 def get_images():
@@ -418,7 +562,6 @@ def edit_etalase():
             file.save(file_path)
     return jsonify({"message": "Images uploaded successfully"})
 
-
 @app.route('/setstatus', methods=['POST'])
 def SetStatus():
     status = request.form['status']
@@ -428,17 +571,27 @@ def SetStatus():
 
 @app.route('/deleteproduk/<_id>', methods=['GET', 'POST'])
 def deleteProduk(_id):
+    id_receive = request.get("id_give")
     db.produk.delete_one({'_id': ObjectId(_id)})
     return jsonify({'message': 'Product deleted successfully'})
 
-@app.route('/form_ulasan/<_id>', methods=['GET', 'POST'])
-def form_ulasan(_id):
+@app.route('/form_ulasan', methods=['GET', 'POST'])
+def form_ulasan_without_product():
     if request.method == 'POST':
-        ulasan = request.form['ulasan']
-        rating = request.form['rating']
-        db.produk.update_one({'_id': ObjectId(_id)}, {'$set': {'ulasan': ulasan, 'rating': rating}})
-        return jsonify({'message': 'Ulasan berhasil dikirim'})
+        rating = request.form.get('rating')
+        deskripsi = request.form.get('deskripsiProduk')
+
+        # Simpan ulasan ke dalam database
+        new_review = {
+            'rating': rating,
+            'deskripsi': deskripsi
+        }
+        db.produk.insert_one(new_review)  # Menyimpan ulasan ke dalam database
+
+        return 'Ulasan berhasil disimpan'
+
     return render_template('form_ulasan.html')
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

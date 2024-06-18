@@ -8,7 +8,11 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
+<<<<<<< HEAD
 set VIRTUAL_ENV=C:\Users\USER\Documents\FINAL TA KLP 1\ProjectFinal_Kelompok1_EVGA\venv
+=======
+set VIRTUAL_ENV=C:\Users\JACK\Documents\LearningX\New folder\ProjectFinal_Kelompok1_EVGA\venv
+>>>>>>> 23efe4f99800f34f601fadffba4fabea3e85897c
 
 if not defined PROMPT set PROMPT=$P$G
 

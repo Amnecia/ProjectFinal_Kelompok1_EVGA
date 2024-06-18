@@ -38,8 +38,20 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
+<<<<<<< HEAD
 VIRTUAL_ENV="C:\Users\USER\Documents\FINAL TA KLP 1\ProjectFinal_Kelompok1_EVGA\venv"
 export VIRTUAL_ENV
+=======
+# on Windows, a path can contain colons and backslashes and has to be converted:
+if [ "$OSTYPE" = "cygwin" ] || [ "$OSTYPE" = "msys" ] ; then
+    # transform D:\path\to\venv to /d/path/to/venv on MSYS
+    # and to /cygdrive/d/path/to/venv on Cygwin
+    export VIRTUAL_ENV=$(cygpath "C:\Users\JACK\Documents\LearningX\New folder\ProjectFinal_Kelompok1_EVGA\venv")
+else
+    # use the path as-is
+    export VIRTUAL_ENV="C:\Users\JACK\Documents\LearningX\New folder\ProjectFinal_Kelompok1_EVGA\venv"
+fi
+>>>>>>> 23efe4f99800f34f601fadffba4fabea3e85897c
 
 _OLD_VIRTUAL_PATH="$PATH"
 PATH="$VIRTUAL_ENV/Scripts:$PATH"

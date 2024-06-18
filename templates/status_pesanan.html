@@ -19,15 +19,15 @@
     <title>Document</title>
     <style>
         body {
-    min-height: 100vh;
-    overflow-y: auto;
-}
-       .product-image{
+            min-height: 100vh;
+            overflow-y: auto;
+        }
+        .product-image{
             width:350px;
             height:350px;
             margin-top:20px;
         }
-       .container-order {
+        .container-order {
             border: 1px solid #ccc;
             width: 1800px;
             margin: 0 20px;
@@ -42,17 +42,17 @@
             border-radius: 10px;
             background-color: #fff;
         }
-       .image-container {
+        .image-container {
             flex-basis: 200px;
         }
-       .text-container {
+        .text-container {
             flex: 1;
             padding-left: 20px;
             margin-top: -60px;
             display: flex;
             flex-direction: column;
         }
-       .button-container {
+        .button-container {
             flex-basis: 100%;
             display: flex;
             justify-content: flex-end;
@@ -62,298 +62,242 @@
             color:red;
         }
         .button-ulasan-cancelled {
-    background-color: #5e5e5e;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-
-.button-cancel-cancelled {
-    background-color: #2e2e2e;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-
-
-.button-delete-cancelled {
-    background-color: #2e2e2e;
-    border: none;
-    width:40px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    padding: 0;
-}
-
-.button-delete-cancelled i {
-    font-size: 20px;
-    line-height: 40px;
-}
-
-.button-cancel-success {
-    background-color: #2e2e2e;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-.button-delete-success {
-    background-color: #2e2e2e;
-    border: none;
-    width:40px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    padding: 0;
-}
-
-.button-ulasan-success {
-    background-color: #D00000;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-.button-ulasan-preparing {
-    background-color: #5e5e5e;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-
-.button-cancel-preparing {
-    background-color: #D00000;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-.button-delete-preparing {
-    background-color: #2e2e2e;
-    border: none;
-    width:40px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    padding: 0;
-}
-.button-ulasan-delivery {
-    background-color: #5e5e5e;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-
-.button-cancel-delivery {
-    background-color: #2e2e2e;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-.button-delete-delivery {
-    background-color: #2e2e2e;
-    border: none;
-    width:40px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    padding: 0;
-}
-
-.button-ulasan-not-confirmed {
-    background-color: #5e5e5e;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-
-.button-cancel-not-confirmed {
-    background-color: #2e2e2e;
-    border: none;
-    width:200px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-.button-delete-not-confirmed {
-    background-color: #D00000;
-    border: none;
-    width:40px;
-    height:40px;
-    color:white;
-    margin-right: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    padding: 0;
-}
+            background-color: #5e5e5e;
+            border: none;
+            width:200px;
+            height:40px;
+            color:white;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .button-cancel-cancelled {
+            background-color: #2e2e2e;
+            border: none;
+            width:200px;
+            height:40px;
+            color:white;
+            margin-right: 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .button-delete-cancelled {
+            background-color: #2e2e2e;
+            border: none;
+            width:40px;
+            height:40px;
+            color:white;
+            margin-right: 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            padding: 0;
+        }
+        .button-delete-cancelled i {
+            font-size: 20px;
+            line-height: 40px;
+        }
+        .button-cancel-success {
+            background-color: #2e2e2e;
+            border: none;
+            width:200px;
+            height:40px;
+            color:white;
+            margin-right: 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .button-delete-success {
+            background-color: #2e2e2e;
+            border: none;
+            width:40px;
+            height:40px;
+            color:white;
+            margin-right: 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            padding: 0;
+        }
+        .button-ulasan-success {
+            background-color: #D00000;
+            border: none;
+            width:200px;
+            height:40px;
+            color:white;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .button-ulasan-preparing {
+            background-color: #5e5e5e;
+            border: none;
+            width:200px;
+            height:40px;
+            color:white;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .button-cancel-preparing {
+            background-color: #D00000;
+            border: none;
+            width:200px;
+            height:40px;
+            color:white;
+            margin-right: 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .button-delete-preparing {
+            background-color: #2e2e2e;
+            border: none;
+            width:40px;
+            height:40px;
+            color:white;
+            margin-right: 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            padding: 0;
+        }
+        .button-ulasan-delivery {
+            background-color: #5e5e5e;
+            border: none;
+            width:200px;
+            height:40px;
+            color:white;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .button-cancel-delivery {
+            background-color: #2e2e2e;
+            border: none;
+            width:200px;
+            height:40px;
+            color:white;
+            margin-right: 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .button-delete-delivery {
+            background-color: #2e2e2e;
+            border: none;
+            width:40px;
+            height:40px;
+            color:white;
+            margin-right: 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            padding: 0;
+        }
+        .button-ulasan-not-confirmed {
+            background-color: #5e5e5e;
+            border: none;
+            width:200px;
+            height:40px;
+            color:white;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .button-cancel-not-confirmed {
+            background-color: #2e2e2e;
+            border: none;
+            width:200px;
+            height:40px;
+            color:white;
+            margin-right: 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .button-delete-not-confirmed {
+            background-color: #D00000;
+            border: none;
+            width:40px;
+            height:40px;
+            color:white;
+            margin-right: 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            padding: 0;
+        }
     </style>
 </head>
 <body>
+    {% for order in orders %}
     <div class="container-order">
         <div class="image-container">
             <img src="https://www.pixelstalk.net/wp-content/uploads/2016/07/3840x2160-Images-Free-Download.jpg" class="product-image">
         </div>
         <div class="text-container">
-            <h1 style="font-size:28px;">Product Name</h1>
-            <p style="font-weight:normal; font-size:16px;">Jumlah   : </p>
-            <p style="font-weight:normal;font-size:16px;">Email    : </p>
-            <p style="font-weight:normal;font-size:16px;">Alamat  : </p>
-            <p style="font-weight:normal;font-size:16px;">Harga    : </p>
-            <p style="font-weight:normal;font-size:16px;">Tanggal   : </p>
-            <p style="font-weight:normal;font-size:16px; color:red;">Cancelled</p>
+            <h1 style="font-size:28px;">{{ order.product_name }}</h1>
+            <p style="font-weight:normal; font-size:16px;">Jumlah   : {{ order.quantity }}</p>
+            <p style="font-weight:normal;font-size:16px;">Email    : {{ order.email }}</p>
+            <p style="font-weight:normal;font-size:16px;">Alamat  : {{ order.address }}</p>
+            <p style="font-weight:normal;font-size:16px;">Harga    : {{ order.price }}</p>
+            <p style="font-weight:normal;font-size:16px;">Tanggal    : {{ order.date }}</p>
+            {% if order.status == "Cancelled" %}
+            <p style="font-weight:normal;font-size:16px; color:red;">{{ order.status }}</p>
             <div class="button-container">
                 <button class="button-delete-cancelled"><i class="fas fa-trash-alt"></i></button>               
                  <button class="button-cancel-cancelled">Cancel</button>
                 <button class="button-ulasan-cancelled">Beri Ulasan</button>
             </div>
-        </div>
-    </div>
-    <div class="container-order">
-        <div class="image-container">
-            <img src="https://www.pixelstalk.net/wp-content/uploads/2016/07/3840x2160-Images-Free-Download.jpg" class="product-image">
-        </div>
-        <div class="text-container">
-            <h1 style="font-size:28px;">Product Name</h1>
-            <p style="font-weight:normal; font-size:16px;">Jumlah   : </p>
-            <p style="font-weight:normal;font-size:16px;">Email    : </p>
-            <p style="font-weight:normal;font-size:16px;">Alamat  : </p>
-            <p style="font-weight:normal;font-size:16px;">Harga    : </p>
-            <p style="font-weight:normal;font-size:16px;">Tanggal    : </p>
-            <p style="font-weight:normal;font-size:16px; color:rgb(0, 202, 0);" >Success</p>
+            {% elif order.status == "Success" %}
+            <p style="font-weight:normal;font-size:16px; color:rgb(0, 202, 0);">{{ order.status }}</p>
             <div class="button-container">
                 <button class="button-delete-success"><i class="fas fa-trash-alt"></i></button>     
                 <button class="button-cancel-success">Cancel</button>
                 <button class="button-ulasan-success">Beri Ulasan</button>
             </div>
-        </div>
-    </div>
-    <div class="container-order">
-        <div class="image-container">
-            <img src="https://www.pixelstalk.net/wp-content/uploads/2016/07/3840x2160-Images-Free-Download.jpg" class="product-image">
-        </div>
-        <div class="text-container">
-            <h1 style="font-size:28px;">Product Name</h1>
-            <p style="font-weight:normal; font-size:16px;">Jumlah   : </p>
-            <p style="font-weight:normal;font-size:16px;">Email    : </p>
-            <p style="font-weight:normal;font-size:16px;">Alamat  : </p>
-            <p style="font-weight:normal;font-size:16px;">Harga    : </p>
-            <p style="font-weight:normal;font-size:16px;">Tanggal    : </p>
-            <p style="font-weight:normal;font-size:16px; color:rgb(246, 207, 53);" >Is being prepared</p>
+            {% elif order.status == "Preparing" %}
+            <p style="font-weight:normal;font-size:16px; color:rgb(246, 207, 53);">{{ order.status }}</p>
             <div class="button-container">
                 <button class="button-delete-preparing"><i class="fas fa-trash-alt"></i></button>     
                 <button class="button-cancel-preparing">Cancel</button>
                 <button class="button-ulasan-preparing">Beri Ulasan</button>
             </div>
-        </div>
-    </div>
-    <div class="container-order">
-        <div class="image-container">
-            <img src="https://www.pixelstalk.net/wp-content/uploads/2016/07/3840x2160-Images-Free-Download.jpg" class="product-image">
-        </div>
-        <div class="text-container">
-            <h1 style="font-size:28px;">Product Name</h1>
-            <p style="font-weight:normal; font-size:16px;">Jumlah   : </p>
-            <p style="font-weight:normal;font-size:16px;">Email    : </p>
-            <p style="font-weight:normal;font-size:16px;">Alamat  : </p>
-            <p style="font-weight:normal;font-size:16px;">Harga    : </p>
-            <p style="font-weight:normal;font-size:16px;">Tanggal    : </p>
-            <p style="font-weight:normal;font-size:16px; color:rgb(246, 207, 53);" >On delivery</p>
+            {% elif order.status == "Delivery" %}
+            <p style="font-weight:normal;font-size:16px; color:rgb(246, 207, 53);">{{ order.status }}</p>
             <div class="button-container">
                 <button class="button-delete-delivery"><i class="fas fa-trash-alt"></i></button>     
                 <button class="button-cancel-delivery">Cancel</button>
                 <button class="button-ulasan-delivery">Beri Ulasan</button>
             </div>
-        </div>
-    </div>
-    <div class="container-order">
-        <div class="image-container">
-            <img src="https://www.pixelstalk.net/wp-content/uploads/2016/07/3840x2160-Images-Free-Download.jpg" class="product-image">
-        </div>
-        <div class="text-container">
-            <h1 style="font-size:28px;">Product Name</h1>
-            <p style="font-weight:normal; font-size:16px;">Jumlah   : </p>
-            <p style="font-weight:normal;font-size:16px;">Email    : </p>
-            <p style="font-weight:normal;font-size:16px;">Alamat  : </p>
-            <p style="font-weight:normal;font-size:16px;">Harga    : </p>
-            <p style="font-weight:normal;font-size:16px;">Tanggal    : </p>
+            {% else %}
+            <p style="font-weight:normal;font-size:16px; color:rgb(246, 207, 53);">{{ order.status }}</p>
             <div class="button-container">
                 <button class="button-delete-not-confirmed"><i class="fas fa-trash-alt"></i></button>     
                 <button class="button-cancel-not-confirmed">Cancel</button>
                 <button class="button-ulasan-not-confirmed">Beri Ulasan</button>
             </div>
+            {% endif %}
         </div>
     </div>
-    
-    
-</div>
+    {% endfor %}
 </body>
 </html>
