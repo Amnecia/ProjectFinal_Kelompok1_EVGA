@@ -1,5 +1,4 @@
 {% include 'header.html' %}
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -169,13 +168,18 @@
         <img src="#" alt="Image Placeholder">
         <div class="details">
           <h3>Bakso Aci Tulang Rangu</h3>
+          <form>
+            <label for="email1">Email:</label>
+            <input type="email" id="email1" name="email1" value="example@gmail.com">
+            <br>
+            <label for="address1">Address:</label>
+            <input type="text" id="address1" name="address1" value="Jl. Contoh12, No. 12">
+          </form>
           <div class="quantity-controls">
             <button class="decrease">-</button>
             <span class="quantity">1</span>
             <button class="increase">+</button>
           </div>
-          <p>Email: example@gmail.com</p>
-          <p>Address: Jl. Contoh12, No. 12</p>
           <p>Harga: Rp. 15.000</p>
           <div class="price">Rp. 15.000</div>
         </div>
@@ -188,13 +192,18 @@
         <img src="#" alt="Image Placeholder">
         <div class="details">
           <h3>Bakso Aci Ayam Suwir</h3>
+          <form>
+            <label for="email2">Email:</label>
+            <input type="email" id="email2" name="email2" value="example@gmail.com">
+            <br>
+            <label for="address2">Address:</label>
+            <input type="text" id="address2" name="address2" value="Jl. Contoh12, No. 12">
+          </form>
           <div class="quantity-controls">
             <button class="decrease">-</button>
             <span class="quantity">1</span>
             <button class="increase">+</button>
           </div>
-          <p>Email: example@gmail.com</p>
-          <p>Address: Jl. Contoh12, No. 12</p>
           <p>Harga: Rp. 15.000</p>
           <div class="price">Rp. 15.000</div>
         </div>
@@ -207,13 +216,18 @@
         <img src="#" alt="Image Placeholder">
         <div class="details">
           <h3>Bakso Aci Telur</h3>
+          <form>
+            <label for="email3">Email:</label>
+            <input type="email" id="email3" name="email3" value="example@gmail.com">
+            <br>
+            <label for="address3">Address:</label>
+            <input type="text" id="address3" name="address3" value="Jl. Contoh12, No. 12">
+          </form>
           <div class="quantity-controls">
             <button class="decrease">-</button>
             <span class="quantity">1</span>
             <button class="increase">+</button>
           </div>
-          <p>Email: example@gmail.com</p>
-          <p>Address: Jl. Contoh12, No. 12</p>
           <p>Harga: Rp. 13.000</p>
           <div class="price">Rp. 13.000</div>
         </div>
@@ -275,10 +289,15 @@
     });
 
     function checkout() {
+      // Redirect ke halaman status_pesanan
       window.location.href = "/status_pesanan";
     }
 
+    function logout() {
+      window.location.href = "{{ url_for('logout') }}";
+    }
   </script>
 </body>
 </html>
+
 
