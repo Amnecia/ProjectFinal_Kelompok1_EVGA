@@ -117,6 +117,34 @@
           },
         });
       }
+
+      function forgotPassword(event) {
+        event.preventDefault(); 
+        let email = $("#email").val();
+
+        console.log("Forgot password for email:", email);
+
+        // You should implement an API call here to send a password reset link to the user's email address
+        // For example, you could use an AJAX call to your server-side code that handles sending password reset emails
+
+        // In this example, I'll just simulatea successful response
+        simulateApiResponse({
+          success: true,
+          message: "A password reset link has been sent to your email address.",
+        });
+      }
+
+      function simulateApiResponse(response) {
+        if (response.success) {
+          alert(response.message);
+        } else {
+          alert("Error: " + response.message);
+        }
+      }
+
+      $(document).ready(function () {
+        $("#forgot-password-link").on("click", forgotPassword);
+      });
     </script>
   </head>
   <body>
@@ -139,7 +167,7 @@
         <button class="login-btn" onclick="sign_in(event)">Log in</button>
         <p>or</p>
         <button class="btn-guest" type="button" onclick="window.location.href='/'">Login as guest</button>
-        <p><a href="#">Forget password?</a></p>
+        <p><a id="forgot-password-link" href="#">Forget password?</a></p>
       </form>
     </div>
   </body>

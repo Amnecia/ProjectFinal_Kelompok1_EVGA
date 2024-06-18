@@ -7,9 +7,10 @@ import datetime
 import hashlib
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 from werkzeug.utils import secure_filename
-from datetime import datetime, timedelta
+from datetime  import datetime, timedelta
+import jwt
 from bson import ObjectId
-from os.path import join, dirname
+
 #from dotenv import load_dotenv
 import hashlib
 
@@ -18,35 +19,8 @@ import hashlib
 
 app = Flask(__name__)
 
-# app.config['TEMPLATES_AUTO_RELOAD']=True
-# app.config['UPLOAD_FOLDER']='./static/profile_pics'
-
-# SECRET_KEY = 'SPARTA'
-
-# MONGODB_URI = os.environ.get("MONGODB_URI")
-# DB_NAME =  os.environ.get("DB_NAME")
-# client = MongoClient(MONGODB_URI)
-# db = client[DB_NAME]
-
-# TOKEN_KEY = 'mytoken'
-
-# app.config['TEMPLATES_AUTO_RELOAD']=True
-# app.config['UPLOAD_FOLDER']='./static/profile_pics'
-
-# SECRET_KEY = 'SPARTA'
-
-# MONGODB_URI = os.environ.get("MONGODB_URI")
-# DB_NAME =  os.environ.get("DB_NAME")
-# client = MongoClient(MONGODB_URI)
-# db = client[DB_NAME]
-
-# TOKEN_KEY = 'mytoken'
-
-# client = MongoClient('mongodb+srv://andreasrafaeltobing:ManhwaXL9LUL@cluster0.aajaqnf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-# db = client.dbsandreasrafaeltobing
-
-client = MongoClient('mongodb+srv://ade:adesaef@cluster0.lqterof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-db = client.projekTA
+client = MongoClient('mongodb://grace:sparta@ac-luh7xkk-shard-00-00.r4fnst4.mongodb.net:27017,ac-luh7xkk-shard-00-01.r4fnst4.mongodb.net:27017,ac-luh7xkk-shard-00-02.r4fnst4.mongodb.net:27017/?ssl=true&replicaSet=atlas-66k3xp-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0')
+db = client.dbgrace
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
@@ -134,6 +108,52 @@ def sign_in():
         return jsonify({"result": "success", "token": token, "user_info": user_info})
     
     return jsonify({"result": "fail", "msg": "Login gagal, email atau password invalid"})
+
+
+
+@app.route('/forget_password', methods=['POST'])
+def forgot_password():
+    email_receive = request.form["email_give"]
+    user = db.users.find_one({
+        "email": email_receive
+        })
+    if user:
+        token = secret.token_hex(16)
+        user.update({
+            "password_reset_token": token
+            })
+        db.users.save(user)
+        send_password_reset_email(
+             email_receive, 
+             token,
+            )
+        return jsonify({
+            "result": "success", 
+            "msg": "Password reset link sent to your email"
+            })
+    else:
+        return jsonify({"result": "fail", "msg": "Email not found."})
+
+@app.route('/reset_password', methods=['POST'])
+def reset_password():
+    token_receive = request.form["token_give"]
+    new_password_receive = request.form["new_password_give"]
+    user = db.users.find_one({"password_reset_token": token_receive})
+    if user:
+        pw_hash = hashlib.sha256(new_password_receive.encode("utf-8")).hexdigest()
+        user.update({"password": pw_hash, "password_reset_token": ""})
+        db.users.save(user)
+        return jsonify({
+            "result": "success", 
+            "msg": "Password reset successfully"
+            })
+    else:
+        return jsonify({"result": "fail", "msg": "Invalid token."})
+
+def send_password_reset_email(email, token):
+    # Implement your email sending logic here
+    pass
+
 
 
 # def token_required(f):
@@ -363,56 +383,36 @@ def detail_produk(_id):
 @app.route('/order', methods=['GET', 'POST'])
 def order():
     if request.method == 'POST':
-        # Simulasi data checkout dari halaman order
-        product_id = request.form['product_id']
-        quantity = int(request.form['quantity'])
-        email = request.form['email']
-        address = request.form['address']
-        price = int(request.form['price'])
-        date = request.form['date']
+        try:
+            product_id = ObjectId(request.form['product_id'])
+            quantity = int(request.form['quantity'])
+            email = request.form['email']
+            address = request.form['address']
+            price = int(request.form['price'])
+            date = datetime.strptime(request.form['date'], '%Y-%m-%d %H:%M:%S')
 
-        # Simpan data ke database
-        order_data = {
-            'product_id': ObjectId(product_id),
-            'quantity': quantity,
-            'email': email,
-            'address': address,
-            'price': price * quantity,  # Hitung total harga berdasarkan quantity
-            'date': datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
-        }
+            order_data = {
+                'product_id': product_id,
+                'quantity': quantity,
+                'email': email,
+                'address': address,
+                'price': price * quantity,
+                'date': date
+            }
 
-        db.orders.insert_one(order_data)
+            db.orders.insert_one(order_data)
+            return redirect(url_for('status_pesanan'))
+        except ValueError:
+            # Handle invalid form data
+            flash('Invalid form data')
+            return render_template('order.html')
 
-        # Redirect ke halaman status pesanan
-        return redirect(url_for('status_pesanan'))
-    
-    # Jika metode GET, tampilkan halaman order
     return render_template('order.html')
 
 @app.route('/status_pesanan')
 def status_pesanan():
-    # Ambil data pesanan dari database
-    orders = db.orders.find()  # Ganti 'orders' dengan nama koleksi di database Anda
-
-    # Buat daftar untuk menyimpan data pesanan beserta email pengguna
-    orders_with_email = []
-
-    # Loop melalui setiap pesanan dan ambil email pengguna
-    for order in orders:
-        # Asumsikan setiap dokumen pesanan memiliki field 'user_email'
-        email = order.get('user_email')
-        orders_with_email.append({
-            'order_id': order.get('_id'),
-            'email': email,
-            'product_name': order.get('product_name'),
-            'quantity': order.get('quantity'),
-            'address': order.get('address'),
-            'price': order.get('price'),
-            'date': order.get('date'),
-            'status': order.get('status')
-        })
-
-    # Render template HTML sambil mengirimkan data pesanan dengan email pengguna
+    orders = db.orders.find().sort('_id', -1)
+    orders_with_email = [{'order_id': order['_id'], 'email': order['email'], 'product_name': order.get('product_name'), 'quantity': order['quantity'], 'address': order['address'], 'price': order['price'], 'date': order['date'], 'tatus': order.get('status')} for order in orders]
     return render_template('status_pesanan.html', orders=orders_with_email)
 
 @app.route('/list', methods=['GET'])
