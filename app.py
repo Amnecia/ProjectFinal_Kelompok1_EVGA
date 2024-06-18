@@ -374,56 +374,36 @@ def detail_produk(_id):
 @app.route('/order', methods=['GET', 'POST'])
 def order():
     if request.method == 'POST':
-        # Simulasi data checkout dari halaman order
-        product_id = request.form['product_id']
-        quantity = int(request.form['quantity'])
-        email = request.form['email']
-        address = request.form['address']
-        price = int(request.form['price'])
-        date = request.form['date']
+        try:
+            product_id = ObjectId(request.form['product_id'])
+            quantity = int(request.form['quantity'])
+            email = request.form['email']
+            address = request.form['address']
+            price = int(request.form['price'])
+            date = datetime.strptime(request.form['date'], '%Y-%m-%d %H:%M:%S')
 
-        # Simpan data ke database
-        order_data = {
-            'product_id': ObjectId(product_id),
-            'quantity': quantity,
-            'email': email,
-            'address': address,
-            'price': price * quantity,  # Hitung total harga berdasarkan quantity
-            'date': datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
-        }
+            order_data = {
+                'product_id': product_id,
+                'quantity': quantity,
+                'email': email,
+                'address': address,
+                'price': price * quantity,
+                'date': date
+            }
 
-        db.orders.insert_one(order_data)
+            db.orders.insert_one(order_data)
+            return redirect(url_for('status_pesanan'))
+        except ValueError:
+            # Handle invalid form data
+            flash('Invalid form data')
+            return render_template('order.html')
 
-        # Redirect ke halaman status pesanan
-        return redirect(url_for('status_pesanan'))
-    
-    # Jika metode GET, tampilkan halaman order
     return render_template('order.html')
 
 @app.route('/status_pesanan')
 def status_pesanan():
-    # Ambil data pesanan dari database
-    orders = db.orders.find()  # Ganti 'orders' dengan nama koleksi di database Anda
-
-    # Buat daftar untuk menyimpan data pesanan beserta email pengguna
-    orders_with_email = []
-
-    # Loop melalui setiap pesanan dan ambil email pengguna
-    for order in orders:
-        # Asumsikan setiap dokumen pesanan memiliki field 'user_email'
-        email = order.get('user_email')
-        orders_with_email.append({
-            'order_id': order.get('_id'),
-            'email': email,
-            'product_name': order.get('product_name'),
-            'quantity': order.get('quantity'),
-            'address': order.get('address'),
-            'price': order.get('price'),
-            'date': order.get('date'),
-            'status': order.get('status')
-        })
-
-    # Render template HTML sambil mengirimkan data pesanan dengan email pengguna
+    orders = db.orders.find().sort('_id', -1)
+    orders_with_email = [{'order_id': order['_id'], 'email': order['email'], 'product_name': order.get('product_name'), 'quantity': order['quantity'], 'address': order['address'], 'price': order['price'], 'date': order['date'], 'tatus': order.get('status')} for order in orders]
     return render_template('status_pesanan.html', orders=orders_with_email)
 
 @app.route('/list', methods=['GET'])
