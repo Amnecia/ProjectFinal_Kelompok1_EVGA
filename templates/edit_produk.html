@@ -203,32 +203,32 @@
                 }
             });
         }
+$(document).ready(function () {
+    $('#imageInput1').change(function (event) {
+        var reader = new FileReader();
+        reader.onload = function (event) {
+            $('#imagePreview .carousel-item:nth-child(1) img').attr('src', event.target.result);
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    });
 
-        $(document).ready(function () {
-            $('#imageInput1').change(function (event) {
-                var reader = new FileReader();
-                reader.onload = function (event) {
-                    $('#carousel-item-1 img').attr('src', event.target.result);
-                }
-                reader.readAsDataURL(event.target.files[0]);
-            });
+    $('#imageInput2').change(function (event) {
+        var reader = new FileReader();
+        reader.onload = function (event) {
+            $('#imagePreview .carousel-item:nth-child(2) img').attr('src', event.target.result);
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    });
 
-            $('#imageInput2').change(function (event) {
-                var reader = new FileReader();
-                reader.onload = function (event) {
-                    $('#carousel-item-2 img').attr('src', event.target.result);
-                }
-                reader.readAsDataURL(event.target.files[0]);
-            });
+    $('#imageInput3').change(function (event) {
+        var reader = new FileReader();
+        reader.onload = function (event) {
+            $('#imagePreview .carousel-item:nth-child(3) img').attr('src', event.target.result);
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    });
+});
 
-            $('#imageInput3').change(function (event) {
-                var reader = new FileReader();
-                reader.onload = function (event) {
-                    $('#carousel-item-3 img').attr('src', event.target.result);
-                }
-                reader.readAsDataURL(event.target.files[0]);
-            });
-        });
     </script>
 </body>
 

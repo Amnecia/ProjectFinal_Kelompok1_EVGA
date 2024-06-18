@@ -259,47 +259,56 @@ def edit_produk(_id):
 
 @app.route('/updateProduk/<_id>', methods=['POST'])
 def update_produk(_id):
-    produk = db.produk.find_one({'_id': ObjectId(_id)})
-    if produk:
-        nama = request.form['nama']
-        harga = request.form['harga']
-        deskripsi = request.form['deskripsi']
-        image1 = request.files['image1']
-        image2 = request.files['image2']
-        image3 = request.files['image3']
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        id = payload["id"]
+        validasi = db.admin.find_one({"_id": ObjectId(id)}, {"_id": False})
+        produk = db.produk.find_one({'_id': ObjectId(_id)})
+        if validasi:
+            if produk:
+                nama = request.form['nama']
+                harga = request.form['harga']
+                deskripsi = request.form['deskripsi']
+                image1 = request.files['image1']
+                image2 = request.files['image2']
+                image3 = request.files['image3']
 
-        extension1 = image1.filename.split('.')[-1]
-        extension2 = image2.filename.split('.')[-1]
-        extension3 = image3.filename.split('.')[-1]
+                extension1 = image1.filename.split('.')[-1]
+                extension2 = image2.filename.split('.')[-1]
+                extension3 = image3.filename.split('.')[-1]
 
-        today = datetime.now()
-        mytime = today.strftime('%Y-%m-%d %H:%M')
+                today = datetime.now()
+                mytime = today.strftime('%Y-%m-%d %H:%M')
 
-        image_name1 = f'image1-{mytime}.{extension1}'
-        image_name2 = f'image2-{mytime}.{extension2}'
-        image_name3 = f'image3-{mytime}.{extension3}'
+                image_name1 = f'image1-{mytime}.{extension1}'
+                image_name2 = f'image2-{mytime}.{extension2}'
+                image_name3 = f'image3-{mytime}.{extension3}'
 
-        save_to1 = f'static/assets/productImage/{image_name1}'
-        save_to2 = f'static/assets/productImage/{image_name2}'
-        save_to3 = f'static/assets/productImage/{image_name3}'
+                save_to1 = f'static/assets/productImage/{image_name1}'
+                save_to2 = f'static/assets/productImage/{image_name2}'
+                save_to3 = f'static/assets/productImage/{image_name3}'
 
-        image1.save(save_to1)
-        image2.save(save_to2)
-        image3.save(save_to3)
+                image1.save(save_to1)
+                image2.save(save_to2)
+                image3.save(save_to3)
 
-        updated_fields = {
-            'nama': nama,
-            'harga': harga,
-            'deskripsi': deskripsi,
-            'image1': image_name1,
-            'image2': image_name2,
-            'image3': image_name3,
-            'updated_at': datetime.now()
-        }
-
-        db.produk.update_one({'_id': ObjectId(_id)}, {'$set': updated_fields})
-        return jsonify({'message': 'Product updated successfully'})
-    return jsonify({'message': 'Product not found'}), 404
+                doc = {
+                    'nama': nama,
+                    'harga': harga,
+                    'deskripsi': deskripsi,
+                    'image1': image_name1,
+                    'image2': image_name2,
+                    'image3': image_name3,
+                    'today': mytime,
+                }
+                db.produk.insert_one({'_Id': ObjectId(_id)}, {'$set': doc})
+                return jsonify({'message': 'Product has been updated successfully'})
+            return render_template('edit_produk.html')
+        else:
+            return redirect(url_for("home"))
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
 
 @app.route('/etalase', methods=['GET'])
 def Etalase():
@@ -551,7 +560,7 @@ def SetStatus():
 
 @app.route('/deleteproduk/<_id>', methods=['GET', 'POST'])
 def deleteProduk(_id):
-    id_receive = request.get("id_give")
+    id_receive = request.form.get("id_give")
     db.produk.delete_one({'_id': ObjectId(_id)})
     return jsonify({'message': 'Product deleted successfully'})
 
