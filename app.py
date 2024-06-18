@@ -7,9 +7,10 @@ import datetime
 import hashlib
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 from werkzeug.utils import secure_filename
-from datetime import datetime, timedelta
+from datetime  import datetime, timedelta
+import jwt
 from bson import ObjectId
-from os.path import join, dirname
+
 #from dotenv import load_dotenv
 import hashlib
 
@@ -18,8 +19,8 @@ import hashlib
 
 app = Flask(__name__)
 
-client = MongoClient('mongodb+srv://andreasrafaeltobing:ManhwaXL9LUL@cluster0.aajaqnf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-db = client.dbsandreasrafaeltobing
+client = MongoClient('mongodb://grace:sparta@ac-luh7xkk-shard-00-00.r4fnst4.mongodb.net:27017,ac-luh7xkk-shard-00-01.r4fnst4.mongodb.net:27017,ac-luh7xkk-shard-00-02.r4fnst4.mongodb.net:27017/?ssl=true&replicaSet=atlas-66k3xp-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0')
+db = client.dbgrace
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
