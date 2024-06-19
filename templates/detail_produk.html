@@ -180,19 +180,23 @@ border-bottom-right-radius: 20px;
   background-color: #333;
 }
 
-/* Media queries for mobile screens */
+
 @media (max-width: 768px) {
- .carousel {
-    width: 300px; /* reduced width for mobile screens */
+  .container-product {
+    max-width: 800px;
+    flex-direction: column;
   }
- .carousel-inner {
-    height: 200px; /* reduced height for mobile screens */
+  .carousel {
+    width: 300px;
   }
- .carousel-item img {
-    width: 300px; /* reduced width for mobile screens */
-    height: 200px; /* reduced height for mobile screens */
+  .carousel-inner {
+    height: 200px;
   }
- .product-image {
+  .carousel-item img {
+    width: 300px;
+    height: 200px;
+  }
+  .product-image {
     width: 200px;
     height: 150px;
   }
@@ -200,16 +204,20 @@ border-bottom-right-radius: 20px;
     width: 400px;
     height: 300px;
   }
- .product-info {
+  .product-info {
+    order: 2;
     margin-left: 20px;
     font-size: 16px;
     margin-right: 40px;
   }
- .price-container {
+  .price-container {
     padding-top: 40px;
   }
- .add-to-cart-btn {
+  .add-to-cart-btn {
     height: 50px;
+  }
+  .main-image-container {
+    order: 1;
   }
 }
 
@@ -321,7 +329,7 @@ border-bottom-right-radius: 20px;
         <div class="product-info">
           <h1>{{ produk.nama }}</h1> 
               <div class="product-description">
-              <p style="font-weight: normal;">{{ produk.deskripsi }}</p>
+              <p style="font-weight: normal; font-size: 14px;">{{ produk.deskripsi }}</p>
               <div class="star-rating ms-2">
                   <i class="fa-regular fa-star" data-rating="1" style="color: #FFD43B;"></i>
                   <i class="fa-regular fa-star" data-rating="2" style="color: #FFD43B;"></i>
