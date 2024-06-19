@@ -19,8 +19,11 @@ import hashlib
 
 app = Flask(__name__)
 
-client = MongoClient('mongodb://grace:sparta@ac-luh7xkk-shard-00-00.r4fnst4.mongodb.net:27017,ac-luh7xkk-shard-00-01.r4fnst4.mongodb.net:27017,ac-luh7xkk-shard-00-02.r4fnst4.mongodb.net:27017/?ssl=true&replicaSet=atlas-66k3xp-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0')
-db = client.dbgrace
+#client = MongoClient('mongodb://grace:sparta@ac-luh7xkk-shard-00-00.r4fnst4.mongodb.net:27017,ac-luh7xkk-shard-00-01.r4fnst4.mongodb.net:27017,ac-luh7xkk-shard-00-02.r4fnst4.mongodb.net:27017/?ssl=true&replicaSet=atlas-66k3xp-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0')
+#db = client.dbgrace
+
+client = MongoClient('mongodb+srv://ade:adesaef@cluster0.lqterof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+db = client.projekTA
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
