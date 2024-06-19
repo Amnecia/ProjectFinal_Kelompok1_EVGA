@@ -114,8 +114,8 @@ def sign_in():
 
 
 
-@app.route('/forget_password', methods=['POST'])
-def forgot_password():
+#@app.route('/forget_password', methods=['POST'])
+#def forgot_password():
     email_receive = request.form["email_give"]
     user = db.users.find_one({
         "email": email_receive
@@ -136,9 +136,11 @@ def forgot_password():
             })
     else:
         return jsonify({"result": "fail", "msg": "Email not found."})
+    
+    
 
-@app.route('/reset_password', methods=['POST'])
-def reset_password():
+#@app.route('/reset_password', methods=['POST'])
+#def reset_password():
     token_receive = request.form["token_give"]
     new_password_receive = request.form["new_password_give"]
     user = db.users.find_one({"password_reset_token": token_receive})
@@ -153,10 +155,9 @@ def reset_password():
     else:
         return jsonify({"result": "fail", "msg": "Invalid token."})
 
-def send_password_reset_email(email, token):
+#def send_password_reset_email(email, token):
     # Implement your email sending logic here
-    pass
-
+    #pass
 
 
 # def token_required(f):
