@@ -287,12 +287,14 @@ def update_produk(_id):
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
         id = payload["id"]
         validasi = db.admin.find_one({"_id": ObjectId(id)}, {"_id": False})
-        produk = db.produk.find_one({'_id': ObjectId(_id)})
+
         if validasi:
+            produk = db.produk.find_one({'_id': ObjectId(_id)})
             if produk:
                 nama = request.form['nama']
                 harga = request.form['harga']
                 deskripsi = request.form['deskripsi']
+
                 image1 = request.files['image1']
                 image2 = request.files['image2']
                 image3 = request.files['image3']
@@ -325,7 +327,7 @@ def update_produk(_id):
                     'image3': image_name3,
                     'today': mytime,
                 }
-                db.produk.insert_one({'_Id': ObjectId(_id)}, {'$set': doc})
+                db.produk.update_one({'_id': ObjectId(_id)}, {'$set': doc})
                 return jsonify({'message': 'Product has been updated successfully'})
             return render_template('edit_produk.html')
         else:
