@@ -224,48 +224,7 @@
 
     @media (max-width: 768px) {
       .container-product {
-        max-width: 800px;
-        flex-direction: column;
-      }
-      .carousel {
-        width: 300px;
-      }
-      .carousel-inner {
-        height: 200px;
-      }
-      .carousel-item img {
-        width: 300px;
-        height: 200px;
-      }
-      .product-image {
-        width: 200px;
-        height: 150px;
-      }
-      #main-image {
-        width: 400px;
-        height: 300px;
-      }
-      .product-info {
-        order: 2; /* Ensure product info comes after */
-        margin-left: 20px;
-        font-size: 16px;
-        margin-right: 40px;
-        margin-top: 20px; /* Optional: Add some top margin for spacing */
-      }
-      .price-container {
-        padding-top: 40px;
-      }
-      .add-to-cart-btn {
-        height: 50px;
-      }
-      .main-image-container {
-        order: 1; /* Ensure carousel comes first */
-      }
-    }
-
-    @media (max-width: 480px) {
-      .container-product {
-        max-width: 300px; /* Adjust max-width for smaller screens */
+        max-width: 100%; /* Adjust to full width on smaller screens */
         padding: 10px; /* Adjust padding for smaller screens */
       }
 
@@ -274,42 +233,65 @@
       }
 
       .carousel-inner {
-        height: 200px; /* reduced height for smaller screens */
+        height: 300px; /* reduced height for smaller screens */
       }
 
       .carousel-item img {
-        width: 150%; /* full width for smaller screens */
-        height: 200px; /* reduced height for smaller screens */
-      }
-
-      .product-image {
-        width: 100%; /* full width for smaller screens */
-        height: 150px; /* reduced height for smaller screens */
-      }
-
-      #main-image {
         width: 100%; /* full width for smaller screens */
         height: 300px; /* reduced height for smaller screens */
       }
 
+      .product-image {
+        width: 100%; /* full width for smaller screens */
+        height: 200px; /* reduced height for smaller screens */
+      }
+
+      #main-image {
+        width: 100%; /* full width for smaller screens */
+        height: 400px; /* reduced height for smaller screens */
+      }
+
       .product-info {
+        width: 100%; /* full width for smaller screens */
         margin-top: 20px; /* Optional: Adjust margin top for spacing */
-        font-size: 18px; /* Increase font size for better readability */
+        font-size: 16px; /* Adjust font size for smaller screens */
+      }
+
+      .price-container {
+        padding-top: 20px; /* Adjust padding top for smaller screens */
       }
 
       .quantity-input button,
       .quantity-input input {
-        font-size: 20px; /* Increase button and input font size */
+        font-size: 16px; /* Adjust button and input font size */
       }
 
       .add-to-cart-btn {
-        height: 60px; /* Increase button height */
-        font-size: 20px; /* Increase button font size */
+        height: 50px; /* Adjust button height */
+        font-size: 18px; /* Adjust button font size */
       }
 
       .review-item img {
         width: 60px; /* Increase review user image size */
         height: 60px; /* Increase review user image size */
+      }
+    }
+
+    @media (max-width: 480px) {
+      .carousel-inner {
+        height: 200px; /* Further reduce height for smallest screens */
+      }
+
+      .carousel-item img {
+        height: 200px; /* Further reduce height for smallest screens */
+      }
+
+      .product-image {
+        height: 150px; /* Further reduce height for smallest screens */
+      }
+
+      #main-image {
+        height: 300px; /* Further reduce height for smallest screens */
       }
     }
   </style>
@@ -322,15 +304,15 @@
     <div class="main-image-container">
       <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
-            <div class="carousel-item active">
-              <img src="{{ url_for('static', filename='assets/productImage/' + produk.image1) }}" class="product-image">
-            </div>
-            <div class="carousel-item">
-              <img src="{{ url_for('static', filename='assets/productImage/' + produk.image2) }}" class="product-image">
-            </div>
-            <div class="carousel-item">
-              <img src="{{ url_for('static', filename='assets/productImage/' + produk.image3) }}" class="product-image">
-            </div>
+          <div class="carousel-item active">
+            <img src="{{ url_for('static', filename='assets/productImage/' + produk.image1) }}" class="product-image">
+          </div>
+          <div class="carousel-item">
+            <img src="{{ url_for('static', filename='assets/productImage/' + produk.image2) }}" class="product-image">
+          </div>
+          <div class="carousel-item">
+            <img src="{{ url_for('static', filename='assets/productImage/' + produk.image3) }}" class="product-image">
+          </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
           <i class="fas fa-chevron-left" aria-hidden="true"></i>
@@ -345,7 +327,7 @@
     <div class="product-info">
       <h1>{{ produk.nama }}</h1> 
       <div class="product-description">
-        <p style="font-weight: normal; font-size: 14px;">{{ produk.deskripsi }}</p>
+        <p style="font-weight: normal; font-size: 16px;">{{ produk.deskripsi }}</p>
         <div class="star-rating ms-2">
           <i class="fa-regular fa-star" data-rating="1" style="color: #FFD43B;"></i>
           <i class="fa-regular fa-star" data-rating="2" style="color: #FFD43B;"></i>
@@ -443,5 +425,6 @@
 
 </body>
 </html>
+
 
 {% include 'footer.html' %}
