@@ -12,10 +12,11 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
-      .carousel-item img {
-        height: 650px; /* Set the height of the images */
-        object-fit: cover; /* Make the images cover the entire carousel item */
-    }
+    .carousel-item img {
+    width: 100%; /* Make the image width 100% of its container */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: contain; /* Fit the entire image within the carousel item */
+  }
 
     /* Add CSS for products section */
     .products {
@@ -71,6 +72,9 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 </head>
 <body>
+    <br>
+    <br>
+    <br>
     <div class="etalase">
         <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
