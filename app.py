@@ -19,8 +19,8 @@ import hashlib
 
 app = Flask(__name__)
 
-#client = MongoClient('mongodb://grace:sparta@ac-luh7xkk-shard-00-00.r4fnst4.mongodb.net:27017,ac-luh7xkk-shard-00-01.r4fnst4.mongodb.net:27017,ac-luh7xkk-shard-00-02.r4fnst4.mongodb.net:27017/?ssl=true&replicaSet=atlas-66k3xp-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0')
-#db = client.dbgrace
+#client = MongoClient('mongodb+srv://ade:adesaef@cluster0.lqterof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+#db = client.projekTA
 
 client = MongoClient('mongodb+srv://ade:adesaef@cluster0.lqterof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 db = client.projekTA
@@ -31,6 +31,7 @@ SECRET_KEY='EVGA'
 
 
 TOKEN_KEY = 'mytoken'
+CART_KEY = 'tempcart'
 
 
 @app.route('/')
@@ -384,42 +385,109 @@ def secret():
 @app.route('/detail/<_id>', methods=['GET'])
 def detail_produk(_id):
     produk = db.produk.find_one({'_id': ObjectId(_id)})
-    return render_template('detail_produk.html', produk=produk)
+    return render_template('detail_produk.html', produk=produk, id=_id)
 
-@app.route('/order', methods=['GET', 'POST'])
+@app.route('/cart', methods=['GET'])
+def cart():
+    return render_template('order.html', )
+
+@app.route('/view_cart', methods=['GET'])
+def view_cart():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    cart_key = request.cookies.get(CART_KEY)
+    try:
+        if token_receive:
+            payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+            id_user = payload["id"]
+            user_cart_items = list(db.orders.find({'user_id': id_user}))
+            if user_cart_items:
+                return jsonify({"result": "success", "cart_items": user_cart_items})
+            else:
+                return jsonify({"result": "error", "message": "No items in user cart"}), 404
+        elif cart_key:
+            guest_cart_items = list(db.guest_order.find({'id_cart': cart_key}))
+            if guest_cart_items:
+                return jsonify({"result": "success", "cart_items": guest_cart_items})
+            else:
+                return jsonify({"result": "error", "message": "No items in guest cart"}), 404
+        else:
+            return jsonify({"result": "error", "message": "No cart found"}), 404
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        if cart_key:
+            guest_cart_items = list(db.guest_order.find({'id_cart': cart_key}))
+            if guest_cart_items:
+                return jsonify({"result": "success", "cart_items": guest_cart_items})
+            else:
+                return jsonify({"result": "error", "message": "No items in guest cart"}), 404
+        else:
+            return jsonify({"result": "error", "message": "No cart found"}), 404
+
+
+
+@app.route('/order', methods=['POST'])
 def order():
-    if request.method == 'POST':
-        try:
-            _id = request.form['product_id']
-            product_id = ObjectId(_id)
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        id_user = payload["id"]
+        product_id = ObjectId(request.form['productId'])
+        user = db.users.find_one({"_id": ObjectId(id_user)}, {"_id": False})
+        product = db.produk.find_one({"_id": ObjectId(product_id)}, {"_id": False})
+
+        if user and product:
             quantity = int(request.form['quantity'])
-            email = request.form['email']
-            address = request.form['address']
-            price = int(request.form['price'])
-            date = datetime.strptime(request.form['date'], '%Y-%m-%d %H:%M:%S')
+            email = user["email"]
+            address = user['address']
+            harga = product["harga"]
+            total = harga * quantity
 
             order_data = {
                 'product_id': product_id,
                 'quantity': quantity,
                 'email': email,
+                'harga': harga,
                 'address': address,
-                'price': price * quantity,
-                'date': date
+                'total': total,
+                'date': datetime.now()  # Use current date and time for order date
             }
 
             db.orders.insert_one(order_data)
-            return redirect(url_for('status_pesanan'))
+            return jsonify({"success": True, "message": "Order placed successfully!"}), 200
 
-        except Exception as e:
-            return f"Error: {str(e)}", 400
+        return jsonify({"success": False, "message": "User or product not found!"}), 404
 
-    return render_template('order.html')
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)}), 500
+    
+@app.route('/guest_order', methods=['POST'])
+def add_to_cart():
+    product_id = ObjectId(request.form['productId'])
+    quantity = int(request.form['quantity'])
+    id_cart = request.cookies.get(CART_KEY)
 
+    if not id_cart:
+        id_cart = str(ObjectId())  # Generate a unique cart ID if it doesn't exist
+        new_cart = True
+    else:
+        new_cart = False
+    
+    cart_data = {
+        'id_cart': id_cart,
+        'product_id': product_id,
+        'quantity': quantity,
+        'date_added': datetime.datetime.now()
+    }
+
+    db.guest_orders.insert_one(cart_data)
+
+    return jsonify({"result": "success", "new_cart": new_cart, "id_cart": id_cart})
 
 @app.route('/status_pesanan')
 def status_pesanan():
     orders = db.orders.find().sort('_id', -1)
-    orders_with_email = [{'order_id': str(order['_id']), 'email': order['email'], 'product_name': order.get('product_name'), 'quantity': order['quantity'], 'address': order['address'], 'price': order['price'], 'date': order['date'], 'status': order.get('status')} for order in orders]
+    orders_with_email = [{'order_id': order['_id'], 'email': order['email'], 'product_name': order.get('product_name'), 'quantity': order['quantity'], 'address': order['address'], 'price': order['price'], 'date': order['date'], 'tatus': order.get('status')} for order in orders]
     return render_template('status_pesanan.html', orders=orders_with_email)
 
 @app.route('/list', methods=['GET'])
