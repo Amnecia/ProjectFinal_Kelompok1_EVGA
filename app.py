@@ -390,7 +390,8 @@ def detail_produk(_id):
 def order():
     if request.method == 'POST':
         try:
-            product_id = ObjectId(request.form['product_id'])
+            _id = request.form['product_id']
+            product_id = ObjectId(_id)
             quantity = int(request.form['quantity'])
             email = request.form['email']
             address = request.form['address']
@@ -408,17 +409,17 @@ def order():
 
             db.orders.insert_one(order_data)
             return redirect(url_for('status_pesanan'))
-        except ValueError:
-            # Handle invalid form data
-            flash('Invalid form data')
-            return render_template('order.html')
+
+        except Exception as e:
+            return f"Error: {str(e)}", 400
 
     return render_template('order.html')
+
 
 @app.route('/status_pesanan')
 def status_pesanan():
     orders = db.orders.find().sort('_id', -1)
-    orders_with_email = [{'order_id': order['_id'], 'email': order['email'], 'product_name': order.get('product_name'), 'quantity': order['quantity'], 'address': order['address'], 'price': order['price'], 'date': order['date'], 'tatus': order.get('status')} for order in orders]
+    orders_with_email = [{'order_id': str(order['_id']), 'email': order['email'], 'product_name': order.get('product_name'), 'quantity': order['quantity'], 'address': order['address'], 'price': order['price'], 'date': order['date'], 'status': order.get('status')} for order in orders]
     return render_template('status_pesanan.html', orders=orders_with_email)
 
 @app.route('/list', methods=['GET'])

@@ -163,17 +163,18 @@
   <!-- Konten utama -->
   <div class="content-container">
     <!-- Konten 1 -->
-    <div class="content" data-price="15000">
+    <div class="content" data-product-id="1" data-price="15000">
       <div class="order-item">
         <img src="#" alt="Image Placeholder">
         <div class="details">
           <h3>Bakso Aci Tulang Rangu</h3>
-          <form>
+          <form id="form1">
+            <input type="hidden" name="product_id" value="1">
             <label for="email1">Email:</label>
-            <input type="email" id="email1" name="email1" value="example@gmail.com">
+            <input type="email" id="email1" name="email" value="example@gmail.com">
             <br>
             <label for="address1">Address:</label>
-            <input type="text" id="address1" name="address1" value="Jl. Contoh12, No. 12">
+            <input type="text" id="address1" name="address" value="Jl. Contoh12, No. 12">
           </form>
           <div class="quantity-controls">
             <button class="decrease">-</button>
@@ -187,17 +188,18 @@
       </div>
     </div>
     <!-- Konten 2 -->
-    <div class="content" data-price="15000">
+    <div class="content" data-product-id="2" data-price="15000">
       <div class="order-item">
         <img src="#" alt="Image Placeholder">
         <div class="details">
           <h3>Bakso Aci Ayam Suwir</h3>
-          <form>
+          <form id="form2">
+            <input type="hidden" name="product_id" value="2">
             <label for="email2">Email:</label>
-            <input type="email" id="email2" name="email2" value="example@gmail.com">
+            <input type="email" id="email2" name="email" value="example@gmail.com">
             <br>
             <label for="address2">Address:</label>
-            <input type="text" id="address2" name="address2" value="Jl. Contoh12, No. 12">
+            <input type="text" id="address2" name="address" value="Jl. Contoh12, No. 12">
           </form>
           <div class="quantity-controls">
             <button class="decrease">-</button>
@@ -211,17 +213,18 @@
       </div>
     </div>
     <!-- Konten 3 -->
-    <div class="content" data-price="13000">
+    <div class="content" data-product-id="3" data-price="13000">
       <div class="order-item">
         <img src="#" alt="Image Placeholder">
         <div class="details">
           <h3>Bakso Aci Telur</h3>
-          <form>
+          <form id="form3">
+            <input type="hidden" name="product_id" value="3">
             <label for="email3">Email:</label>
-            <input type="email" id="email3" name="email3" value="example@gmail.com">
+            <input type="email" id="email3" name="email" value="example@gmail.com">
             <br>
             <label for="address3">Address:</label>
-            <input type="text" id="address3" name="address3" value="Jl. Contoh12, No. 12">
+            <input type="text" id="address3" name="address" value="Jl. Contoh12, No. 12">
           </form>
           <div class="quantity-controls">
             <button class="decrease">-</button>
@@ -289,15 +292,40 @@
     });
 
     function checkout() {
-      // Redirect ke halaman status_pesanan
-      window.location.href = "/status_pesanan";
-    }
+      // Mengumpulkan data untuk dikirim ke Flask
+      const orders = [];
+      document.querySelectorAll('.content').forEach(content => {
+        const productId = content.getAttribute('data-product-id');
+        const email = content.querySelector('input[name="email"]').value;
+        const address = content.querySelector('input[name="address"]').value;
+        const quantity = parseInt(content.querySelector('.quantity').textContent);
+        const price = parseInt(content.getAttribute('data-price'));
+        orders.push({ productId, email, address, quantity, price });
+      });
 
-    function logout() {
-      window.location.href = "{{ url_for('logout') }}";
+      // Mengirim data menggunakan fetch
+      fetch('/order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ orders }),
+      }).then(response => {
+        if (response.ok) {
+          // Redirect ke halaman status_pesanan jika berhasil
+          window.location.href = "/status_pesanan";
+        } else {
+          alert('Gagal melakukan checkout. Silakan coba lagi.');
+        }
+      }).catch(error => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat melakukan checkout. Silakan coba lagi.');
+      });
     }
   </script>
 </body>
 </html>
+{% include 'footer.html' %}
+
 
 
