@@ -385,29 +385,30 @@ border-bottom-right-radius: 20px;
     </div>
     </div>
 
-      <script>
-        let addToCartBtn = document.querySelector('.add-to-cart-btn');
-        let quantityInput = document.querySelector('.quantity-input input');
-        let cartItems = [];
+    <script>
+      let addToCartBtn = document.querySelector('.add-to-cart-btn');
+      let quantityInput = document.querySelector('.quantity-input input');
+      let cartItems = [];
     
-        addToCartBtn.addEventListener('click', function() {
-          let product = {
-            title: 'Product Title',
-            price: 50,
-            quantity: quantityInput.value
-          };
+      addToCartBtn.addEventListener('click', function() {
+        let product = {
+          title: '{{ produk.nama }}', // Assuming you are using a template engine like Jinja2
+          price: {{ produk.harga }}, // Assuming you are using a template engine like Jinja2
+          quantity: parseInt(quantityInput.value)
+        };
     
-          cartItems.push(product);
-          console.log(cartItems);
-        });
+        cartItems.push(product);
+        localStorage.setItem('cartItems', JSON.stringify(cartItems)); // Store cart items in localStorage
+        window.location.href = 'order.html'; // Redirect to the order page
+      });
     
-        let quantityBtn = document.querySelectorAll('.quantity-input button');
+      let quantityBtn = document.querySelectorAll('.quantity-input button');
     
       quantityBtn.forEach(function(btn) {
         btn.addEventListener('click', function(e) {
           let input = e.target.closest('.quantity-input').querySelector('input');
           let quantity = parseInt(input.value);
-
+    
           if (e.target.textContent === '-') {
             if (quantity > 1) {
               input.value = quantity - 1;
@@ -417,16 +418,13 @@ border-bottom-right-radius: 20px;
           }
         });
       });
-
-document.getElementById('carouselExample').addEventListener('slide.bs.carousel', function (event) {
-            var img = event.relatedTarget.querySelector('img');
-            document.getElementById('main-image').src = img.src;
-        });
-        document.getElementById('add-to-cart').addEventListener('click', function () {
-            var quantity = document.getElementById('quantity').value;
-            alert('You added ' + quantity + 'tems to your cart.');
-        });
-        </script>
+    
+      document.getElementById('carouselExample').addEventListener('slide.bs.carousel', function(event) {
+        var img = event.relatedTarget.querySelector('img');
+        document.getElementById('main-image').src = img.src;
+      });
+    </script>
+    
 </body>
 </html>
 {% include 'footer.html' %}
