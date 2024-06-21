@@ -389,7 +389,37 @@ def detail_produk(_id):
 
 @app.route('/cart', methods=['GET'])
 def cart():
-    return render_template('order.html', )
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        if token_receive:
+            payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+            id_user = payload["id"]
+            user = db.users.find_one({'_id': ObjectId(id_user)})
+            email = user["email"]
+            cart_items = db.carts.find({"email":email})
+            test = [item for item in cart_items]
+            print(test)
+
+            return render_template('order.html',cart_items=test)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
+
+@app.route('/remove_item', methods=['POST'])
+def remove_item():
+    item_id = request.json.get('item_id')
+    if not item_id:
+        return jsonify({'result': 'error', 'message': 'Invalid item ID'}), 400
+
+    try:
+        db.carts.delete_one({'_id': ObjectId(item_id)})
+        return jsonify({'result': 'success'})
+    except Exception as e:
+        return jsonify({'result': 'error', 'message': str(e)}), 500
+
+
+
+
 
 @app.route('/view_cart', methods=['GET'])
 def view_cart():
@@ -399,15 +429,41 @@ def view_cart():
         if token_receive:
             payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
             id_user = payload["id"]
-            user_cart_items = list(db.orders.find({'user_id': id_user}))
-            if user_cart_items:
-                return jsonify({"result": "success", "cart_items": user_cart_items})
+            user = db.users.find_one({'_id': ObjectId(id_user)})
+
+            if user:
+                email = user["email"]
+                user_cart_items = list(
+                db.carts.find({"email": email}).sort("date", -1).limit(20)
+            )
+
+                # Convert ObjectId to string
+                for item in user_cart_items:
+                    item["_id"] = str(item["_id"])
+                    item["product_id"] = str(item["product_id"])
+
+                if user_cart_items:
+                    return jsonify({
+                        "result": "success",
+                        "cart_items": user_cart_items
+                    })
+                else:
+                    return jsonify({"result": "error", "message": "No items in user cart"}), 404
             else:
-                return jsonify({"result": "error", "message": "No items in user cart"}), 404
+                return jsonify({"result": "error", "message": "User not found"}), 404
         elif cart_key:
             guest_cart_items = list(db.guest_order.find({'id_cart': cart_key}))
+
+            # Convert ObjectId to string
+            for item in guest_cart_items:
+                item["_id"] = str(item["_id"])
+                item["product_id"] = str(item["product_id"])
+
             if guest_cart_items:
-                return jsonify({"result": "success", "cart_items": guest_cart_items})
+                return jsonify({
+                    "result": "success",
+                    "cart_items": guest_cart_items
+                })
             else:
                 return jsonify({"result": "error", "message": "No items in guest cart"}), 404
         else:
@@ -415,12 +471,24 @@ def view_cart():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         if cart_key:
             guest_cart_items = list(db.guest_order.find({'id_cart': cart_key}))
+
+            # Convert ObjectId to string
+            for item in guest_cart_items:
+                item["_id"] = str(item["_id"])
+                item["product_id"] = str(item["product_id"])
+
             if guest_cart_items:
-                return jsonify({"result": "success", "cart_items": guest_cart_items})
+                return jsonify({
+                    "result": "success",
+                    "cart_items": guest_cart_items
+                })
             else:
                 return jsonify({"result": "error", "message": "No items in guest cart"}), 404
         else:
             return jsonify({"result": "error", "message": "No cart found"}), 404
+
+
+
 
 
 
@@ -430,7 +498,7 @@ def order():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
         id_user = payload["id"]
-        product_id = ObjectId(request.form['productId'])
+        product_id =request.form['productId']
         user = db.users.find_one({"_id": ObjectId(id_user)}, {"_id": False})
         product = db.produk.find_one({"_id": ObjectId(product_id)}, {"_id": False})
 
@@ -438,20 +506,24 @@ def order():
             quantity = int(request.form['quantity'])
             email = user["email"]
             address = user['address']
-            harga = product["harga"]
-            total = harga * quantity
+            harga = int(product["harga"])
+            product_name = product["nama"]
+            cek_same = db.carts.find_one({"product_id":product_id})
+            if cek_same :
+                current_quantity = int(cek_same["quantity"])
+                add_quantity = current_quantity + quantity
+                db.carts.update_one({"product_id":product_id}, {"$set": {"quantity":add_quantity}})
+            if not cek_same:
+                order_data = {
+                    'product_id': product_id,
+                    'nama': product_name,
+                    'quantity': quantity,
+                    'email': email,
+                    'harga': harga,
+                    'address': address,
+                }
 
-            order_data = {
-                'product_id': product_id,
-                'quantity': quantity,
-                'email': email,
-                'harga': harga,
-                'address': address,
-                'total': total,
-                'date': datetime.now()  # Use current date and time for order date
-            }
-
-            db.orders.insert_one(order_data)
+                db.carts.insert_one(order_data)
             return jsonify({"success": True, "message": "Order placed successfully!"}), 200
 
         return jsonify({"success": False, "message": "User or product not found!"}), 404
@@ -477,10 +549,9 @@ def add_to_cart():
         'id_cart': id_cart,
         'product_id': product_id,
         'quantity': quantity,
-        'date_added': datetime.datetime.now()
     }
 
-    db.guest_orders.insert_one(cart_data)
+    db.guest_carts.insert_one(cart_data)
 
     return jsonify({"result": "success", "new_cart": new_cart, "id_cart": id_cart})
 

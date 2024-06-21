@@ -1,300 +1,296 @@
 {% include 'header.html' %}
 <!DOCTYPE html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <title>Website Name</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Sedan+SC&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-  <link href="../static/assets/mystyle.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/1L_dstPt3HV5HzF6Gvk/e3s4Wz6iJgD/+ub2oU" crossorigin="anonymous" referrerpolicy="no-referrer" />   
-  <script src="https://kit.fontawesome.com/d46734533e.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Website Name</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Sedan+SC&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+    <link href="../static/assets/mystyle.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/1L_dstPt3HV5HzF6Gvk/e3s4Wz6iJgD/+ub2oU"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script
+      src="https://kit.fontawesome.com/d46734533e.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
 
-  <style>
-    body {
-      font-family: sans-serif;
-      margin: 0;
-    }
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 0;
+      }
+      .content-container {
+        padding-top: 80px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .content {
+        width: 80%;
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+      .order-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 10px;
+      }
+      .details {
+        flex-grow: 1;
+      }
+      .remove {
+        background-color: #ddd;
+        border: 1px solid #ccc;
+        padding: 10px;
+        cursor: pointer;
+      }
+      .content img {
+        width: 150px;
+        height: 150px;
+        background-color: #eee;
+        display: block;
+        margin-right: 20px;
+      }
+      .quantity-controls {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+      }
+      .quantity-controls button {
+        padding: 2px 8px;
+        border: 1px solid #ddd;
+        background-color: #f8f8f8;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .quantity-controls span {
+        margin: 0 10px;
+        font-size: 14px;
+      }
+      .total-container {
+        width: 80%;
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .total-container .total-price {
+        font-size: 20px;
+        font-weight: bold;
+      }
+      .total-container .checkout-button {
+        background-color: #ffa500;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        width: 100%;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        top: 60px;
+        padding-top: 10px;
+      }
+      .dropdown-content a:hover {
+        background-color: #f1f1f1;
+      }
+      .show {
+        display: block;
+      }
+      .profile-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .profile-info img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+      .profile-info .edit-profile {
+        color: black;
+        font-weight: bold;
+        font-size: 18px;
+        margin-right: 10px;
+      }
+      .logout-box {
+        border: 1px solid black;
+        padding: 5px 10px;
+        display: inline-block;
+        cursor: pointer;
+      }
+    </style>
+  </head>
 
-    .content-container {
-      padding-top: 80px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .content {
-      width: 80%;
-      max-width: 1200px;
-      margin: 20px auto;
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      box-sizing: border-box;
-    }
-
-    .order-item {
-      display: flex;
-      align-items: center;
-      margin-bottom: 20px;
-      padding: 10px;
-    }
-
-    .details {
-      flex-grow: 1;
-    }
-
-    .remove {
-      background-color: #ddd;
-      border: 1px solid #ccc;
-      padding: 10px;
-      cursor: pointer;
-    }
-
-    .content img {
-      width: 150px;
-      height: 150px;
-      background-color: #eee;
-      display: block;
-      margin-right: 20px;
-    }
-
-    .quantity-controls {
-      display: flex;
-      align-items: center;
-      margin-top: 10px;
-    }
-
-    .quantity-controls button {
-      padding: 2px 8px;
-      border: 1px solid #ddd;
-      background-color: #f8f8f8;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    .quantity-controls span {
-      margin: 0 10px;
-      font-size: 14px;
-    }
-
-    .total-container {
-      width: 80%;
-      max-width: 1200px;
-      margin: 20px auto;
-      padding: 20px;
-      box-sizing: border-box;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .total-container .total-price {
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    .total-container .checkout-button {
-      background-color: #ffa500;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: #f9f9f9;
-      width: 100%;
-      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-      z-index: 1;
-      top: 60px;
-      padding-top: 10px;
-    }
-
-    .dropdown-content a:hover {
-      background-color: #f1f1f1;
-    }
-
-    .show {
-      display: block;
-    }
-
-    .profile-info {
-      display: flex;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .profile-info img {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      margin-right: 10px;
-    }
-
-    .profile-info .edit-profile {
-      color: black;
-      font-weight: bold;
-      font-size: 18px;
-      margin-right: 10px;
-    }
-
-    .logout-box {
-      border: 1px solid black;
-      padding: 5px 10px;
-      display: inline-block;
-      cursor: pointer;
-    }
-  </style>
-</head>
-
-<body>
-
-  <!-- Konten utama -->
-  <div class="content-container">
-    <!-- Konten 1 -->
-    <div class="content" data-price="15000">
-      <div class="order-item">
-        <img src="#" alt="Image Placeholder">
-        <div class="details">
-          <h3>Bakso Aci Tulang Rangu</h3>
-          <form>
-            <label for="email1">Email:</label>
-            <input type="email" id="email1" name="email1" value="example@gmail.com">
-            <br>
-            <label for="address1">Address:</label>
-            <input type="text" id="address1" name="address1" value="Jl. Contoh12, No. 12">
-          </form>
-          <div class="quantity-controls">
-            <button class="decrease">-</button>
-            <span class="quantity">1</span>
-            <button class="increase">+</button>
+  <body>
+    <!-- Konten utama -->
+    <div class="content-container" id="produk-cart">
+      {% for item in cart_items %}
+      <div
+        class="content"
+        data-order-id="{{ item.product_id }}"
+        data-price="{{ item.harga }}"
+        data-item-id="{{ item._id }}"
+      >
+        <div class="order-item">
+          <input type="checkbox" class="select-order me-4" />
+          <img src="#" alt="Image Placeholder" class="mx-3" />
+          <div class="details">
+            <h3>{{ item.nama }}</h3>
+            <p><strong>Email:</strong> {{ item.email }}</p>
+            <p><strong>Address:</strong> {{ item.address }}</p>
+            <div class="quantity-controls">
+              <button class="decrease">-</button>
+              <span class="quantity">{{ item.quantity }}</span>
+              <button class="increase">+</button>
+            </div>
+            <p>Harga: Rp. {{ "{:,}".format(item.harga) }}</p>
+            <div class="price">
+              Rp. {{ "{:,}".format(item.harga * item.quantity) }}
+            </div>
           </div>
-          <p>Harga: Rp. 15.000</p>
-          <div class="price">Rp. 15.000</div>
+          <div class="remove">X</div>
         </div>
-        <div class="remove">X</div>
       </div>
-    </div>
-    <!-- Konten 2 -->
-    <div class="content" data-price="15000">
-      <div class="order-item">
-        <img src="#" alt="Image Placeholder">
-        <div class="details">
-          <h3>Bakso Aci Ayam Suwir</h3>
-          <form>
-            <label for="email2">Email:</label>
-            <input type="email" id="email2" name="email2" value="example@gmail.com">
-            <br>
-            <label for="address2">Address:</label>
-            <input type="text" id="address2" name="address2" value="Jl. Contoh12, No. 12">
-          </form>
-          <div class="quantity-controls">
-            <button class="decrease">-</button>
-            <span class="quantity">1</span>
-            <button class="increase">+</button>
-          </div>
-          <p>Harga: Rp. 15.000</p>
-          <div class="price">Rp. 15.000</div>
-        </div>
-        <div class="remove">X</div>
-      </div>
-    </div>
-    <!-- Konten 3 -->
-    <div class="content" data-price="13000">
-      <div class="order-item">
-        <img src="#" alt="Image Placeholder">
-        <div class="details">
-          <h3>Bakso Aci Telur</h3>
-          <form>
-            <label for="email3">Email:</label>
-            <input type="email" id="email3" name="email3" value="example@gmail.com">
-            <br>
-            <label for="address3">Address:</label>
-            <input type="text" id="address3" name="address3" value="Jl. Contoh12, No. 12">
-          </form>
-          <div class="quantity-controls">
-            <button class="decrease">-</button>
-            <span class="quantity">1</span>
-            <button class="increase">+</button>
-          </div>
-          <p>Harga: Rp. 13.000</p>
-          <div class="price">Rp. 13.000</div>
-        </div>
-        <div class="remove">X</div>
-      </div>
+      {% endfor %}
     </div>
     <!-- Total Harga dan Checkout -->
     <div class="total-container">
-      <div class="total-price">Total Harga: Rp. 43.000</div>
+      <div class="total-price">Total Harga: Rp. 0</div>
       <button class="checkout-button" onclick="checkout()">Checkout</button>
     </div>
-  </div>
 
-  <script>
-    function updateTotal() {
-      let total = 0;
-      document.querySelectorAll('.content').forEach(content => {
-        const quantity = parseInt(content.querySelector('.quantity').textContent);
-        const price = parseInt(content.getAttribute('data-price'));
-        total += quantity * price;
-      });
-      document.querySelector('.total-price').textContent = 'Total Harga: Rp. ' + total.toLocaleString();
-    }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        function updateTotal() {
+          let total = 0;
+          $(".content").each(function () {
+            if ($(this).find(".select-order").is(":checked")) {
+              const quantity = parseInt($(this).find(".quantity").text());
+              const price = parseInt($(this).data("price"));
+              total += quantity * price;
+            }
+          });
+          $(".total-price").text("Total Harga: Rp. " + total.toLocaleString());
+        }
 
-    document.addEventListener('DOMContentLoaded', function () {
-      document.querySelectorAll('.increase').forEach(button => {
-        button.addEventListener('click', function () {
-          const quantityElem = this.previousElementSibling;
-          quantityElem.textContent = parseInt(quantityElem.textContent) + 1;
-          const priceElem = this.closest('.order-item').querySelector('.price');
-          const price = parseInt(this.closest('.content').getAttribute('data-price'));
-          priceElem.textContent = 'Rp. ' + (parseInt(quantityElem.textContent) * price).toLocaleString();
+        function updateItemPrice(itemElem) {
+          const quantity = parseInt(itemElem.find(".quantity").text());
+          const price = parseInt(itemElem.data("price"));
+          const totalPrice = quantity * price;
+          itemElem.find(".price").text("Rp. " + totalPrice.toLocaleString());
+        }
+
+        // Update the item prices on page load
+        $(".content").each(function () {
+          updateItemPrice($(this));
+        });
+
+        $(document).on("click", ".increase", function () {
+          const quantityElem = $(this).siblings(".quantity");
+          const newQuantity = parseInt(quantityElem.text()) + 1;
+          quantityElem.text(newQuantity);
+          const contentElem = $(this).closest(".content");
+          updateItemPrice(contentElem);
           updateTotal();
         });
-      });
 
-      document.querySelectorAll('.decrease').forEach(button => {
-        button.addEventListener('click', function () {
-          const quantityElem = this.nextElementSibling;
-          if (parseInt(quantityElem.textContent) > 1) {
-            quantityElem.textContent = parseInt(quantityElem.textContent) - 1;
-            const priceElem = this.closest('.order-item').querySelector('.price');
-            const price = parseInt(this.closest('.content').getAttribute('data-price'));
-            priceElem.textContent = 'Rp. ' + (parseInt(quantityElem.textContent) * price).toLocaleString();
+        $(document).on("click", ".decrease", function () {
+          const quantityElem = $(this).siblings(".quantity");
+          const currentQuantity = parseInt(quantityElem.text());
+          if (currentQuantity > 1) {
+            const newQuantity = currentQuantity - 1;
+            quantityElem.text(newQuantity);
+            const contentElem = $(this).closest(".content");
+            updateItemPrice(contentElem);
             updateTotal();
           }
         });
-      });
 
-      document.querySelectorAll('.remove').forEach(button => {
-        button.addEventListener('click', function () {
-          const product = this.closest('.content');
-          product.remove();
+        $(document).on("click", ".remove", function () {
+          const contentElem = $(this).closest(".content");
+          const itemId = contentElem.data("item-id");
+
+          $.ajax({
+            url: "/remove_item",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ item_id: itemId }),
+            success: function (data) {
+              if (data.result === "success") {
+                contentElem.remove();
+                updateTotal();
+              } else {
+                alert("Failed to remove item: " + data.message);
+              }
+            },
+            error: function (err) {
+              alert("Error: " + err.responseText);
+            },
+          });
+        });
+
+        $(document).on("change", ".select-order", function () {
           updateTotal();
         });
+
+        updateTotal();
       });
 
-      updateTotal();
-    });
-
-    function checkout() {
-      // Redirect ke halaman status_pesanan
-      window.location.href = "/status_pesanan";
-    }
-
-  </script>
-</body>
+      function checkout() {
+        const selectedOrders = [];
+        $(".content").each(function () {
+          if ($(this).find(".select-order").is(":checked")) {
+            const orderId = $(this).data("order-id");
+            selectedOrders.push(orderId);
+          }
+        });
+        if (selectedOrders.length > 0) {
+          window.location.href = "/status_pesanan"; // Adjust this as needed
+        } else {
+          alert("Please select at least one order to checkout.");
+        }
+      }
+    </script>
+  </body>
 </html>
-
-
