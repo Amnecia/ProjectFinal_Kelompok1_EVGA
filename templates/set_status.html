@@ -1,5 +1,4 @@
 {% include 'header.html' %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,21 +26,26 @@
             height:350px;
             margin-top:20px;
         }
-       .container-order {
-            border: 1px solid #ccc;
-            width: 1800px;
-            margin: 0 20px;
-            margin-top: 100px;
-            margin-bottom:-30px;
-            padding-left: 30px;
-            padding-bottom: 40px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            background-color: #fff;
-        }
+        .container-order {
+    border: 1px solid #ccc;
+    width: 1200px; /* Reduced width */
+    margin: 0 20px;
+    margin-top: 100px;
+    margin-bottom: -30px;
+    padding-left: 30px;
+    padding-bottom: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+}
        .image-container {
             flex-basis: 200px;
         }
@@ -52,20 +56,17 @@
             display: flex;
             flex-direction: column;
         }
-       .button-container {
-            flex-basis: 100%;
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 90px;
-            margin-bottom:-90px;
-            margin-right: 30px;
-            color:red;
-        }
+        .button-container {
+    margin-top: 20px; /* Add some margin top to create space */
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 30px; /* Add some padding right to keep the button inside the container */
+}
         .button-delete {
     background-color: #5e5e5e;
     border: none;
-    width:200px;
-    height:40px;
+    width:100px;
+    height:100px;
     margin-right:-20px;
     color:white;
     border-top-left-radius: 20px;
@@ -73,6 +74,9 @@
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
         }
+        .button-delete i {
+    font-size: 30px; /* Increase the font size to 30px */
+}
         .button-delete:hover {
    background-color: #D00000;
         }
@@ -101,9 +105,70 @@ select {
         select option:selected {
             background-color: #aaa;
         }
+  
+        @media (max-width: 1200px) {
+        .container-order {
+            width: 90%; /* Reduce width to fit smaller screens */
+            margin-bottom: 10px;            
+        }
+        .image-container {
+            flex-basis: 150px; /* Reduce image size */
+        }
+        .text-container {
+            padding-left: 10px; /* Reduce padding */
+            margin-top: 20px;
+        }
+        .button-container {
+            margin-top: 10px; /* Reduce margin top */
+        }
+    }
+
+    @media (max-width: 768px) {
+ .container-order {
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+ .image-container {
+    width: 100%;
+  }
+ .text-container {
+    width: 100%;
+    padding-left: 0;
+    margin-top: 20px; /* Add some margin top to create space */
+  }
+  .product-image {
+    width: 510px; /* Make image full-width */
+      height: auto; /* Adjust height automatically */
+      align-items: center;
+  }
+}  
+
+    /* For screens smaller than 480px */
+    @media (max-width: 480px) {
+        .container-order {
+            width: 100%; /* Make container full-width */
+            margin-bottom: 10px;
+        }
+        .product-image {
+            width: 200px; /* Reduce image size */
+            height: 200px;
+        }
+        .text-container {
+            font-size: 14px; 
+            margin-top: 20px;
+        }
+        .product-image {
+      width: 375px; /* Make image full-width */
+      height: auto; /* Adjust height automatically */
+      align-items: center;
+    }
+    }
     </style>
 </head>
 <body>
+    <br>
+    <br>
+    <br>
    <div class="container-order">
     <div class="image-container">
         <img src="https://www.pixelstalk.net/wp-content/uploads/2016/07/3840x2160-Images-Free-Download.jpg" class="product-image">
@@ -124,12 +189,13 @@ select {
              
            </select> 
        </p> 
-       <div class="button-container">
+       
+    </div>
+    <div class="button-container">
         <button class="button-delete"><i class="fas fa-trash-alt"></i></button>     
       
     </div>
    </div>
-</div>
 <div class="container-order">
     <div class="image-container">
         <img src="https://www.pixelstalk.net/wp-content/uploads/2016/07/3840x2160-Images-Free-Download.jpg" class="product-image">
@@ -151,12 +217,13 @@ select {
                
            </select> 
        </p> 
-       <div class="button-container">
+       
+    </div>
+    <div class="button-container">
         <button class="button-delete"><i class="fas fa-trash-alt"></i></button>     
       
     </div>
    </div>
-</div>
 <div class="container-order">
     <div class="image-container">
         <img src="https://www.pixelstalk.net/wp-content/uploads/2016/07/3840x2160-Images-Free-Download.jpg" class="product-image">
@@ -177,39 +244,14 @@ select {
              
            </select> 
        </p> 
-       <div class="button-container">
+       
+    </div>
+    <div class="button-container">
         <button class="button-delete"><i class="fas fa-trash-alt"></i></button>     
       
     </div>
    </div>
-   
-</div>
-<div class="container-order">
-    <div class="image-container">
-        <img src="https://www.pixelstalk.net/wp-content/uploads/2016/07/3840x2160-Images-Free-Download.jpg" class="product-image">
-    </div>
-    <div class="text-container">
-        <h1 style="font-size:28px;">Product Name</h1> 
-        <p style="font-weight:normal; font-size:16px;">Jumlah : </p> 
-       <p style="font-weight:normal;font-size:16px;">Email : </p> 
-       <p style="font-weight:normal;font-size:16px;">Alamat : </p> 
-       <p style="font-weight:normal;font-size:16px;">Harga : </p> 
-       <p style="font-weight:normal;font-size:16px;">Tanggal : </p> 
-       <p style="font-weight:normal;font-size:16px;"> 
-           <label for="order-status">Order Status:</label> <select id="order-status"> 
-               <option value="preparing" selected>Is being prepared</option> 
-               <option value="delivery">Success</option> 
-               <option value="delivery">Cancelled</option> 
-               <option value="delivery">On delivery</option> 
-             
-           </select> 
-       </p> 
-       <div class="button-container">
-        <button class="button-delete"><i class="fas fa-trash-alt"></i></button>     
-      
-    </div>
-   </div>
-</div>
+
 </div>
 
 </body>
