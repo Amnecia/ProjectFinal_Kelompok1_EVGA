@@ -376,7 +376,7 @@
     </div>
   </div>
   <h3 style="margin-left:20px; margin-top:20px;">Reviews</h3>
-
+  <div class="reviews-wrapper" style="height: 300px; overflow-y: auto;">
   <div class="reviews-container">
     <div class="review-item">
       <img src= "https://wallpapercave.com/wp/wp6183733.jpg" alt="User 1" class="review-user-picture">
@@ -410,7 +410,7 @@
       </div>
     </div>
   </div>
-
+</div>
   <script>
     let addToCartBtn = document.querySelector('.add-to-cart-btn');
     let quantityInput = document.querySelector('.quantity-input input');
@@ -449,6 +449,13 @@
       var img = event.relatedTarget.querySelector('img');
       document.getElementById('main-image').src = img.src;
     });
+    // Add a JavaScript function to handle scrolling
+const reviewsWrapper = document.querySelector('.reviews-wrapper');
+
+reviewsWrapper.addEventListener('scroll', function() {
+  // You can add additional functionality here, such as loading more reviews when the user reaches the end of the container
+  console.log('Scrolling...');
+});
   </script>
 
 </body>

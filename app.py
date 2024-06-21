@@ -424,42 +424,9 @@ def view_cart():
 
 
 
-@app.route('/order', methods=['POST'])
+@app.route('/order', methods=['GET'])
 def order():
-    token_receive = request.cookies.get(TOKEN_KEY)
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
-        id_user = payload["id"]
-        product_id = ObjectId(request.form['productId'])
-        user = db.users.find_one({"_id": ObjectId(id_user)}, {"_id": False})
-        product = db.produk.find_one({"_id": ObjectId(product_id)}, {"_id": False})
-
-        if user and product:
-            quantity = int(request.form['quantity'])
-            email = user["email"]
-            address = user['address']
-            harga = product["harga"]
-            total = harga * quantity
-
-            order_data = {
-                'product_id': product_id,
-                'quantity': quantity,
-                'email': email,
-                'harga': harga,
-                'address': address,
-                'total': total,
-                'date': datetime.now()  # Use current date and time for order date
-            }
-
-            db.orders.insert_one(order_data)
-            return jsonify({"success": True, "message": "Order placed successfully!"}), 200
-
-        return jsonify({"success": False, "message": "User or product not found!"}), 404
-
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for("home"))
-    except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+   return render_template('order.html')
     
 @app.route('/guest_order', methods=['POST'])
 def add_to_cart():
