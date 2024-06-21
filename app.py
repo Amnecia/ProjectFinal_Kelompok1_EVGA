@@ -492,7 +492,7 @@ def view_cart():
 
 
 
-@app.route('/order', methods=['POST'])
+@app.route('/order', methods=['GET'])
 def order():
     token_receive = request.cookies.get(TOKEN_KEY)
     try:
@@ -697,12 +697,9 @@ def edit_etalase():
             file.save(file_path)
     return jsonify({"message": "Images uploaded successfully"})
 
-@app.route('/setstatus', methods=['POST'])
+@app.route('/setstatus', methods=['GET', 'POST'])
 def SetStatus():
-    status = request.form['status']
-    _id = request.form['_id']
-    db.produk.update_one({'_id': ObjectId(_id)}, {'$set': {'status': status}})
-    return jsonify({'message': 'Status updated successfully'})
+       return render_template('set_status.html')
 
 @app.route('/deleteproduk/<_id>', methods=['GET', 'POST'])
 def deleteProduk(_id):
