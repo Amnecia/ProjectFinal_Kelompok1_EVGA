@@ -378,8 +378,24 @@ def secret():
         return redirect(url_for("home"))
 
 
-
-
+@app.route('/submit_review/<_id>', methods=['POST'])
+def submit_review(_id):
+    produk = db.produk.find_one({'_id': ObjectId(_id)})
+    if produk:
+        rating = request.form['rating']
+        review_text = request.form['deskripsiProduk']
+        # Create a new review document
+        review = {
+            'produk_id': _id,
+            'rating': int(rating),
+            'review_text': review_text,
+            'created_at': datetime.utcnow()
+        }
+        # Insert the review into the database
+        db.reviews.insert_one(review)
+        # Redirect the user to the product detail page
+        return redirect(url_for('detail_produk', _id=_id))
+    return 'Error: Product not found', 404
 
 
 @app.route('/detail/<_id>', methods=['GET'])
@@ -603,23 +619,10 @@ def deleteProduk(_id):
     db.produk.delete_one({'_id': ObjectId(_id)})
     return jsonify({'message': 'Product deleted successfully'})
 
-@app.route('/form_ulasan', methods=['GET', 'POST'])
-def form_ulasan_without_product():
-    if request.method == 'POST':
-        rating = request.form.get('rating')
-        deskripsi = request.form.get('deskripsiProduk')
-
-        # Simpan ulasan ke dalam database
-        new_review = {
-            'rating': rating,
-            'deskripsi': deskripsi
-        }
-        db.produk.insert_one(new_review)  # Menyimpan ulasan ke dalam database
-
-        return 'Ulasan berhasil disimpan'
-
-    return render_template('form_ulasan.html')
-
+@app.route('/form_ulasan/<_id>', methods=['GET'])
+def form_ulasan(_id):
+    produk = db.produk.find_one({'_id': ObjectId(_id)})
+    return render_template('form_ulasan.html', produk=produk)
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

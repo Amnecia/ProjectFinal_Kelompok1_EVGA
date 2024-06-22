@@ -113,8 +113,10 @@
   object-fit: cover;
 }
 
-.carousel-control-prev,.carousel-control-next {
-  top: 40%;
+.carousel-control-prev, .carousel-control-next {
+  top: 35%;
+  transform: translateY(-50%);
+  margin-top: 100px; /* add a negative margin to move the arrows upwards */
 }
 
 .product-description {
@@ -356,6 +358,52 @@ display: flex;
     height: 60px; /* Increase review user image size */
   }
 }
+
+.review-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px; /* adjust the height to your needs */
+  border : none;
+  background-color: #D00000;
+  color:  #ffffff
+}
+
+
+.bottom {
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.bottom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px; /* adjust the height to your needs */
+  margin-top: 60px;
+  margin-bottom: 50px;
+}
+
+.review-btn {
+  color: #f7f7f7;
+  background-color: #D00000;
+  border: none;
+  width: 250px;
+  height: 50px;
+  border-radius: 45px;
+  /* Remove display: block; */
+  text-align: center; /* Center the text inside the button */
+  display: flex; /* Use flexbox to center the text */
+  align-items: center; /* Align items to the center vertically */
+  justify-content: center; /* Align items to the center horizontally */
+  text-decoration: none;
+
+}
+
+.review-btn:hover {
+  background-color: #8b0707; /* A slightly darker shade of red */
+  color:#ddd;
+}
   </style>
 </head>
 <body>
@@ -412,7 +460,9 @@ display: flex;
     </div>
     </div>
   </div>
+  <div class="review-section">
   <h3 style="margin-left:20px; margin-top:20px;">Reviews</h3>
+  </div>
   <div class="reviews-wrapper" style="height: 300px; overflow-y: auto;">
   <div class="reviews-container">
     <div class="review-item">
@@ -431,22 +481,11 @@ display: flex;
     </div>
   </div>
 
-  <div class="reviews-container">
-    <div class="review-item">
-      <img src= "https://wallpapercave.com/wp/wp6183733.jpg" alt="User 1" class="review-user-picture">
-      <div class="review-content">
-        <p class="review-user-name">John Doe</p>
-        <div class="review-stars">
-          <i class="fas fa-star" aria-hidden="true"></i>
-          <i class="fas fa-star" aria-hidden="true"></i>
-          <i class="fas fa-star" aria-hidden="true"></i>
-          <i class="fas fa-star" aria-hidden="true"></i>
-          <i class="fas fa-star" aria-hidden="true"></i>
-        </div>
-        <p class="review-description">These headphones are amazing! The sound quality is incredible and the noise-cancelling feature is so effective. I highly recommend them!</p>
-      </div>
-    </div>
   </div>
+
+</div>
+<div class="bottom">
+  <a href="{{ url_for('form_ulasan', _id=produk._id) }}" class="review-btn">Leave a Review</a>
 </div>
   <script>
     let addToCartBtn = document.querySelector('.add-to-cart-btn');
