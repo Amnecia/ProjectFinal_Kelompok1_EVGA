@@ -22,8 +22,13 @@ app = Flask(__name__)
 #client = MongoClient('mongodb+srv://ade:adesaef@cluster0.lqterof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 #db = client.projekTA
 
-client = MongoClient('mongodb+srv://ade:adesaef@cluster0.lqterof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-db = client.projekTA
+#client = MongoClient('mongodb+srv://ade:adesaef@cluster0.lqterof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+#db = client.projekTA
+
+
+client = MongoClient('mongodb+srv://andreasrafaeltobing:ManhwaXL9LUL@cluster0.aajaqnf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+db = client.dbsandreasrafaeltobing
+
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
@@ -39,12 +44,21 @@ def home():
     produk = db.produk.find()
     etalase_folder = 'static/assets/etalase/'
     etalase_images = [file for file in os.listdir(etalase_folder) if os.path.isfile(os.path.join(etalase_folder, file))]
-    print(produk)  
-    return render_template('index.html', produk=produk, etalase_images=etalase_images)
+
+    # Retrieve review count and average rating for each product
+    produk_with_review_count_and_rating = []
+    for p in produk:
+        review_count = db.reviews.count_documents({'produk_id': str(p['_id'])})
+        reviews = db.reviews.find({'produk_id': str(p['_id'])})
+        ratings = [review['rating'] for review in reviews]
+        average_rating = sum(ratings) / len(ratings) if ratings else 0
+        p['review_count'] = review_count
+        p['average_rating'] = average_rating
+        produk_with_review_count_and_rating.append(p)
+
+    return render_template('index.html', produk=produk_with_review_count_and_rating, etalase_images=etalase_images)
 
 
-
-    
 @app.route('/login', methods=['GET'])
 def login():
     msg = request.args.get('msg')
@@ -384,12 +398,14 @@ def submit_review(_id):
     if produk:
         rating = request.form['rating']
         review_text = request.form['deskripsiProduk']
-        # Create a new review document
+
+        today = datetime.now()
+        mytime = today.strftime('%Y-%m-%d %H:%M')
         review = {
             'produk_id': _id,
             'rating': int(rating),
             'review_text': review_text,
-            'created_at': datetime.utcnow()
+             'today': mytime,
         }
         # Insert the review into the database
         db.reviews.insert_one(review)
@@ -401,7 +417,19 @@ def submit_review(_id):
 @app.route('/detail/<_id>', methods=['GET'])
 def detail_produk(_id):
     produk = db.produk.find_one({'_id': ObjectId(_id)})
-    return render_template('detail_produk.html', produk=produk, id=_id)
+    reviews = db.reviews.find({'produk_id': _id})
+    total_rating = 0
+    review_count = 0
+
+    for review in reviews:
+        total_rating += review['rating']
+        review_count += 1
+
+    if review_count > 0:
+        average_rating = total_rating / review_count
+    else:
+        average_rating = 0
+    return render_template('detail_produk.html', produk=produk, id=_id, average_rating=average_rating, review_count=review_count)
 
 @app.route('/cart', methods=['GET'])
 def cart():
@@ -502,9 +530,6 @@ def view_cart():
                 return jsonify({"result": "error", "message": "No items in guest cart"}), 404
         else:
             return jsonify({"result": "error", "message": "No cart found"}), 404
-
-
-
 
 
 

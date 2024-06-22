@@ -439,11 +439,14 @@ display: flex;
       <div class="product-description">
         <p class="description">{{ produk.deskripsi }}</p>
         <div class="star-rating ms-2">
-          <i class="fa-regular fa-star" data-rating="1" style="color: #FFD43B;"></i>
-          <i class="fa-regular fa-star" data-rating="2" style="color: #FFD43B;"></i>
-          <i class="fa-regular fa-star" data-rating="3" style="color: #FFD43B;"></i>
-          <i class="fa-regular fa-star" data-rating="4" style="color: #FFD43B;"></i>
-          <i class="fa-regular fa-star" data-rating="5" style="color: #FFD43B;"></i>
+          {% for i in range(5) %}
+            {% if i < average_rating %}
+              <i class="fas fa-star" style="color: #FFD43B;"></i>
+            {% else %}
+              <i class="fa-regular fa-star" style="color: #FFD43B;"></i>
+            {% endif %}
+          {% endfor %}
+          <span style="font-size: 16px; margin-left: 10px;">({{ review_count }} reviews)</span>
         </div>
         <div class="price-container">
           <h2 style="font-weight: bold;">Rp. {{ produk.harga }}</h2>

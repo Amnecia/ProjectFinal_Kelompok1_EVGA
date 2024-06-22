@@ -259,25 +259,19 @@
     <div class="text-center">
       <h2>{{ produk.nama }}</h2>
     </div>
-  
-    <!-- rest of the code remains the same -->
-
-    <div class="d-flex justify-content-center mt-4" style="font-size: 20px;">
-      Rating :
-    </div>
-    <div class="d-flex justify-content-center mb-3">
-      <div class="star-rating ms-2">
-        <i class="fa-regular fa-star" data-rating="1" style="color: #FFD43B;"></i>
-        <i class="fa-regular fa-star" data-rating="2" style="color: #FFD43B;"></i>
-        <i class="fa-regular fa-star" data-rating="3" style="color: #FFD43B;"></i>
-        <i class="fa-regular fa-star" data-rating="4" style="color: #FFD43B;"></i>
-        <i class="fa-regular fa-star" data-rating="5" style="color: #FFD43B;"></i>
-      </div>
-      <input type="hidden" name="rating" id="rating" value="0">
-    </div>
-
     <form action="{{ url_for('submit_review', _id=produk._id) }}" method="post">
-      <!-- Keep the rest of the form fields the same -->
+      <!-- ... -->
+      <div class="d-flex justify-content-center mb-3">
+        <div class="star-rating ms-2">
+          <i class="fa-regular fa-star" data-rating="1" style="color: #FFD43B;"></i>
+          <i class="fa-regular fa-star" data-rating="2" style="color: #FFD43B;"></i>
+          <i class="fa-regular fa-star" data-rating="3" style="color: #FFD43B;"></i>
+          <i class="fa-regular fa-star" data-rating="4" style="color: #FFD43B;"></i>
+          <i class="fa-regular fa-star" data-rating="5" style="color: #FFD43B;"></i>
+        </div>
+        <!-- Keep only one hidden field inside the form -->
+        <input type="hidden" name="rating" id="rating" value="0">
+      </div>
       <div class="mb-4 mx-2">
           <label for="exampleFormControlTextarea1" class="form-label">
               Berikan Penilaianmu Untuk Memberi Tahu Pembeli Lain
@@ -290,19 +284,19 @@
               <button type="submit" class="btn btn-danger px-4">Upload</button>
           </div>
       </div>
-      <!-- Add a hidden field to store the rating -->
-      <input type="hidden" name="rating" id="rating" value="0">
-  </form>
+    </form>
+
+
   <script>
-    $(document).ready(function () {
-      $('.star-rating .fa').on('click', function () {
-        var rating = $(this).data('rating');
-        $('#rating').val(rating);
-        $(this).siblings().removeClass('fa-star').addClass('fa-star-o');
-        $(this).removeClass('fa-star-o').addClass('fa-star');
-        $(this).prevAll().removeClass('fa-star-o').addClass('fa-star');
-      });
-    })
+  $(document).ready(function () {
+    $('.star-rating .fa-star').on('click', function () {
+      var rating = $(this).data('rating');
+      $('#rating').val(rating); // Update the value of the hidden field
+      $(this).siblings().removeClass('fa-solid fa-star').addClass('fa-regular fa-star');
+      $(this).removeClass('fa-regular fa-star').addClass('fa-solid fa-star');
+      $(this).prevAll().removeClass('fa-regular fa-star').addClass('fa-solid fa-star');
+    });
+  });
     $(document).ready(function () {
       $('.btn.btn-danger.px-4').on('click', function () {
         alert('Ulasan anda berhasil disimpan');
