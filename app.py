@@ -19,15 +19,14 @@ import hashlib
 
 app = Flask(__name__)
 
-#client = MongoClient('mongodb+srv://ade:adesaef@cluster0.lqterof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-#db = client.projekTA
-
-#client = MongoClient('mongodb+srv://ade:adesaef@cluster0.lqterof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-#db = client.projekTA
 
 
-client = MongoClient('mongodb+srv://andreasrafaeltobing:ManhwaXL9LUL@cluster0.aajaqnf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-db = client.dbsandreasrafaeltobing
+client = MongoClient('mongodb+srv://ade:adesaef@cluster0.lqterof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+db = client.projekTA
+
+
+# client = MongoClient('mongodb+srv://andreasrafaeltobing:ManhwaXL9LUL@cluster0.aajaqnf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+# db = client.dbsandreasrafaeltobing
 
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
@@ -619,22 +618,21 @@ def checkout():
 
 @app.route('/status_pesanan')
 def status_pesanan():
-    orders = db.orders.find().sort('date', -1)
-    orders_with_email = [
-        {
-            'order_id': str(order['_id']),
-            'email': order['email'],
-            'product_name': order['product_name'],
-            'quantity': order['quantity'],
-            'address': order['address'],
-            'price': order['price'],
-            'date': order['date'].strftime("%Y-%m-%d %H:%M:%S"),
-            'status': order.get('status')
-        }
-        for order in orders
-    ]
-    return render_template('status_pesanan.html', orders=orders_with_email)
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        id_user = payload["id"]
+        user = db.users.find_one({"_id": ObjectId(id_user)}, {"_id": False})
+        email = user["email"]
 
+    return render_template('test_status.html')
+@app.route('/get_order', methods=['GET'])
+def get_order():
+    email = 
+    orders_data = list(db.order.find({'email' : email}))
+    for order in orders_data:
+        order['_id'] = str(order['_id'])
+    return render_template('orders.html', orders=orders_data)
 
 @app.route('/list', methods=['GET'])
 def list():
@@ -772,12 +770,9 @@ def edit_etalase():
             file.save(file_path)
     return jsonify({"message": "Images uploaded successfully"})
 
-@app.route('/setstatus', methods=['POST'])
-def SetStatus():
-    status = request.form['status']
-    _id = request.form['_id']
-    db.produk.update_one({'_id': ObjectId(_id)}, {'$set': {'status': status}})
-    return jsonify({'message': 'Status updated successfully'})
+@app.route('/setstatus', methods=['GET'])
+def Set_status():
+     return render_template('status_pesanan.html')
 
 @app.route('/deleteproduk/<_id>', methods=['GET', 'POST'])
 def deleteProduk(_id):
