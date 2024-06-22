@@ -22,8 +22,13 @@ app = Flask(__name__)
 #client = MongoClient('mongodb+srv://ade:adesaef@cluster0.lqterof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 #db = client.projekTA
 
-client = MongoClient('mongodb+srv://ade:adesaef@cluster0.lqterof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-db = client.projekTA
+#client = MongoClient('mongodb+srv://ade:adesaef@cluster0.lqterof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+#db = client.projekTA
+
+
+client = MongoClient('mongodb+srv://andreasrafaeltobing:ManhwaXL9LUL@cluster0.aajaqnf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+db = client.dbsandreasrafaeltobing
+
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
@@ -39,12 +44,21 @@ def home():
     produk = db.produk.find()
     etalase_folder = 'static/assets/etalase/'
     etalase_images = [file for file in os.listdir(etalase_folder) if os.path.isfile(os.path.join(etalase_folder, file))]
-    print(produk)  
-    return render_template('index.html', produk=produk, etalase_images=etalase_images)
+
+    # Retrieve review count and average rating for each product
+    produk_with_review_count_and_rating = []
+    for p in produk:
+        review_count = db.reviews.count_documents({'produk_id': str(p['_id'])})
+        reviews = db.reviews.find({'produk_id': str(p['_id'])})
+        ratings = [review['rating'] for review in reviews]
+        average_rating = sum(ratings) / len(ratings) if ratings else 0
+        p['review_count'] = review_count
+        p['average_rating'] = average_rating
+        produk_with_review_count_and_rating.append(p)
+
+    return render_template('index.html', produk=produk_with_review_count_and_rating, etalase_images=etalase_images)
 
 
-
-    
 @app.route('/login', methods=['GET'])
 def login():
     msg = request.args.get('msg')
@@ -378,14 +392,44 @@ def secret():
         return redirect(url_for("home"))
 
 
+@app.route('/submit_review/<_id>', methods=['POST'])
+def submit_review(_id):
+    produk = db.produk.find_one({'_id': ObjectId(_id)})
+    if produk:
+        rating = request.form['rating']
+        review_text = request.form['deskripsiProduk']
 
-
+        today = datetime.now()
+        mytime = today.strftime('%Y-%m-%d %H:%M')
+        review = {
+            'produk_id': _id,
+            'rating': int(rating),
+            'review_text': review_text,
+             'today': mytime,
+        }
+        # Insert the review into the database
+        db.reviews.insert_one(review)
+        # Redirect the user to the product detail page
+        return redirect(url_for('detail_produk', _id=_id))
+    return 'Error: Product not found', 404
 
 
 @app.route('/detail/<_id>', methods=['GET'])
 def detail_produk(_id):
     produk = db.produk.find_one({'_id': ObjectId(_id)})
-    return render_template('detail_produk.html', produk=produk, id=_id)
+    reviews = db.reviews.find({'produk_id': _id})
+    total_rating = 0
+    review_count = 0
+
+    for review in reviews:
+        total_rating += review['rating']
+        review_count += 1
+
+    if review_count > 0:
+        average_rating = total_rating / review_count
+    else:
+        average_rating = 0
+    return render_template('detail_produk.html', produk=produk, id=_id, average_rating=average_rating, review_count=review_count)
 
 @app.route('/cart', methods=['GET'])
 def cart():
@@ -486,9 +530,6 @@ def view_cart():
                 return jsonify({"result": "error", "message": "No items in guest cart"}), 404
         else:
             return jsonify({"result": "error", "message": "No cart found"}), 404
-
-
-
 
 
 
@@ -744,23 +785,10 @@ def deleteProduk(_id):
     db.produk.delete_one({'_id': ObjectId(_id)})
     return jsonify({'message': 'Product deleted successfully'})
 
-@app.route('/form_ulasan', methods=['GET', 'POST'])
-def form_ulasan_without_product():
-    if request.method == 'POST':
-        rating = request.form.get('rating')
-        deskripsi = request.form.get('deskripsiProduk')
-
-        # Simpan ulasan ke dalam database
-        new_review = {
-            'rating': rating,
-            'deskripsi': deskripsi
-        }
-        db.produk.insert_one(new_review)  # Menyimpan ulasan ke dalam database
-
-        return 'Ulasan berhasil disimpan'
-
-    return render_template('form_ulasan.html')
-
+@app.route('/form_ulasan/<_id>', methods=['GET'])
+def form_ulasan(_id):
+    produk = db.produk.find_one({'_id': ObjectId(_id)})
+    return render_template('form_ulasan.html', produk=produk)
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
