@@ -718,6 +718,7 @@ def edit_profile():
         address_receive = request.form.get("address_give")
         phone_number_receive = request.form.get("phoneNumber_give")
         password_receive = request.form.get("password_give")
+        profile_picture = request.files.get("profilePicture")
 
         new_doc = {}
         if full_name_receive:
@@ -734,6 +735,11 @@ def edit_profile():
             password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
             new_doc["password"] = password_hash
 
+        if profile_picture:
+            filename = secure_filename(profile_picture.filename)
+            profile_picture.save(os.path.join("static/profile_pictures", filename))
+            new_doc["profile_picture"] = filename
+
         if new_doc:
             update_user = db.users.update_one({"_id": ObjectId(id)}, {"$set": new_doc})
             update_admin = db.admin.update_one({"_id": ObjectId(id)}, {"$set": new_doc})
@@ -746,8 +752,6 @@ def edit_profile():
             return jsonify({"result": "fail", "msg": "No data provided to update"})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
-
-
 
 @app.route('/get_images', methods=['GET'])
 def get_images():
