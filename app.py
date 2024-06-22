@@ -555,11 +555,45 @@ def add_to_cart():
 
     return jsonify({"result": "success", "new_cart": new_cart, "id_cart": id_cart})
 
+
+@app.route('/checkout', methods=['POST'])
+def checkout():
+    data = request.json
+    orders = data.get('orders', [])
+    
+    if not orders:
+        return jsonify({'result': 'error', 'message': 'No orders selected.'}), 400
+
+    order_data = {
+        'orders': orders
+    }
+
+    result = db.orders.insert_one(order_data)
+
+    if result.inserted_id:
+        return jsonify({'result': 'success'})
+    else:
+        return jsonify({'result': 'error', 'message': 'Failed to save order.'}), 500
+
+
 @app.route('/status_pesanan')
 def status_pesanan():
-    orders = db.orders.find().sort('_id', -1)
-    orders_with_email = [{'order_id': order['_id'], 'email': order['email'], 'product_name': order.get('product_name'), 'quantity': order['quantity'], 'address': order['address'], 'price': order['price'], 'date': order['date'], 'tatus': order.get('status')} for order in orders]
+    orders = db.orders.find().sort('date', -1)
+    orders_with_email = [
+        {
+            'order_id': str(order['_id']),
+            'email': order['email'],
+            'product_name': order['product_name'],
+            'quantity': order['quantity'],
+            'address': order['address'],
+            'price': order['price'],
+            'date': order['date'].strftime("%Y-%m-%d %H:%M:%S"),
+            'status': order.get('status')
+        }
+        for order in orders
+    ]
     return render_template('status_pesanan.html', orders=orders_with_email)
+
 
 @app.route('/list', methods=['GET'])
 def list():
