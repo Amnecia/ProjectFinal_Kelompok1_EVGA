@@ -1,0 +1,338 @@
+{% include 'header.html' %}
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Website Name</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Sedan+SC&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+    <link href="../static/assets/mystyle.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/1L_dstPt3HV5HzF6Gvk/e3s4Wz6iJgD/+ub2oU"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script
+      src="https://kit.fontawesome.com/d46734533e.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 0;
+      }
+      .content-container {
+        padding-top: 80px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .content {
+        width: 80%;
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+      .order-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 10px;
+      }
+      .details {
+        flex-grow: 1;
+      }
+      .remove {
+        background-color: #ddd;
+        border: 1px solid #ccc;
+        padding: 10px;
+        cursor: pointer;
+      }
+      .content img {
+        width: 150px;
+        height: 150px;
+        background-color: #eee;
+        display: block;
+        margin-right: 20px;
+      }
+      .quantity-controls {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+      }
+      .quantity-controls button {
+        padding: 2px 8px;
+        border: 1px solid #ddd;
+        background-color: #f8f8f8;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .quantity-controls span {
+        margin: 0 10px;
+        font-size: 14px;
+      }
+      .total-container {
+        width: 80%;
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .total-container .total-price {
+        font-size: 20px;
+        font-weight: bold;
+      }
+      .total-container .checkout-button {
+        background-color: #ffa500;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        width: 100%;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        top: 60px;
+        padding-top: 10px;
+      }
+      .dropdown-content a:hover {
+        background-color: #f1f1f1;
+      }
+      .show {
+        display: block;
+      }
+      .profile-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .profile-info img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+      .profile-info .edit-profile {
+        color: black;
+        font-weight: bold;
+        font-size: 18px;
+        margin-right: 10px;
+      }
+      .logout-box {
+        border: 1px solid black;
+        padding: 5px 10px;
+        display: inline-block;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Konten utama -->
+    <div class="content-container" id="produk-cart">
+      {% for item in cart_items %}
+      <div
+        class="content"
+        data-order-id="{{ item.product_id }}"
+        data-price="{{ item.harga }}"
+        data-item-id="{{ item._id }}"
+      >
+        <div class="order-item">
+          <input
+            type="checkbox"
+            class="select-order me-4"
+            value="{{ item.product_id }}"
+          />
+          <img src="#" alt="Image Placeholder" class="mx-3" />
+          <div class="details">
+            <h3>{{ item.nama }} X {{item.quantity}}</h3>
+            <p><strong>Harga:</strong> {{ item.harga }}</p>
+            <div class="quantity-controls">
+              <button class="decrease">-</button>
+              <span class="quantity">{{ item.quantity }}</span>
+              <button class="increase">+</button>
+            </div>
+            <p><strong>Contact:</strong> {{ item.contact }}</p>
+            <p><strong>Address:</strong> {{ item.address }}</p>
+            <div class="price">
+              Rp. {{ "{:,}".format(item.harga * item.quantity) }}
+            </div>
+          </div>
+          <div class="remove">X</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <!-- Total Harga dan Checkout -->
+    <div class="total-container">
+      <div class="total-price">Total Harga: Rp. 0</div>
+      <button class="checkout-button" onclick="checkout()">Checkout</button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        function updateTotal() {
+          let total = 0;
+          $(".content").each(function () {
+            if ($(this).find(".select-order").is(":checked")) {
+              const quantity = parseInt($(this).find(".quantity").text());
+              const price = parseInt($(this).data("price"));
+              total += quantity * price;
+            }
+          });
+          $(".total-price").text("Total Harga: Rp. " + total.toLocaleString());
+        }
+
+        function updateItemPrice(itemElem) {
+          const quantity = parseInt(itemElem.find(".quantity").text());
+          const price = parseInt(itemElem.data("price"));
+          const totalPrice = quantity * price;
+          itemElem.find(".price").text("Rp. " + totalPrice.toLocaleString());
+        }
+
+        // Update the item prices on page load
+        $(".content").each(function () {
+          updateItemPrice($(this));
+        });
+
+        $(document).on("click", ".increase", function () {
+          const quantityElem = $(this).siblings(".quantity");
+          const newQuantity = parseInt(quantityElem.text()) + 1;
+          quantityElem.text(newQuantity);
+          const contentElem = $(this).closest(".content");
+          updateItemPrice(contentElem);
+          updateTotal();
+        });
+
+        $(document).on("click", ".decrease", function () {
+          const quantityElem = $(this).siblings(".quantity");
+          const currentQuantity = parseInt(quantityElem.text());
+          if (currentQuantity > 1) {
+            const newQuantity = currentQuantity - 1;
+            quantityElem.text(newQuantity);
+            const contentElem = $(this).closest(".content");
+            updateItemPrice(contentElem);
+            updateTotal();
+          }
+        });
+
+        $(document).on("click", ".remove", function () {
+          const contentElem = $(this).closest(".content");
+          const itemId = contentElem.data("item-id");
+
+          $.ajax({
+            url: "/remove_item",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ item_id: itemId }),
+            success: function (data) {
+              if (data.result === "success") {
+                contentElem.remove();
+                updateTotal();
+              } else {
+                alert("Failed to remove item: " + data.message);
+              }
+            },
+            error: function (err) {
+              alert("Error: " + err.responseText);
+            },
+          });
+        });
+
+        $(document).on("change", ".select-order", function () {
+          updateTotal();
+        });
+
+        updateTotal();
+      });
+
+      function checkout() {
+        const selectedOrders = [];
+        // Iterate over each item in the cart
+        $(".content").each(function () {
+          // Check if the item is selected (checkbox is checked)
+          if ($(this).find(".select-order").is(":checked")) {
+            // Extract data from the selected item
+            const orderId = $(this).data("order-id");
+            const nama = $(this).find("h3").text();
+            const harga = parseInt($(this).data("price"));
+            const quantity = parseInt($(this).find(".quantity").text());
+            const email = $(this).find("p:nth-child(2)").text().split(": ")[1];
+            const address = $(this)
+              .find("p:nth-child(3)")
+              .text()
+              .split(": ")[1];
+            // Add the data to the selectedOrders array
+            selectedOrders.push({
+              orderId,
+              nama,
+              harga,
+              quantity,
+              email,
+              address,
+            });
+          }
+        });
+
+        // Check if any items were selected
+        if (selectedOrders.length > 0) {
+          console.log(selectedOrders); // Log selected orders to console for debugging
+          // Send the selected orders to the server using AJAX
+          $.ajax({
+            url: "/checkout",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ orders: selectedOrders }),
+            success: function (data) {
+              // Handle success response
+              if (data.result === "success") {
+                window.location.href = "/status_pesanan";
+              } else {
+                alert("Failed to checkout: " + data.message);
+              }
+            },
+            error: function (err) {
+              // Handle error response
+              alert("Error: " + err.responseText);
+            },
+          });
+        } else {
+          alert("Please select at least one order to checkout.");
+        }
+      }
+    </script>
+  </body>
+</html>
