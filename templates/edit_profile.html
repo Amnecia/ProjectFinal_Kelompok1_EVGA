@@ -38,58 +38,155 @@
     />
     <style>
       body {
-        font-family: sans-serif;
-      }
-      .container {
+        font-family: "Oswald", sans-serif;
+        background-color: #f5f5f5;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
+        min-height: 100vh;
+        margin: 0;
       }
-      .card {
+
+     .card {
         background-color: #fff;
-        padding: 20px;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 400px;
+        width: 500px;
+        padding: 30px;
+        position: relative;
       }
-      .input-group {
+
+     .card h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+      }
+
+     .input-group {
         margin-bottom: 15px;
       }
-      .input-group label {
+
+     .input-group label {
         display: block;
         margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
       }
-      .input-group input {
+
+     .input-group input {
         width: 100%;
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
+        font-size: 16px;
       }
 
-      .button-group {
+     .input-group input::placeholder {
+        color: #999;
+      }
+
+     .button-group {
         display: flex;
         justify-content: space-between;
+        margin-top: 30px;
       }
-      .button-group button {
+
+     .button-group button {
         padding: 10px 20px;
         border: none;
         border-radius: 5px;
         cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
       }
-      .button-group button.cancel {
+
+     .button-group button.cancel {
         background-color: #ccc;
         color: #333;
       }
-      .button-group button.save {
-        background-color: #4caf50;
+
+     .button-group button.cancel:hover {
+        background-color: #ddd;
+      }
+
+     .button-group button.save {
+        background-color: #d00000;
         color: #fff;
+      }
+
+     .button-group button.save:hover {
+        background-color: #7b0000;
+      }
+
+     .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0 auto;
+      }
+     .profile-picture {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        overflow: hidden;
+        position: relative;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+    .profile-picture img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+    .profile-picture label {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        overflow: hidden;
+        position: relative;
+        cursor: pointer;
+      }
+
+    .profile-picture label:hover {
+        background-color: rgba(0, 0, 0, 0.7);
+      }
+
+    .profile-picture label::before {
+        content: "Change Profile Picture";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #fff;
+        font-size: 14px;
+        text-align: center;
+        display: none;
+      }
+
+    .profile-picture label:hover::before {
+        display: block;
       }
     </style>
     <script>
       $(document).ready(function () {
         get_profile();
+        $("#profilePicture").on("change", function () {
+          const file = this.files[0];
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            $("#profilePicturePreview").attr("src", e.target.result);
+          };
+          reader.readAsDataURL(file);
+        });
       });
+
       function get_profile() {
         $.ajax({
           type: "GET",
@@ -116,18 +213,23 @@
         var address = $("#address").val();
         var phoneNumber = $("#phoneNumber").val();
         var password = $("#password").val();
+        var profilePicture = $("#profilePicture")[0].files[0];
+
+        var formData = new FormData();
+        formData.append("fullName_give", fullname);
+        formData.append("username_give", username);
+        formData.append("email_give", email);
+        formData.append("address_give", address);
+        formData.append("phoneNumber_give", phoneNumber);
+        formData.append("password_give", password);
+        formData.append("profilePicture", profilePicture);
 
         $.ajax({
           type: "POST",
           url: "/edit_profile",
-          data: {
-            fullName_give: fullname,
-            username_give: username,
-            email_give: email,
-            address_give: address,
-            phoneNumber_give: phoneNumber,
-            password_give: password,
-          },
+          data: formData,
+          contentType: false,
+          processData: false,
           success: function (response) {
             if (response.result === "success") {
               alert("Profile updated successfully");
@@ -147,12 +249,22 @@
     <div class="container">
       <div class="card">
         <h2>Edit profile</h2>
+        <div class="profile-picture">
+          <label for="profilePicture">
+            <img
+              id="profilePicturePreview"
+              src="https://via.placeholder.com/100x100.png?text=Profile+Picture"
+              alt="Profile Picture Preview"
+            />
+          </label>
+          <input type="file" id="profilePicture" accept="image/*" style="display: none;" />
+        </div>
         <div class="input-group">
-          <label for="fullName">full name</label>
+          <label for="fullName">First Name</label>
           <input type="text" id="fullname" placeholder="Mehrab" />
         </div>
         <div class="input-group">
-          <label for="username">username</label>
+          <label for="username">Last Name</label>
           <input type="text" id="username" placeholder="Bozorgi" />
         </div>
         <div class="input-group">
@@ -175,6 +287,7 @@
           <label for="password">Password</label>
           <input type="password" id="password" />
         </div>
+
         <div class="button-group">
           <button class="cancel" onclick="window.location.href='/'">
             Cancel

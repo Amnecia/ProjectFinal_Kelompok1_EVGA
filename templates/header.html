@@ -48,197 +48,212 @@
         font-style: normal;
       }
       .navbar {
-        background-color: #ff4500; /* red background */
-        border-bottom: 1px solid #444; /* dark gray border */
-        padding: 1rem 0;
-      }
+  background-color: #ff4500; /* red background */
+  border-bottom: 1px solid #444; /* dark gray border */
+  padding: 1rem 0;
+}
 
-      .container-fluid {
-        position: relative; /* Add this line */
-      }
+.container-fluid {
+  position: relative; /* Add this line */
+}
 
-      .navbar-brand {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #ffffff; /* white text */
-      }
-      .navbar-brand:hover {
-        color: #9c9c9c;
-      }
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff; /* white text */
+}
+.navbar-brand:hover {
+  color: #9c9c9c;
+}
 
-      .btn-navbar {
-        font-size: 18px;
-        font-weight: bold;
-        background-color: #ff4500; /* green background */
-        color: white;
-        border: none;
-        padding: 0.5rem 1rem;
-        margin-right: 1rem;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-      }
+.btn-navbar {
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #ff4500; /* green background */
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
 
-      .btn-navbar:hover {
-        color: #ffffff;
-        background-color: #d00000; /* darker green on hover */
-      }
+.btn-navbar:hover {
+  color: #ffffff;
+  background-color: #d00000; /* darker green on hover */
+}
 
-      .btn-login {
-        width: 125px;
-        background-color: #100c08; /* purple background */
-        color: white;
-        border: none;
-        padding: 0.7rem 1.5rem; /* Increase padding to make the button larger */
-        margin-right: 1rem;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-        position: absolute; /* Add this line */
-        right: 120px; /* Adjust the value to position the button correctly */
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 1.2rem; /* Increase font size */
-        text-align: center; /* Center the text */
-      }
+.btn-login {
+  width: 125px;
+  background-color: #100c08; /* purple background */
+  color: white;
+  border: none;
+  padding: 0.7rem 1.5rem; /* Increase padding to make the button larger */
+  margin-right: 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  /* Remove absolute positioning and related styles */
+  position: static;
+  right: auto;
+  top: auto;
+  transform: none;
+  font-size: 1.2rem; /* Increase font size */
+  text-align: center; /* Center the text */
+}
 
-      .btn-login:hover {
-        color: rgb(255, 255, 255);
-        background-color: #585858; /* darker purple on hover */
-      }
+.btn-login:hover {
+  color: rgb(255, 255, 255);
+  background-color: #585858; /* darker purple on hover */
+}
 
-      .btn-checkout {
-        width: 375px;
-        background-color: #ff4500; /* orange background */
-        color: white;
-        border: none;
-        padding: 0.5rem 1rem;
-        margin-right: 1rem;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-      }
+.btn-checkout {
+  width: 375px;
+  background-color: #ff4500; /* orange background */
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
 
-      .btn-checkout:hover {
-        color: white;
-        background-color: #d00000; /* darker orange on hover */
-      }
+.btn-checkout:hover {
+  color: white;
+  background-color: #d00000; /* darker orange on hover */
+}
 
-      /* Additional styles for mobile navigation */
-      @media (max-width: 768px) {
-        .navbar-brand {
-          font-size: 1.2rem;
-        }
-        .btn-navbar {
-          padding: 0.4rem 0.8rem;
-          margin-right: 0.5rem;
-        }
-        .btn-login {
-          padding: 0.4rem 0.8rem;
-          margin-right: 0.5rem;
-        }
-        .btn-checkout {
-          padding: 0.4rem 0.8rem;
-          margin-right: 0.5rem;
-        }
-        .btn-login,
-        .btn-checkout {
-          position: static; /* Remove absolute positioning */
-          top: auto;
-          transform: none;
-        }
-        .btn-checkout {
-          margin-right: 1rem;
-        }
-      }
+/* Additional styles for mobile navigation */
+@media (max-width: 768px) {
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+  .btn-navbar {
+    padding: 0.4rem 0.8rem;
+    margin-right: 0.5rem;
+  }
+  .btn-login {
+    padding: 0.4rem 0.8rem;
+    margin-right: 0.5rem;
+  }
+  .btn-checkout {
+    padding: 0.4rem 0.8rem;
+    margin-right: 0.5rem;
+  }
+  .btn-login,
+  .btn-checkout {
+    position: static; /* Remove absolute positioning */
+    top: auto;
+    transform: none;
+  }
+  .btn-checkout {
+    margin-right: 1rem;
+  }
+}
 
-      .navbar-toggler {
-        border: none;
-        background-color: transparent;
-      }
+.navbar-toggler {
+  border: none;
+  background-color: transparent;
+}
 
-      .navbar-toggler:hover {
-        border: none;
-        background-color: #d00000;
-      }
+.navbar-toggler:hover {
+  border: none;
+  background-color: #d00000;
+}
 
-      .navbar-toggler:focus {
-        box-shadow: none;
-        border: none;
-      }
+.navbar-toggler:focus {
+  box-shadow: none;
+  border: none;
+}
 
-      .offcanvas-header {
-        background-color: #ff4500; /* green background */
-        color: white;
-      }
+.offcanvas-header {
+  background-color: #ff4500; /* green background */
+  color: white;
+}
 
-      .offcanvas-title {
-        font-family: "Oswald", sans-serif;
-        font-size: 1.2rem;
-        font-weight: 700;
-      }
+.offcanvas-title {
+  font-family: "Oswald", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
 
-      .btn-close-white {
-        background-color: white;
-      }
+.btn-close-white {
+  background-color: white;
+}
 
-      .logout {
-        font-size: 20px;
-        width: 375px;
-        text-align: left;
-        background-color: #ffc107; /* orange background */
-        color: white;
-        border: none;
-        padding: 0.5rem 1rem;
-        margin-right: 1rem;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-      }
+.logout {
+  font-size: 20px;
+  width: 375px;
+  text-align: left;
+  background-color: #ffc107; /* orange background */
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
 
-      .logout:hover {
-        background-color: #ffa07a; /* darker orange on hover */
-      }
+.logout:hover {
+  background-color: #ffa07a; /* darker orange on hover */
+}
 
-      /* Additional styles for mobile navigation */
-      @media (max-width: 768px) {
-        .navbar-brand {
-          font-size: 1.2rem;
-        }
-        .btn-navbar {
-          padding: 0.4rem 0.8rem;
-          margin-right: 0.5rem;
-        }
-        .btn-login {
-          padding: 0.4rem 0.8rem;
-          margin-right: 0.5rem;
-        }
-        .btn-checkout {
-          padding: 0.4rem 0.8rem;
-          margin-right: 0.5rem;
-        }
-        .btn-login,
-        .btn-checkout {
-          position: static; /* Remove absolute positioning */
-          top: auto;
-          transform: none;
-        }
-        .btn-checkout {
-          margin-right: 1rem;
-        }
-      }
+/* Additional styles for mobile navigation */
+/* ... existing styles ... */
 
-      .btn-navbar,
-      .btn-login,
-      .btn-checkout {
-        text-decoration: none;
-      }
+/* Additional styles for mobile navigation */
+@media (max-width: 768px) {
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+  .btn-navbar {
+    padding: 0.4rem 0.8rem;
+    margin-right: 0.5rem;
+  }
+  .btn-login {
+    padding: 0.4rem 0.8rem;
+    margin-right: 0.5rem;
+  }
+  .btn-checkout {
+    padding: 0.4rem 0.8rem;
+    margin-right: 0.5rem;
+  }
+  .btn-login,
+  .btn-checkout {
+    position: static; /* Remove absolute positioning */
+    top: auto;
+    transform: none;
+  }
+  .btn-checkout {
+    margin-right: 1rem;
+  }
+  /* Exclude navbar-toggler from the position reset */
+  .navbar-toggler {
+    position: relative; /* Keep the button visible */
+  }
+}
 
-      /* Add styles to align checkout button */
-      .nav-item .nav-link {
-        display: block;
-        margin-bottom: 10px;
-      }
+/* ... rest of your styles ... */
 
-      .btn-checkout {
-        display: block;
-      }
+.btn-navbar,
+.btn-login,
+.btn-checkout {
+  text-decoration: none;
+}
+
+/* Add styles to align checkout button */
+.nav-item .nav-link {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.btn-checkout {
+  display: block;
+}
+
+/*  Change the display direction to row-reverse */
+.d-flex.flex-row {
+  flex-direction: row-reverse;
+}
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
@@ -323,7 +338,7 @@
               <li class="nav-item">
                 <div class="d-flex align-items-center">
                   <img
-                    src="https://github.com/mdo.png"
+                    src="https://www.seekpng.com/png/detail/966-9665317_placeholder-image-person-jpg.png"
                     alt=""
                     width="48"
                     height="48"
