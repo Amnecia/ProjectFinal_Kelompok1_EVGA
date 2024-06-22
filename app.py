@@ -384,13 +384,11 @@ def submit_review(_id):
     if produk:
         rating = request.form['rating']
         review_text = request.form['deskripsiProduk']
-        username = # fetch the current user's username from the session or database
         # Create a new review document
         review = {
             'produk_id': _id,
             'rating': int(rating),
             'review_text': review_text,
-            'username': username,
             'created_at': datetime.utcnow()
         }
         # Insert the review into the database
@@ -399,11 +397,11 @@ def submit_review(_id):
         return redirect(url_for('detail_produk', _id=_id))
     return 'Error: Product not found', 404
 
+
 @app.route('/detail/<_id>', methods=['GET'])
 def detail_produk(_id):
     produk = db.produk.find_one({'_id': ObjectId(_id)})
-    reviews = db.reviews.find({'produk_id': _id})
-    return render_template('detail_produk.html', produk=produk, reviews=reviews)
+    return render_template('detail_produk.html', produk=produk, id=_id)
 
 @app.route('/cart', methods=['GET'])
 def cart():

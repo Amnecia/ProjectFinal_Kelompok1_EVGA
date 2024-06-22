@@ -464,23 +464,22 @@ display: flex;
   <h3 style="margin-left:20px; margin-top:20px;">Reviews</h3>
   </div>
   <div class="reviews-wrapper" style="height: 300px; overflow-y: auto;">
-    <div class="reviews-container">
-      {% for review in produk.reviews %}
-        <div class="review-item">
-          <img src="https://wallpapercave.com/wp/wp6183733.jpg" alt="User 1" class="review-user-picture">
-          <div class="review-content">
-            <p class="review-user-name">{{ review.username }}</p>
-            <div class="review-stars">
-              {% for i in range(review.rating) %}
-                <i class="fas fa-star" aria-hidden="true"></i>
-              {% endfor %}
-            </div>
-            <p class="review-description">{{ review.review_text }}</p>
-            <p class="review-date">{{ review.created_at }}</p>
-          </div>
+  <div class="reviews-container">
+    <div class="review-item">
+      <img src= "https://wallpapercave.com/wp/wp6183733.jpg" alt="User 1" class="review-user-picture">
+      <div class="review-content">
+        <p class="review-user-name">John Doe</p>
+        <div class="review-stars">
+          <i class="fas fa-star" aria-hidden="true"></i>
+          <i class="fas fa-star" aria-hidden="true"></i>
+          <i class="fas fa-star" aria-hidden="true"></i>
+          <i class="fas fa-star" aria-hidden="true"></i>
+          <i class="fas fa-star" aria-hidden="true"></i>
         </div>
-      {% endfor %}
+        <p class="review-description">These headphones are amazing! The sound quality is incredible and the noise-cancelling feature is so effective. I highly recommend them!</p>
+      </div>
     </div>
+  </div>
 
   </div>
 
