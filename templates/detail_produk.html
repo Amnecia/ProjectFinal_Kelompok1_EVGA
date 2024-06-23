@@ -407,164 +407,140 @@ display: flex;
   </style>
 </head>
 <body>
-  <br>
-  <br>
-  <br>
-  <div class="container-product">
-    <div class="main-image-container">
-      <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="{{ url_for('static', filename='assets/productImage/' + produk.image1) }}" class="product-image">
-          </div>
-          <div class="carousel-item">
-            <img src="{{ url_for('static', filename='assets/productImage/' + produk.image2) }}" class="product-image">
-          </div>
-          <div class="carousel-item">
-            <img src="{{ url_for('static', filename='assets/productImage/' + produk.image3) }}" class="product-image">
-          </div>
+<!-- Main Product Section -->
+<br><br><br>
+<div class="container-product">
+  <div class="main-image-container">
+    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="{{ url_for('static', filename='assets/productImage/' + produk.image1) }}" class="product-image">
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-          <i class="fas fa-chevron-left" aria-hidden="true"></i>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-          <i class="fas fa-chevron-right" aria-hidden="true"></i>
-          <span class="visually-hidden">Next</span>
-        </button>
+        <div class="carousel-item">
+          <img src="{{ url_for('static', filename='assets/productImage/' + produk.image2) }}" class="product-image">
+        </div>
+        <div class="carousel-item">
+          <img src="{{ url_for('static', filename='assets/productImage/' + produk.image3) }}" class="product-image">
+        </div>
       </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <i class="fas fa-chevron-left" aria-hidden="true"></i>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <i class="fas fa-chevron-right" aria-hidden="true"></i>
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
-<<<<<<< HEAD
+  </div>
 
-=======
-    <div class="product-info">
-      <h1>{{ produk.nama }}</h1> 
-      <div class="product-description">
-        <p class="description">{{ produk.deskripsi }}</p>
-        <div class="star-rating ms-2">
-          {% for i in range(5) %}
-            {% if i < average_rating %}
-              <i class="fas fa-star" style="color: #FFD43B;"></i>
-            {% else %}
-              <i class="fa-regular fa-star" style="color: #FFD43B;"></i>
-            {% endif %}
-          {% endfor %}
-          <span style="font-size: 16px; margin-left: 10px;">({{ review_count }} reviews)</span>
-        </div>
-        <div class="price-container">
-          <h2 style="font-weight: bold;">Rp. {{ produk.harga }}</h2>
-          <div class="quantity-input">
-            <button>-</button>
-            <input type="number" min="1" value="1">
-            <button>+</button>
-          </div>
-        </div>
+  <div class="product-info">
+    <h1>{{ produk.nama }}</h1> 
+    <div class="product-description">
+      <p class="description">{{ produk.deskripsi }}</p>
+      <div class="star-rating ms-2">
+        {% for i in range(5) %}
+          {% if i < average_rating %}
+            <i class="fas fa-star" style="color: #FFD43B;"></i>
+          {% else %}
+            <i class="fa-regular fa-star" style="color: #FFD43B;"></i>
+          {% endif %}
+        {% endfor %}
+        <span style="font-size: 16px; margin-left: 10px;">({{ review_count }} reviews)</span>
       </div>
-      <div class="add-to-cart-btn-container">
-        <button class="add-to-cart-btn" onclick="user_order()">Add to Cart</button>
+      <div class="price-container">
+        <h2 style="font-weight: bold;">Rp. {{ produk.harga }}</h2>
+        <div class="quantity-input">
+          <button>-</button>
+          <input type="number" min="1" value="1">
+          <button>+</button>
+        </div>
       </div>
     </div>
->>>>>>> b58ce685ecc3a63af3c509e47463549b88d03c82
+    <div class="add-to-cart-btn-container">
+      <button class="add-to-cart-btn" onclick="user_order()">Add to Cart</button>
     </div>
   </div>
-  <div class="review-section">
+</div>
+
+<!-- Review Section -->
+<div class="review-section">
   <h3 style="margin-left:20px; margin-top:20px;">Reviews</h3>
-  </div>
-  <div class="reviews-wrapper" style="height: 300px; overflow-y: auto;">
+</div>
+<div class="reviews-wrapper" style="height: 300px; overflow-y: auto;">
   <div class="reviews-container">
     <h2>Reviews ({{ review_count }})</h2>
     {% for review in reviews %}
-    <div class="review-item">
-      <img src="{{ url_for('static', filename='assets/profilePictures/' + review.profile_picture) }}" alt="Profile Picture">      <div class="review-content">
-        <p class="review-user-name">{{ review.username}}</p>
-        <div class="review-stars">
-       {% for i in range(review.rating) %}
-          <i class="fas fa-star" aria-hidden="true"></i>
-          {% endfor %}
+      <div class="review-item">
+        <img src="{{ url_for('static', filename='assets/profilePictures/' + (review.profile_picture if review.profile_picture else 'default.jpg')) }}" alt="Profile Picture">
+        <div class="review-content">
+          <p class="review-user-name">{{ review.username}}</p>
+          <div class="review-stars">
+            {% for i in range(review.rating) %}
+              <i class="fas fa-star" aria-hidden="true"></i>
+            {% endfor %}
+          </div>
+          <p class="review-description">{{ review.review_text }}</p>
+          <span>{{ review.today }}</span>
         </div>
-        <p class="review-description">{{review.review_text}}</p>
-        <span>{{ review.today }}</span>
       </div>
-    </div>
     {% endfor %}
   </div>
-
-  </div>
-
 </div>
+
+<!-- Review Button -->
 <div class="bottom">
   <a href="{{ url_for('form_ulasan', _id=produk._id) }}" class="review-btn">Leave a Review</a>
 </div>
-  <script>
-function user_order() {
-  var quantity = $(".quantity-input input").val();
-  var productId = "{{ produk._id }}";
-  console.log( productId);
-  $.ajax({
-    url: "/order",
-    method: "POST",
-    data: {
-      productId: productId,
-      quantity: quantity,
-    },
-    success: function (response) {
-      alert("Product added to cart!");
-    },
-    error: function (xhr, status, error) {
-      alert("Error adding product to cart. Please try again.");
-    },
-  });
-}
 
-    // let addToCartBtn = document.querySelector('.add-to-cart-btn');
-    // let quantityInput = document.querySelector('.quantity-input input');
-    // let cartItems = [];
+<script>
+  function user_order() {
+    var quantity = $(".quantity-input input").val();
+    var productId = "{{ produk._id }}";
+    console.log(productId);
+    $.ajax({
+      url: "/order",
+      method: "POST",
+      data: {
+        productId: productId,
+        quantity: quantity,
+      },
+      success: function (response) {
+        alert("Product added to cart!");
+      },
+      error: function (xhr, status, error) {
+        alert("Error adding product to cart. Please try again.");
+      },
+    });
+  }
 
-    // addToCartBtn.addEventListener('click', function() {
-    //   let product = {
-    //     title: '{{ produk.nama }}', // Assuming you are using a template engine like Jinja2
-    //     price: {{ produk.harga }}, // Assuming you are using a template engine like Jinja2
-    //     quantity: parseInt(quantityInput.value)
-    //   };
+  let quantityBtn = document.querySelectorAll('.quantity-input button');
+  quantityBtn.forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      let input = e.target.closest('.quantity-input').querySelector('input');
+      let quantity = parseInt(input.value);
 
-    //   cartItems.push(product);
-    //   localStorage.setItem('cartItems', JSON.stringify(cartItems)); // Store cart items in localStorage
-    //   window.location.href = 'order.html'; // Redirect to the order page
-    // });
-
-    let quantityBtn = document.querySelectorAll('.quantity-input button');
-
-    quantityBtn.forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
-        let input = e.target.closest('.quantity-input').querySelector('input');
-        let quantity = parseInt(input.value);
-
-        if (e.target.textContent === '-') {
-          if (quantity > 1) {
-            input.value = quantity - 1;
-          }
-        } else if (e.target.textContent === '+') {
-          input.value = quantity + 1;
+      if (e.target.textContent === '-') {
+        if (quantity > 1) {
+          input.value = quantity - 1;
         }
-      });
+      } else if (e.target.textContent === '+') {
+        input.value = quantity + 1;
+      }
     });
+  });
 
-    document.getElementById('carouselExample').addEventListener('slide.bs.carousel', function(event) {
-      var img = event.relatedTarget.querySelector('img');
-      document.getElementById('main-image').src = img.src;
-    });
-    // Add a JavaScript function to handle scrolling
-const reviewsWrapper = document.querySelector('.reviews-wrapper');
+  document.getElementById('carouselExample').addEventListener('slide.bs.carousel', function(event) {
+    var img = event.relatedTarget.querySelector('img');
+    document.getElementById('main-image').src = img.src;
+  });
 
-reviewsWrapper.addEventListener('scroll', function() {
-  // You can add additional functionality here, such as loading more reviews when the user reaches the end of the container
-  console.log('Scrolling...');
-});
-
-
-  </script>
-
-</body>
+  // Handle scrolling in the review section
+  const reviewsWrapper = document.querySelector('.reviews-wrapper');
+  reviewsWrapper.addEventListener('scroll', function() {
+    console.log('Scrolling...');
+  });
+</script>
 </html>
 
 

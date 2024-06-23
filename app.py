@@ -409,16 +409,41 @@ def submit_review(_id):
             return 'Error: Invalid token', 401
     return 'Error: Product not found', 404
 
+# @app.route('/detail/<_id>', methods=['GET'])
+# def detail_produk(_id):
+#     produk = db.produk.find_one({'_id': ObjectId(_id)})
+#     reviews = db.reviews.find({'produk_id': _id}) 
+#     print(reviews)  # Query reviews based on produk_id
+#     total_rating = 0
+#     review_count = 0
+
+#     for review in reviews:
+#         total_rating += review['rating']
+#         review_count += 1
+
+#     if review_count > 0:
+#         average_rating = total_rating / review_count
+#     else:
+#         average_rating = 0
+
+#     return render_template('detail_produk.html', produk=produk, id=_id, average_rating=average_rating, review_count=review_count, reviews=reviews)
 @app.route('/detail/<_id>', methods=['GET'])
 def detail_produk(_id):
-    produk = db.produk.find_one({'_id': ObjectId(_id)})
-    reviews = db.reviews.find({'produk_id': _id})  # Query reviews based on produk_id
+    produk_id = ObjectId(_id)
+
+    produk = db.produk.find_one({'_id': produk_id})
+    if not produk:
+        return "Product not found", 404  # Return a 404 Not Found response if the product does not exist
+
+    reviews_cursor = db.reviews.find({'produk_id': _id})
+    reviews = list(reviews_cursor)  # Convert the cursor to a list
+
     total_rating = 0
-    review_count = 0
+    review_count = len(reviews)
 
     for review in reviews:
-        total_rating += review['rating']
-        review_count += 1
+        review['profile_picture'] = review.get('profile_picture', 'default.jpg')
+        total_rating += review.get('rating', 0)
 
     if review_count > 0:
         average_rating = total_rating / review_count
@@ -426,6 +451,7 @@ def detail_produk(_id):
         average_rating = 0
 
     return render_template('detail_produk.html', produk=produk, id=_id, average_rating=average_rating, review_count=review_count, reviews=reviews)
+
 
 @app.route('/cart', methods=['GET'])
 def cart():
