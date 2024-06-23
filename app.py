@@ -368,27 +368,6 @@ def Etalase():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
-@app.route("/secret")
-def secret():
-    token_receive = request.cookies.get(TOKEN_KEY)
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
-        email = payload["id"]
-        user = db.users.find_one({"email": email}, {"_id": False})
-        if not user:
-            user = db.admin.find_one({"email": email}, {"_id": False})
-
-        if user:
-            user_info = db.users.find_one({"email": email}, {"_id": False})
-            if not user_info:
-                user_info = db.admin.find_one({"email": email}, {"_id": False})
-
-            return render_template("secret.html", user_info=user_info)
-        else:
-            return redirect(url_for("home"))
-
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for("home"))
 
 
 @app.route('/submit_review/<_id>', methods=['POST'])
@@ -441,7 +420,6 @@ def cart():
             email = user["email"]
             cart_items = db.carts.find({"email":email})
             test = [item for item in cart_items]
-            print(test)
 
             return render_template('order.html',cart_items=test)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
@@ -459,77 +437,6 @@ def remove_item():
         return jsonify({'result': 'success'})
     except Exception as e:
         return jsonify({'result': 'error', 'message': str(e)}), 500
-
-
-
-
-
-@app.route('/view_cart', methods=['GET'])
-def view_cart():
-    token_receive = request.cookies.get(TOKEN_KEY)
-    cart_key = request.cookies.get(CART_KEY)
-    try:
-        if token_receive:
-            payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
-            id_user = payload["id"]
-            user = db.users.find_one({'_id': ObjectId(id_user)})
-
-            if user:
-                email = user["email"]
-                user_cart_items = list(
-                db.carts.find({"email": email}).sort("date", -1).limit(20)
-            )
-
-                # Convert ObjectId to string
-                for item in user_cart_items:
-                    item["_id"] = str(item["_id"])
-                    item["product_id"] = str(item["product_id"])
-
-                if user_cart_items:
-                    return jsonify({
-                        "result": "success",
-                        "cart_items": user_cart_items
-                    })
-                else:
-                    return jsonify({"result": "error", "message": "No items in user cart"}), 404
-            else:
-                return jsonify({"result": "error", "message": "User not found"}), 404
-        elif cart_key:
-            guest_cart_items = list(db.guest_order.find({'id_cart': cart_key}))
-
-            # Convert ObjectId to string
-            for item in guest_cart_items:
-                item["_id"] = str(item["_id"])
-                item["product_id"] = str(item["product_id"])
-
-            if guest_cart_items:
-                return jsonify({
-                    "result": "success",
-                    "cart_items": guest_cart_items
-                })
-            else:
-                return jsonify({"result": "error", "message": "No items in guest cart"}), 404
-        else:
-            return jsonify({"result": "error", "message": "No cart found"}), 404
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        if cart_key:
-            guest_cart_items = list(db.guest_order.find({'id_cart': cart_key}))
-
-            # Convert ObjectId to string
-            for item in guest_cart_items:
-                item["_id"] = str(item["_id"])
-                item["product_id"] = str(item["product_id"])
-
-            if guest_cart_items:
-                return jsonify({
-                    "result": "success",
-                    "cart_items": guest_cart_items
-                })
-            else:
-                return jsonify({"result": "error", "message": "No items in guest cart"}), 404
-        else:
-            return jsonify({"result": "error", "message": "No cart found"}), 404
-
 
 
 @app.route('/order', methods=['POST'])
@@ -604,53 +511,119 @@ def checkout():
     if not orders:
         return jsonify({'result': 'error', 'message': 'No orders selected.'}), 400
 
+    # Calculate the total price
+    total_price = sum(order['harga'] * order['quantity'] for order in orders)
+
+    # Prepare the order data to be inserted
     order_data = {
-        'orders': orders
+        '_id': ObjectId(),  # Automatically generate an ObjectId
+        'orders': orders,
+        'date': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),  # Add the current date and time
+        'status': 'is being prepared',  # Set the default status
+        'total': total_price  # Calculate and add the total price
     }
 
+    # Insert the order data into the database
     result = db.orders.insert_one(order_data)
 
     if result.inserted_id:
+        # Extract orderIds from the orders to delete from carts
+        order_ids = [order['orderId'] for order in orders]
+
+        # Delete the items from the carts collection
+        db.carts.delete_many({'orderId': {'$in': order_ids}})
+        
         return jsonify({'result': 'success'})
     else:
         return jsonify({'result': 'error', 'message': 'Failed to save order.'}), 500
 
 
+# @app.route('/status_pesanan')
+# def status_pesanan():
+#     token_receive = request.cookies.get(TOKEN_KEY)
+#     try:
+#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+#         id_user = payload["id"]
+#         user = db.users.find_one({"_id": ObjectId(id_user)}, {"_id": False})
+#         email = user["email"]
+
+    # return render_template('test_status.html')
+
+
 @app.route('/status_pesanan')
-def status_pesanan():
+def get_orders():
     token_receive = request.cookies.get(TOKEN_KEY)
+    if not token_receive:
+        return jsonify({"error": "Missing token"}), 401
+
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
-        id_user = payload["id"]
-        user = db.users.find_one({"_id": ObjectId(id_user)}, {"_id": False})
-        email = user["email"]
+    except jwt.ExpiredSignatureError:
+        return jsonify({"error": "Token expired"}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({"error": "Invalid token"}), 401
 
-    return render_template('test_status.html')
-@app.route('/get_order', methods=['GET'])
-def get_order():
-    email = 
-    orders_data = list(db.order.find({'email' : email}))
-    for order in orders_data:
-        order['_id'] = str(order['_id'])
-    return render_template('orders.html', orders=orders_data)
+    id_user = payload["id"]
+    user = db.users.find_one({"_id": ObjectId(id_user)}, {"_id": False})
+    email = user["email"]
+    
+    # Fetch orders based on email
+    orders_data = db.orders.find({"orders.email": email})
+    
+    all_orders = []
+    current_time = datetime.utcnow()
 
-@app.route('/list', methods=['GET'])
-def list():
-    token_receive = request.cookies.get(TOKEN_KEY)
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
-        id = payload["id"]
+    for order_document in orders_data:
+        order_date_str = order_document.get('date')
+        status = order_document.get('status', 'Unknown')  # Default to 'Unknown' if status is missing
+        
+        # Add debug statement for order document
+        print(f"Processing order document: {order_document}")
 
-        validasi = db.admin.find_one({"_id": ObjectId(id)}, {"_id": False})
+        if order_date_str:
+            try:
+                order_date = datetime.strptime(order_date_str, '%Y-%m-%d %H:%M')
+                can_cancel = (current_time - order_date) < timedelta(minutes=15)
+            except ValueError as e:
+                print(f"Error parsing date '{order_date_str}': {e}")
+                order_date = None
+                can_cancel = False
+        else:
+            print("Order document missing 'date' field.")
+            order_date = None
+            can_cancel = False
+        
+        for order in order_document.get('orders', []):
+            all_orders.append({
+                '_id': order_document['_id'],
+                'orders': order,
+                'total': order_document.get('total', 0),
+                'can_cancel': can_cancel,
+                'status': status,
+                'order_date': order_date_str  # Include raw date for debugging
+            })
+    
+    grouped_orders = {}
+    for order_group in all_orders:
+        _id = str(order_group['_id'])
+        if _id not in grouped_orders:
+            grouped_orders[_id] = {
+                'orders': [order_group['orders']],
+                'total': order_group['total'],
+                'can_cancel': order_group['can_cancel'],
+                'status': order_group['status'],
+                'order_date': order_group['order_date']  # Include raw date for debugging
+            }
+        else:
+            grouped_orders[_id]['orders'].append(order_group['orders'])
 
-        if validasi:
-            produk = db.produk.find()
+    # Debug output to check what's being passed to the template
+    print(f"Grouped Orders: {grouped_orders}")
 
-            return render_template('produk.html', produk=produk)
-        else :
-            return redirect(url_for("home"))
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for("home"))
+    return render_template('test_status.html', grouped_orders=grouped_orders)
+
+
+
 
 @app.route('/guest', methods=['GET'])
 def guest():

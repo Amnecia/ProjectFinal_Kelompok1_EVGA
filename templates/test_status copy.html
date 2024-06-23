@@ -162,51 +162,60 @@
   <body>
     <!-- Konten utama -->
     <div class="content-container" id="produk-cart">
-      {% for _id, group in grouped_orders.items() %}
+      {% for _id, orders in grouped_orders.items() %}
       <div class="content" data-group-id="{{ _id }}">
-          <div class="row">
-              <div class="col-1 align-self-center">
-                  <input type="checkbox" class="select-order me-4" value="{{ _id }}" />
-              </div>
-              <div class="col">
-                  {% for order in group.orders %}
-                  <div class="order-item">
-                      <img src="#" alt="Image Placeholder" class="mx-3" />
-                      <div class="details">
-                          <h3>{{ order.nama }} x{{ order.quantity }}</h3>
-                          <p>
-                              <strong>Harga:</strong> Rp. {{ "{:,}".format(order.harga) if order.harga is not none else 'N/A' }}
-                          </p>
-                      </div>
-                  </div>
-                  {% endfor %}
-                  <!-- General information here -->
-                  <div class="container text-start">
-                      <div class="row">
-                          <div class="col">
-                              <strong>Email:</strong> {{ group.orders[0].email }}
-                              <div><strong>Address:</strong> {{ group.orders[0].address }}</div>
-                          </div>
-                          <div class="col">
-                              <div class="price">
-                                  <strong>Total: Rp. {{ "{:,}".format(group.total) }}</strong>
-                              </div>
-                              <div><strong>Status: </strong>{{ group.status }}</div>
-                          </div>
-                      </div>
-                      <div class="button-container">
-                          {% if group.status == "Done" %}
-                          <button class="button">Beri Ulasan</button>
-                          {% elif group.can_cancel %}
-                          <button class="button">Cancel</button>
-                          {% endif %}
-                      </div>
-                  </div>
-              </div>
+        <div class="row">
+          <div class="col-1 align-self-center">
+            <input
+              type="checkbox"
+              class="select-order me-4"
+              value="{{ _id }}"
+            />
           </div>
+          <div class="col">
+            {% for order in orders %}
+            <div class="order-item">
+              <img src="#" alt="Image Placeholder" class="mx-3" />
+              <div class="details">
+                <h3>{{ order.nama }} x{{ order.quantity }}</h3>
+                <p>
+                  <strong>Harga:</strong> Rp. {{ "{:,}".format(order.harga) if
+                  order.harga is not none else 'N/A' }}
+                </p>
+              </div>
+            </div>
+            {% endfor %}
+            <!-- Menempatkan informasi yang tidak ingin diulang di sini -->
+            <div class="container text-start">
+              <div class="row">
+                <div class="col">
+                  <strong>Email:</strong> {{ orders[0].email }}
+                <div><strong>Address:</strong> {{ orders[0].address }}</div>
+                </div>
+                <div class="col">
+                  <div class="price">
+                    <strong
+                      >Total: Rp. {{ "{:,}".format(orders[0].harga *
+                      orders[0].quantity) if orders[0].harga is not none else
+                      'N/A' }}</strong>
+                  </div>
+                  <div><strong>Status: </strong>{{ orders[0].status }}</div>
+                </div>
+              </div>
+              <div class="button-container">
+                {% if orders[0].status == "Cancelled" %}
+                <button class="button">Cancel</button>
+                <button class="button">Beri Ulasan</button>
+                {% elif orders[0].status == "Done" %}
+                <button class="button">Beri Ulasan</button>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       {% endfor %}
-  </div>
+    </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
       // Custom JavaScript bisa ditambahkan di sini

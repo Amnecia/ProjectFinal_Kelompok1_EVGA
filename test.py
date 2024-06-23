@@ -27,7 +27,7 @@ db = client.projekTA
 email = 'user'
 
 def cart():
-    test=list(db.carts.find({"email": email}))
-    print(test)
+    orders_data = list(db.orders.find({"orders.email": email}, {"orders.$": 1}))
+    print(orders_data)
 
 cart()

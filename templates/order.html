@@ -37,6 +37,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     />
+
     <style>
       body {
         font-family: sans-serif;
@@ -159,6 +160,7 @@
       }
     </style>
   </head>
+
   <body>
     <!-- Konten utama -->
     <div class="content-container" id="produk-cart">
@@ -170,11 +172,7 @@
         data-item-id="{{ item._id }}"
       >
         <div class="order-item">
-          <input
-            type="checkbox"
-            class="select-order me-4"
-            value="{{ item.product_id }}"
-          />
+          <input type="checkbox" class="select-order me-4" />
           <img src="#" alt="Image Placeholder" class="mx-3" />
           <div class="details">
             <h3>{{ item.nama }}</h3>
@@ -281,54 +279,14 @@
 
       function checkout() {
         const selectedOrders = [];
-        // Iterate over each item in the cart
         $(".content").each(function () {
-          // Check if the item is selected (checkbox is checked)
           if ($(this).find(".select-order").is(":checked")) {
-            // Extract data from the selected item
             const orderId = $(this).data("order-id");
-            const nama = $(this).find("h3").text();
-            const harga = parseInt($(this).data("price"));
-            const quantity = parseInt($(this).find(".quantity").text());
-            const email = $(this).find("p:nth-child(2)").text().split(": ")[1];
-            const address = $(this)
-              .find("p:nth-child(3)")
-              .text()
-              .split(": ")[1];
-            // Add the data to the selectedOrders array
-            selectedOrders.push({
-              orderId,
-              nama,
-              harga,
-              quantity,
-              email,
-              address,
-            });
+            selectedOrders.push(orderId);
           }
         });
-
-        // Check if any items were selected
         if (selectedOrders.length > 0) {
-          console.log(selectedOrders); // Log selected orders to console for debugging
-          // Send the selected orders to the server using AJAX
-          $.ajax({
-            url: "/checkout",
-            method: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({ orders: selectedOrders }),
-            success: function (data) {
-              // Handle success response
-              if (data.result === "success") {
-                window.location.href = "/status_pesanan";
-              } else {
-                alert("Failed to checkout: " + data.message);
-              }
-            },
-            error: function (err) {
-              // Handle error response
-              alert("Error: " + err.responseText);
-            },
-          });
+          window.location.href = "/status_pesanan"; // Adjust this as needed
         } else {
           alert("Please select at least one order to checkout.");
         }
