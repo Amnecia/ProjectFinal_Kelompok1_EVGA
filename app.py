@@ -22,12 +22,12 @@ app = Flask(__name__)
 #client = MongoClient('mongodb+srv://ade:adesaef@cluster0.lqterof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 #db = client.projekTA
 
-#client = MongoClient('mongodb+srv://ade:adesaef@cluster0.lqterof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-#db = client.projekTA
+client = MongoClient('mongodb+srv://ade:adesaef@cluster0.lqterof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+db = client.projekTA
 
 
-client = MongoClient('mongodb+srv://andreasrafaeltobing:ManhwaXL9LUL@cluster0.aajaqnf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-db = client.dbsandreasrafaeltobing
+#client = MongoClient('mongodb+srv://andreasrafaeltobing:ManhwaXL9LUL@cluster0.aajaqnf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+#db = client.dbsandreasrafaeltobing
 
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
@@ -314,6 +314,12 @@ def update_produk(_id):
                 image2 = request.files['image2']
                 image3 = request.files['image3']
 
+                if not nama or not harga or not deskripsi:
+                    return jsonify({'message': 'Please fill in all fields'}), 400
+
+                if not image1 or not image2 or not image3:
+                    return jsonify({'message': 'Please upload all images'}), 400
+
                 extension1 = image1.filename.split('.')[-1]
                 extension2 = image2.filename.split('.')[-1]
                 extension3 = image3.filename.split('.')[-1]
@@ -344,12 +350,13 @@ def update_produk(_id):
                 }
                 db.produk.update_one({'_id': ObjectId(_id)}, {'$set': doc})
                 return jsonify({'message': 'Product has been updated successfully'})
-            return render_template('edit_produk.html')
+            return jsonify({'message': 'Product not found'}), 404
         else:
             return redirect(url_for("home"))
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
-
+    except Exception as e:
+        return jsonify({'message': 'Error updating product: ' + str(e)}), 500
 @app.route('/etalase', methods=['GET'])
 def Etalase():
     token_receive = request.cookies.get(TOKEN_KEY)
@@ -368,7 +375,24 @@ def Etalase():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
+@app.route('/list', methods=['GET'])
+def list():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        id = payload["id"]
 
+        validasi = db.admin.find_one({"_id": ObjectId(id)}, {"_id": False})
+
+        if validasi:
+            produk = db.produk.find()
+
+            return render_template('produk.html', produk=produk)
+        else :
+            return redirect(url_for("home"))
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+    
 
 @app.route('/submit_review/<_id>', methods=['POST'])
 def submit_review(_id):
@@ -427,6 +451,7 @@ def submit_review(_id):
 #         average_rating = 0
 
 #     return render_template('detail_produk.html', produk=produk, id=_id, average_rating=average_rating, review_count=review_count, reviews=reviews)
+
 @app.route('/detail/<_id>', methods=['GET'])
 def detail_produk(_id):
     produk_id = ObjectId(_id)
@@ -436,13 +461,12 @@ def detail_produk(_id):
         return "Product not found", 404  # Return a 404 Not Found response if the product does not exist
 
     reviews_cursor = db.reviews.find({'produk_id': _id})
-    reviews = list(reviews_cursor)  # Convert the cursor to a list
+    reviews = [review for review in reviews_cursor]  # Convert the cursor to a list
 
     total_rating = 0
     review_count = len(reviews)
 
     for review in reviews:
-        review['profile_picture'] = review.get('profile_picture', 'default.jpg')
         total_rating += review.get('rating', 0)
 
     if review_count > 0:
@@ -451,8 +475,6 @@ def detail_produk(_id):
         average_rating = 0
 
     return render_template('detail_produk.html', produk=produk, id=_id, average_rating=average_rating, review_count=review_count, reviews=reviews)
-
-
 @app.route('/cart', methods=['GET'])
 def cart():
     token_receive = request.cookies.get(TOKEN_KEY)

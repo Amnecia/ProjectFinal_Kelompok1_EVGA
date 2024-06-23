@@ -170,8 +170,8 @@ function updateProduk(_id) {
         contentType: false,
         processData: false,
         success: function(response) {
-          alert("Produk Baru telah berhasil diupdate!")
-          location.href = '/list';
+            alert("Produk Baru telah berhasil diupdate!");
+            location.href = '/list';
         },
         error: function (error) {
             console.log(error);
@@ -179,7 +179,6 @@ function updateProduk(_id) {
         }
     });
 }
-
 $(document).ready(function () {
     $('#imageInput1').change(function (event) {
         var reader = new FileReader();
