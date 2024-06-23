@@ -241,6 +241,41 @@
         $(this).prevAll().removeClass('fa-regular fa-star').addClass('fa-solid fa-star');
       });
     });
+
+    $(document).ready(function() {
+    $('#submit-review').on('click', function(e) {
+      e.preventDefault();
+      var rating = $('#rating').val();
+      var reviewText = $('#deskripsiProduk').val();
+      var produkId = '{{ produk._id }}';
+
+      $.ajax({
+        type: 'POST',
+        url: '{{ url_for("submit_review", _id=produk._id) }}',
+        data: {
+          rating: rating,
+          review_text: reviewText
+        },
+        success: function(data) {
+          // Update the reviews container in detail_produk.html
+          $.ajax({
+            type: 'GET',
+            url: '{{ url_for("detail_produk", _id=produk._id) }}',
+            success: function(html) {
+              // Extract the updated reviews container from the response
+              var updatedReviewsContainer = $(html).find('.reviews-container');
+
+              // Update the existing reviews container on the page
+              $('.reviews-container').html(updatedReviewsContainer.html());
+
+              // Optionally, you can redirect the user back to detail_produk.html
+              window.location.href = '{{ url_for("detail_produk", _id=produk._id) }}';
+            }
+          });
+        }
+      });
+    });
+  });
   </script>
   <title>Tambah Ulasan</title>
 </head>

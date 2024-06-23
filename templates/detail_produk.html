@@ -434,6 +434,9 @@ display: flex;
         </button>
       </div>
     </div>
+<<<<<<< HEAD
+
+=======
     <div class="product-info">
       <h1>{{ produk.nama }}</h1> 
       <div class="product-description">
@@ -461,6 +464,7 @@ display: flex;
         <button class="add-to-cart-btn" onclick="user_order()">Add to Cart</button>
       </div>
     </div>
+>>>>>>> b58ce685ecc3a63af3c509e47463549b88d03c82
     </div>
   </div>
   <div class="review-section">
@@ -468,20 +472,21 @@ display: flex;
   </div>
   <div class="reviews-wrapper" style="height: 300px; overflow-y: auto;">
   <div class="reviews-container">
+    <h2>Reviews ({{ review_count }})</h2>
+    {% for review in reviews %}
     <div class="review-item">
-      <img src= "https://wallpapercave.com/wp/wp6183733.jpg" alt="User 1" class="review-user-picture">
-      <div class="review-content">
-        <p class="review-user-name">John Doe</p>
+      <img src="{{ url_for('static', filename='assets/profilePictures/' + review.profile_picture) }}" alt="Profile Picture">      <div class="review-content">
+        <p class="review-user-name">{{ review.username}}</p>
         <div class="review-stars">
+       {% for i in range(review.rating) %}
           <i class="fas fa-star" aria-hidden="true"></i>
-          <i class="fas fa-star" aria-hidden="true"></i>
-          <i class="fas fa-star" aria-hidden="true"></i>
-          <i class="fas fa-star" aria-hidden="true"></i>
-          <i class="fas fa-star" aria-hidden="true"></i>
+          {% endfor %}
         </div>
-        <p class="review-description">These headphones are amazing! The sound quality is incredible and the noise-cancelling feature is so effective. I highly recommend them!</p>
+        <p class="review-description">{{review.review_text}}</p>
+        <span>{{ review.today }}</span>
       </div>
     </div>
+    {% endfor %}
   </div>
 
   </div>
@@ -555,6 +560,8 @@ reviewsWrapper.addEventListener('scroll', function() {
   // You can add additional functionality here, such as loading more reviews when the user reaches the end of the container
   console.log('Scrolling...');
 });
+
+
   </script>
 
 </body>
