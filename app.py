@@ -430,6 +430,7 @@ def submit_review(_id):
         except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
             return 'Error: Invalid token', 401
     return 'Error: Product not found', 404
+
 @app.route('/detail/<_id>', methods=['GET'])
 def detail_produk(_id):
     produk = db.produk.find_one({'_id': ObjectId(_id)})
@@ -850,6 +851,19 @@ def deleteProduk(_id):
 def form_ulasan(_id):
     produk = db.produk.find_one({'_id': ObjectId(_id)})
     return render_template('form_ulasan.html', produk=produk)
+
+@app.route('/get_reviews/<_id>', methods=['GET'])
+def get_reviews(_id):
+    reviews = db.reviews.find({'produk_id': _id})
+    reviews_list = []
+    for review in reviews:
+        reviews_list.append({
+            'username': review['username'],
+            'profile_picture': review['profile_picture'],
+            'rating': review['rating'],
+            'review_text': review['review_text']
+        })
+    return jsonify({'reviews': reviews_list})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

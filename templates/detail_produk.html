@@ -434,33 +434,7 @@ display: flex;
         </button>
       </div>
     </div>
-    <div class="product-info">
-      <h1>{{ produk.nama }}</h1> 
-      <div class="product-description">
-        <p class="description">{{ produk.deskripsi }}</p>
-        <div class="star-rating ms-2">
-          {% for i in range(5) %}
-            {% if i < average_rating %}
-              <i class="fas fa-star" style="color: #FFD43B;"></i>
-            {% else %}
-              <i class="fa-regular fa-star" style="color: #FFD43B;"></i>
-            {% endif %}
-          {% endfor %}
-          <span style="font-size: 16px; margin-left: 10px;">({{ review_count }} reviews)</span>
-        </div>
-        <div class="price-container">
-          <h2 style="font-weight: bold;">Rp. {{ produk.harga }}</h2>
-          <div class="quantity-input">
-            <button>-</button>
-            <input type="number" min="1" value="1">
-            <button>+</button>
-          </div>
-        </div>
-      </div>
-      <div class="add-to-cart-btn-container">
-        <button class="add-to-cart-btn">Add to Cart</button>
-      </div>
-    </div>
+
     </div>
   </div>
   <div class="review-section">
@@ -468,20 +442,21 @@ display: flex;
   </div>
   <div class="reviews-wrapper" style="height: 300px; overflow-y: auto;">
   <div class="reviews-container">
+    <h2>Reviews ({{ review_count }})</h2>
+    {% for review in reviews %}
     <div class="review-item">
-      <img src= "https://wallpapercave.com/wp/wp6183733.jpg" alt="User 1" class="review-user-picture">
-      <div class="review-content">
-        <p class="review-user-name">John Doe</p>
+      <img src="{{ url_for('static', filename='assets/profilePictures/' + review.profile_picture) }}" alt="Profile Picture">      <div class="review-content">
+        <p class="review-user-name">{{ review.username}}</p>
         <div class="review-stars">
+       {% for i in range(review.rating) %}
           <i class="fas fa-star" aria-hidden="true"></i>
-          <i class="fas fa-star" aria-hidden="true"></i>
-          <i class="fas fa-star" aria-hidden="true"></i>
-          <i class="fas fa-star" aria-hidden="true"></i>
-          <i class="fas fa-star" aria-hidden="true"></i>
+          {% endfor %}
         </div>
-        <p class="review-description">These headphones are amazing! The sound quality is incredible and the noise-cancelling feature is so effective. I highly recommend them!</p>
+        <p class="review-description">{{review.review_text}}</p>
+        <span>{{ review.today }}</span>
       </div>
     </div>
+    {% endfor %}
   </div>
 
   </div>
@@ -535,6 +510,8 @@ reviewsWrapper.addEventListener('scroll', function() {
   // You can add additional functionality here, such as loading more reviews when the user reaches the end of the container
   console.log('Scrolling...');
 });
+
+
   </script>
 
 </body>
