@@ -434,7 +434,37 @@ display: flex;
         </button>
       </div>
     </div>
+<<<<<<< HEAD
 
+=======
+    <div class="product-info">
+      <h1>{{ produk.nama }}</h1> 
+      <div class="product-description">
+        <p class="description">{{ produk.deskripsi }}</p>
+        <div class="star-rating ms-2">
+          {% for i in range(5) %}
+            {% if i < average_rating %}
+              <i class="fas fa-star" style="color: #FFD43B;"></i>
+            {% else %}
+              <i class="fa-regular fa-star" style="color: #FFD43B;"></i>
+            {% endif %}
+          {% endfor %}
+          <span style="font-size: 16px; margin-left: 10px;">({{ review_count }} reviews)</span>
+        </div>
+        <div class="price-container">
+          <h2 style="font-weight: bold;">Rp. {{ produk.harga }}</h2>
+          <div class="quantity-input">
+            <button>-</button>
+            <input type="number" min="1" value="1">
+            <button>+</button>
+          </div>
+        </div>
+      </div>
+      <div class="add-to-cart-btn-container">
+        <button class="add-to-cart-btn" onclick="user_order()">Add to Cart</button>
+      </div>
+    </div>
+>>>>>>> b58ce685ecc3a63af3c509e47463549b88d03c82
     </div>
   </div>
   <div class="review-section">
@@ -466,21 +496,41 @@ display: flex;
   <a href="{{ url_for('form_ulasan', _id=produk._id) }}" class="review-btn">Leave a Review</a>
 </div>
   <script>
-    let addToCartBtn = document.querySelector('.add-to-cart-btn');
-    let quantityInput = document.querySelector('.quantity-input input');
-    let cartItems = [];
+function user_order() {
+  var quantity = $(".quantity-input input").val();
+  var productId = "{{ produk._id }}";
+  console.log( productId);
+  $.ajax({
+    url: "/order",
+    method: "POST",
+    data: {
+      productId: productId,
+      quantity: quantity,
+    },
+    success: function (response) {
+      alert("Product added to cart!");
+    },
+    error: function (xhr, status, error) {
+      alert("Error adding product to cart. Please try again.");
+    },
+  });
+}
 
-    addToCartBtn.addEventListener('click', function() {
-      let product = {
-        title: '{{ produk.nama }}', // Assuming you are using a template engine like Jinja2
-        price: {{ produk.harga }}, // Assuming you are using a template engine like Jinja2
-        quantity: parseInt(quantityInput.value)
-      };
+    // let addToCartBtn = document.querySelector('.add-to-cart-btn');
+    // let quantityInput = document.querySelector('.quantity-input input');
+    // let cartItems = [];
 
-      cartItems.push(product);
-      localStorage.setItem('cartItems', JSON.stringify(cartItems)); // Store cart items in localStorage
-      window.location.href = 'order.html'; // Redirect to the order page
-    });
+    // addToCartBtn.addEventListener('click', function() {
+    //   let product = {
+    //     title: '{{ produk.nama }}', // Assuming you are using a template engine like Jinja2
+    //     price: {{ produk.harga }}, // Assuming you are using a template engine like Jinja2
+    //     quantity: parseInt(quantityInput.value)
+    //   };
+
+    //   cartItems.push(product);
+    //   localStorage.setItem('cartItems', JSON.stringify(cartItems)); // Store cart items in localStorage
+    //   window.location.href = 'order.html'; // Redirect to the order page
+    // });
 
     let quantityBtn = document.querySelectorAll('.quantity-input button');
 
