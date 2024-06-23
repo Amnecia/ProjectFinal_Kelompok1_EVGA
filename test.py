@@ -27,7 +27,9 @@ db = client.projekTA
 email = 'user'
 
 def cart():
-    orders_data = list(db.orders.find({"orders.email": email}, {"orders.$": 1}))
-    print(orders_data)
+    db.orders.update_one(
+        {'_id': ObjectId('6676c167a8b94f0f7bdfa267')},  # Find the document by ObjectId
+        {'$set': {'status': 'new_status'}}  # Update the status field
+    )
 
 cart()

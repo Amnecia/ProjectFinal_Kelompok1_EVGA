@@ -1,161 +1,212 @@
 {% include 'header.html' %}
-
 <!DOCTYPE html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Sedan+SC&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <link href="../static/assets/mystyle.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/1L_dstPt3HV5HzF6Gvk/e3s4Wz6iJgD/+ub2oU" crossorigin="anonymous" referrerpolicy="no-referrer" />   
-    <title>Status Pesanan</title>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Website Name</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Sedan+SC&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+    <link href="../static/assets/mystyle.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/1L_dstPt3HV5HzF6Gvk/e3s4Wz6iJgD/+ub2oU"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script
+      src="https://kit.fontawesome.com/d46734533e.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
     <style>
-        body {
-            min-height: 100vh;
-            overflow-y: auto;
-        }
-        .product-image {
-            width: 350px;
-            height: 350px;
-            margin-top: 20px;
-        }
-        .container-order {
-            border: 1px solid #ccc;
-            width: 100%;
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            background-color: #fff;
-        }
-        .image-container {
-            flex-basis: 200px;
-        }
-        .text-container {
-            flex: 1;
-            padding-left: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-        .button-container {
-            flex-basis: 100%;
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 20px;
-            color: red;
-        }
-        .button {
-            background-color: #5e5e5e;
-            border: none;
-            padding: 10px 20px;
-            color: white;
-            border-radius: 20px;
-            margin-right: 10px;
-            text-align: center;
-            cursor: pointer;
-        }
-        .button-delete {
-            background-color: #D00000;
-            width: 40px;
-            height: 40px;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .button-delete i {
-            font-size: 20px;
-        }
+      body {
+        font-family: sans-serif;
+        margin: 0;
+      }
+      .content-container {
+        padding-top: 80px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .content {
+        width: 80%;
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+      .order-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 10px;
+      }
+      .details {
+        flex-grow: 1;
+      }
+      .remove {
+        background-color: #ddd;
+        border: 1px solid #ccc;
+        padding: 10px;
+        cursor: pointer;
+      }
+      .content img {
+        width: 150px;
+        height: 150px;
+        background-color: #eee;
+        display: block;
+        margin-right: 20px;
+      }
+      .quantity-controls {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+      }
+      .quantity-controls button {
+        padding: 2px 8px;
+        border: 1px solid #ddd;
+        background-color: #f8f8f8;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .quantity-controls span {
+        margin: 0 10px;
+        font-size: 14px;
+      }
+      .total-container {
+        width: 80%;
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .total-container .total-price {
+        font-size: 20px;
+        font-weight: bold;
+      }
+      .total-container .checkout-button {
+        background-color: #ffa500;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        width: 100%;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        top: 60px;
+        padding-top: 10px;
+      }
+      .dropdown-content a:hover {
+        background-color: #f1f1f1;
+      }
+      .show {
+        display: block;
+      }
+      .profile-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .profile-info img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+      .profile-info .edit-profile {
+        color: black;
+        font-weight: bold;
+        font-size: 18px;
+        margin-right: 10px;
+      }
+      .logout-box {
+        border: 1px solid black;
+        padding: 5px 10px;
+        display: inline-block;
+        cursor: pointer;
+      }
     </style>
-</head>
-<body>
-    {% for order in orders %}
+  </head>
+  <body>
+    <!-- Konten utama -->
     <div class="content-container" id="produk-cart">
-        {% for item in cart_items %}
-        <div
-          class="content"
-          data-order-id="{{ item.product_id }}"
-          data-price="{{ item.harga }}"
-          data-item-id="{{ item._id }}"
-        >
-          <div class="order-item">
-            <input
-              type="checkbox"
-              class="select-order me-4"
-              value="{{ item.product_id }}"
-            />
-            <img src="#" alt="Image Placeholder" class="mx-3" />
-            <div class="details">
-              <h3>{{ item.nama }}</h3>
-              <p><strong>Email:</strong> {{ item.email }}</p>
-              <p><strong>Address:</strong> {{ item.address }}</p>
-              <div class="quantity-controls">
-                <button class="decrease">-</button>
-                <span class="quantity">{{ item.quantity }}</span>
-                <button class="increase">+</button>
+      {% for _id, group in grouped_orders.items() %}
+      <div class="content" data-group-id="{{ _id }}">
+          <div class="row">
+              <div class="col">
+                  {% for order in group.orders %}
+                  <div class="order-item">
+                      <img src="#" alt="Image Placeholder" class="mx-3" />
+                      <div class="details">
+                          <h3>{{ order.nama }} x{{ order.quantity }}</h3>
+                          <p>
+                              <strong>Harga:</strong> Rp. {{ "{:,}".format(order.harga) if order.harga is not none else 'N/A' }}
+                          </p>
+                      </div>
+                  </div>
+                  {% endfor %}
+                  <!-- General information here -->
+                  <div class="container text-start">
+                      <div class="row">
+                          <div class="col">
+                              <strong>Email:</strong> {{ group.orders[0].email }}
+                              <div><strong>Address:</strong> {{ group.orders[0].address }}</div>
+                          </div>
+                          <div class="col">
+                              <div class="price">
+                                  <strong>Total: Rp. {{ "{:,}".format(group.total) }}</strong>
+                              </div>
+                              <div><strong>Status: </strong>{{ group.status }}</div>
+                          </div>
+                      </div>
+                      <div class="button-container">
+                          {% if group.status == "Done" %}
+                          <button class="button">Beri Ulasan</button>
+                          {% elif group.can_cancel %}
+                          <button class="button">Cancel</button>
+                          {% endif %}
+                      </div>
+                  </div>
               </div>
-              <p>Harga: Rp. {{ "{:,}".format(item.harga) }}</p>
-              <div class="price">
-                Rp. {{ "{:,}".format(item.harga * item.quantity) }}
-              </div>
-            </div>
-            <div class="remove">X</div>
           </div>
-        </div>
-    <div class="container-order">
-        <div class="image-container">
-            <img src="https://www.pixelstalk.net/wp-content/uploads/2016/07/3840x2160-Images-Free-Download.jpg" class="product-image">
-        </div>
-        
-        <div class="text-container">
-            <h1 style="font-size:28px;">{{ order.product_name }}</h1>
-            <p style="font-weight:normal; font-size:16px;">Jumlah: {{ order.quantity }}</p>
-            <p style="font-weight:normal;font-size:16px;">Email: {{ order.email }}</p>
-            <p style="font-weight:normal;font-size:16px;">Alamat: {{ order.address }}</p>
-            <p style="font-weight:normal;font-size:16px;">Harga: Rp. {{ "{:,}".format(order.price) }}</p>
-            <p style="font-weight:normal;font-size:16px;">Tanggal: {{ order.date }}</p>
-            <p style="font-weight:normal;font-size:16px; color: 
-                {% if order.status == "Cancelled" %}
-                    red
-                {% elif order.status == "Success" %}
-                    green
-                {% elif order.status == "Preparing" or order.status == "Delivery" or order.status == "Not Confirmed" %}
-                    rgb(246, 207, 53)
-                {% else %}
-                    black
-                {% endif %}
-            ;">{{ order.status }}</p>
-            <div class="button-container">
-                <button class="button-delete"><i class="fas fa-trash-alt"></i></button>
-                {% if order.status == "Cancelled" %}
-                    <button class="button">Cancel</button>
-                    <button class="button">Beri Ulasan</button>
-                {% elif order.status == "Success" %}
-                    <button class="button">Cancel</button>
-                    <button class="button" style="background-color: #D00000;">Beri Ulasan</button>
-                {% elif order.status == "Preparing" %}
-                    <button class="button" style="background-color: #D00000;">Cancel</button>
-                    <button class="button">Beri Ulasan</button>
-                {% elif order.status == "Delivery" %}
-                    <button class="button">Cancel</button>
-                    <button class="button">Beri Ulasan</button>
-                {% else %}
-                    <button class="button">Cancel</button>
-                    <button class="button">Beri Ulasan</button>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-    {% endfor %}
-</body>
+      </div>
+      {% endfor %}
+  </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      // Custom JavaScript bisa ditambahkan di sini
+    </script>
+  </body>
 </html>

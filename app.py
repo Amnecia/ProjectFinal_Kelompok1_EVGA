@@ -37,7 +37,6 @@ SECRET_KEY='EVGA'
 
 
 TOKEN_KEY = 'mytoken'
-CART_KEY = 'tempcart'
 
 
 @app.route('/')
@@ -447,22 +446,28 @@ def order():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
         id_user = payload["id"]
-        product_id =request.form['productId']
+        product_id = request.form['productId']
+        quantity = int(request.form['quantity'])
+
+        # Retrieve user and product details
         user = db.users.find_one({"_id": ObjectId(id_user)}, {"_id": False})
         product = db.produk.find_one({"_id": ObjectId(product_id)}, {"_id": False})
 
         if user and product:
-            quantity = int(request.form['quantity'])
             email = user["email"]
-            address = user['address']
+            address = user.get('address', 'No address provided')
             harga = int(product["harga"])
             product_name = product["nama"]
-            cek_same = db.carts.find_one({"product_id":product_id})
-            if cek_same :
+
+            # Check if the product is already in the cart
+            cek_same = db.carts.find_one({"product_id": product_id, "email": email})
+            if cek_same:
+                # Update the existing quantity
                 current_quantity = int(cek_same["quantity"])
                 add_quantity = current_quantity + quantity
-                db.carts.update_one({"product_id":product_id}, {"$set": {"quantity":add_quantity}})
-            if not cek_same:
+                db.carts.update_one({"product_id": product_id, "email": email}, {"$set": {"quantity": add_quantity}})
+            else:
+                # Insert a new cart entry
                 order_data = {
                     'product_id': product_id,
                     'nama': product_name,
@@ -471,38 +476,22 @@ def order():
                     'harga': harga,
                     'address': address,
                 }
-
                 db.carts.insert_one(order_data)
+
             return jsonify({"success": True, "message": "Order placed successfully!"}), 200
 
         return jsonify({"success": False, "message": "User or product not found!"}), 404
 
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("home"))
+    except jwt.DecodeError:
         return redirect(url_for("home"))
     except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+        # Log the detailed error message
+        app.logger.error(f"Error processing order: {str(e)}")
+        return jsonify({"success": False, "message": "An internal server error occurred."}), 500
+
     
-@app.route('/guest_order', methods=['POST'])
-def add_to_cart():
-    product_id = ObjectId(request.form['productId'])
-    quantity = int(request.form['quantity'])
-    id_cart = request.cookies.get(CART_KEY)
-
-    if not id_cart:
-        id_cart = str(ObjectId())  # Generate a unique cart ID if it doesn't exist
-        new_cart = True
-    else:
-        new_cart = False
-    
-    cart_data = {
-        'id_cart': id_cart,
-        'product_id': product_id,
-        'quantity': quantity,
-    }
-
-    db.guest_carts.insert_one(cart_data)
-
-    return jsonify({"result": "success", "new_cart": new_cart, "id_cart": id_cart})
 
 
 @app.route('/checkout', methods=['POST'])
@@ -610,14 +599,8 @@ def get_orders():
     # Debug output to check what's being passed to the template
     print(f"Grouped Orders: {grouped_orders}")
 
-    return render_template('test_status.html', grouped_orders=grouped_orders)
+    return render_template('status_pesanan.html', grouped_orders=grouped_orders)
 
-
-
-
-@app.route('/guest', methods=['GET'])
-def guest():
-    return render_template('guest.html')
 
 @app.route('/profile', methods=['POST','GET'])
 def profile():
@@ -782,7 +765,92 @@ def edit_etalase():
 
 @app.route('/setstatus', methods=['GET'])
 def Set_status():
-     return render_template('status_pesanan.html')
+    token_receive = request.cookies.get(TOKEN_KEY)
+    if not token_receive:
+        return jsonify({"error": "Missing token"}), 401
+
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+    except jwt.ExpiredSignatureError:
+        return jsonify({"error": "Token expired"}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({"error": "Invalid token"}), 401
+    
+    # Fetch orders based on email
+    orders_data = db.orders.find({})
+    
+    all_orders = []
+    current_time = datetime.utcnow()
+
+    for order_document in orders_data:
+        order_date_str = order_document.get('date')
+        status = order_document.get('status', 'Unknown')  # Default to 'Unknown' if status is missing
+        
+        # Add debug statement for order document
+        print(f"Processing order document: {order_document}")
+
+        if order_date_str:
+            try:
+                order_date = datetime.strptime(order_date_str, '%Y-%m-%d %H:%M')
+                can_cancel = (current_time - order_date) < timedelta(minutes=15)
+            except ValueError as e:
+                print(f"Error parsing date '{order_date_str}': {e}")
+                order_date = None
+                can_cancel = False
+        else:
+            print("Order document missing 'date' field.")
+            order_date = None
+            can_cancel = False
+        
+        for order in order_document.get('orders', []):
+            all_orders.append({
+                '_id': order_document['_id'],
+                'orders': order,
+                'total': order_document.get('total', 0),
+                'can_cancel': can_cancel,
+                'status': status,
+                'order_date': order_date_str  # Include raw date for debugging
+            })
+    
+    grouped_orders = {}
+    for order_group in all_orders:
+        _id = str(order_group['_id'])
+        if _id not in grouped_orders:
+            grouped_orders[_id] = {
+                'orders': [order_group['orders']],
+                'total': order_group['total'],
+                'can_cancel': order_group['can_cancel'],
+                'status': order_group['status'],
+                'order_date': order_group['order_date']  # Include raw date for debugging
+            }
+        else:
+            grouped_orders[_id]['orders'].append(order_group['orders'])
+
+    # Debug output to check what's being passed to the template
+    print(f"Grouped Orders: {grouped_orders}")
+    return render_template('list_pesanan.html', grouped_orders=grouped_orders)
+
+@app.route('/update_status', methods=['POST'])
+def update_status():
+    # Get the document ID and new status from the form data
+    document_id = request.form.get('order_id')
+    new_status = request.form.get('status')
+    print(document_id)
+    print(new_status)
+
+    if not document_id or not new_status:
+        return jsonify({'error': 'Document ID and status are required'}), 400
+
+    # Find and update the status of the document
+    result = db.orders.update_one(
+        {'_id': ObjectId(document_id)},  # Find the document by ObjectId
+        {'$set': {'status': new_status}}  # Update the status field
+    )
+
+    if result.matched_count == 0:
+        return jsonify({'error': 'Order not found'}), 404
+
+    return redirect(url_for('Set_status'))
 
 @app.route('/deleteproduk/<_id>', methods=['GET', 'POST'])
 def deleteProduk(_id):
