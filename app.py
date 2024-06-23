@@ -22,12 +22,12 @@ app = Flask(__name__)
 #client = MongoClient('mongodb+srv://ade:adesaef@cluster0.lqterof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 #db = client.projekTA
 
-client = MongoClient('mongodb+srv://ade:adesaef@cluster0.lqterof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-db = client.projekTA
+#client = MongoClient('mongodb+srv://ade:adesaef@cluster0.lqterof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+#db = client.projekTA
 
 
-#client = MongoClient('mongodb+srv://andreasrafaeltobing:ManhwaXL9LUL@cluster0.aajaqnf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-#db = client.dbsandreasrafaeltobing
+client = MongoClient('mongodb+srv://andreasrafaeltobing:ManhwaXL9LUL@cluster0.aajaqnf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+db = client.dbsandreasrafaeltobing
 
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
@@ -46,7 +46,6 @@ def home():
     etalase_folder = 'static/assets/etalase/'
     etalase_images = [file for file in os.listdir(etalase_folder) if os.path.isfile(os.path.join(etalase_folder, file))]
 
-    # Retrieve review count and average rating for each product
     produk_with_review_count_and_rating = []
     for p in produk:
         review_count = db.reviews.count_documents({'produk_id': str(p['_id'])})
@@ -400,25 +399,41 @@ def submit_review(_id):
         rating = request.form['rating']
         review_text = request.form['deskripsiProduk']
 
-        today = datetime.now()
-        mytime = today.strftime('%Y-%m-%d %H:%M')
-        review = {
-            'produk_id': _id,
-            'rating': int(rating),
-            'review_text': review_text,
-             'today': mytime,
-        }
-        # Insert the review into the database
-        db.reviews.insert_one(review)
-        # Redirect the user to the product detail page
-        return redirect(url_for('detail_produk', _id=_id))
+        token_receive = request.cookies.get(TOKEN_KEY)
+        try:
+            payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+            user_id = payload["id"]
+            user = db.users.find_one({"_id": ObjectId(user_id)}, {"_id": False})
+            if not user:
+                user = db.admin.find_one({"_id": ObjectId(user_id)}, {"_id": False})
+
+            if user:
+                username = user.get("username")
+                profile_picture = user.get("profile_picture")
+
+                today = datetime.now()
+                mytime = today.strftime('%Y-%m-%d %H:%M')
+                review = {
+                    'produk_id': _id,
+                    'rating': int(rating),
+                    'review_text': review_text,
+                    'username': username,
+                    'profile_picture': profile_picture,
+                    'today': mytime,
+                }
+                # Insert the review into the database
+                db.reviews.insert_one(review)
+                # Redirect the user to the product detail page
+                return redirect(url_for('detail_produk', _id=_id))
+            else:
+                return 'Error: User not found', 404
+        except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+            return 'Error: Invalid token', 401
     return 'Error: Product not found', 404
-
-
 @app.route('/detail/<_id>', methods=['GET'])
 def detail_produk(_id):
     produk = db.produk.find_one({'_id': ObjectId(_id)})
-    reviews = db.reviews.find({'produk_id': _id})
+    reviews = db.reviews.find({'produk_id': _id})  # Query reviews based on produk_id
     total_rating = 0
     review_count = 0
 
@@ -430,7 +445,8 @@ def detail_produk(_id):
         average_rating = total_rating / review_count
     else:
         average_rating = 0
-    return render_template('detail_produk.html', produk=produk, id=_id, average_rating=average_rating, review_count=review_count)
+
+    return render_template('detail_produk.html', produk=produk, id=_id, average_rating=average_rating, review_count=review_count, reviews=reviews)
 
 @app.route('/cart', methods=['GET'])
 def cart():
@@ -461,8 +477,6 @@ def remove_item():
         return jsonify({'result': 'success'})
     except Exception as e:
         return jsonify({'result': 'error', 'message': str(e)}), 500
-
-
 
 
 
