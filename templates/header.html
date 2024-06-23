@@ -262,39 +262,67 @@
 
   <script>
     function get_role() {
+    $.ajax({
+      type: "GET",
+      url: "/get_role",
+      success: function (data) {
+        $(".username-view").text(data.username)
+        if (data.role === "guest") {
+          $("#more-menu").hide();
+        } else if (data.role === "user") {
+          $("#edit-produk").hide();
+          $("#edit-etalase").hide();
+          $("#list-pesanan").hide();
+          $(".btn-login").hide();
+        } else if (data.role === "admin") {
+          $("#status-pesanan").hide();
+          $("#checkout-btn").hide();
+          $(".btn-login").hide();
+        }
+      },
+      error: function () {
+        window.location.href = "/";
+      },
+    });
+  }
+
+  $(document).ready(function () {
+    get_role();
+  });
+
+  function sign_out() {
+    $.removeCookie("mytoken", { path: "/" });
+    alert("Signed out!");
+    window.location.href = "/login";
+  }
+
+
+  $(document).ready(function() {
+    // Get the profile picture element
+    const profilePictureElement = $('#profile-picture');
+
+    // Function to update the profile picture
+    function updateProfilePicture() {
       $.ajax({
         type: "GET",
-        url: "/get_role",
-        success: function (data) {
-          $(".username-view").text(data.username)
-          if (data.role === "guest") {
-            $("#more-menu").hide();
-          } else if (data.role === "user") {
-            $("#edit-produk").hide();
-            $("#edit-etalase").hide();
-            $("#list-pesanan").hide();
-            $(".btn-login").hide();
-          } else if (data.role === "admin") {
-            $("#status-pesanan").hide();
-            $("#checkout-btn").hide();
-            $(".btn-login").hide();
-          }
-        },
-        error: function () {
-          window.location.href = "/";
-        },
+        url: "/get_profile_picture",
+        success: function(data) {
+          const profilePictureUrl = data.profile_picture_url;
+          profilePictureElement.attr('src', profilePictureUrl);
+        }
       });
     }
 
-    $(document).ready(function () {
-      get_role();
+    // Update the profile picture when the page loads
+    updateProfilePicture();
+
+    // Update the profile picture when the user updates their profile picture
+    $(document).on('ajaxComplete', function(event, xhr, settings) {
+      if (settings.url === '/upload_profile_picture') {
+        updateProfilePicture();
+      }
     });
-    
-    function sign_out() {
-      $.removeCookie("mytoken", { path: "/" });
-      alert("Signed out!");
-      window.location.href = "/login";
-    }
+  });
   </script>
 
   <body>
@@ -337,17 +365,10 @@
             <ul class="navbar-nav">
               <li class="nav-item">
                 <div class="d-flex align-items-center">
-                  <img
-                    src="https://www.seekpng.com/png/detail/966-9665317_placeholder-image-person-jpg.png"
-                    alt=""
-                    width="48"
-                    height="48"
-                    class="rounded-circle me-2"
-                  />
-                  <div class="mx-2 username-view">
-                    <strong>User</strong>
+                    <img id="profile-picture" src="" alt="" width="48" height="48" class="rounded-circle me-2">                   <div class="mx-2 username-view">
+                      <strong>User</strong>
                   </div>
-                </div>
+              </div>
                 <a
                   class="nav-link mt-3"
                   href="/profile"

@@ -31,6 +31,7 @@ db = client.projekTA
 
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.config["UPLOAD_FOLDER"] = "static/assets/ProfilePicture"
 
 SECRET_KEY='EVGA'
 
@@ -616,7 +617,7 @@ def checkout():
     else:
         return jsonify({'result': 'error', 'message': 'Failed to save order.'}), 500
 
-
+'''
 @app.route('/status_pesanan')
 def status_pesanan():
     token_receive = request.cookies.get(TOKEN_KEY)
@@ -627,6 +628,7 @@ def status_pesanan():
         email = user["email"]
 
     return render_template('test_status.html')
+
 @app.route('/get_order', methods=['GET'])
 def get_order():
     email = 
@@ -634,6 +636,8 @@ def get_order():
     for order in orders_data:
         order['_id'] = str(order['_id'])
     return render_template('orders.html', orders=orders_data)
+'''
+
 
 @app.route('/list', methods=['GET'])
 def list():
@@ -679,6 +683,24 @@ def profile():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
+@app.route("/upload_profile_picture", methods=["POST"])
+def upload_profile_picture():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        id = payload["id"]
+        
+        file = request.files["profilePicture"]
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+        
+        db.users.update_one({"_id": ObjectId(id)}, {"$set": {"profile_picture": filename}})
+        db.admin.update_one({"_id": ObjectId(id)}, {"$set": {"profile_picture": filename}})
+        
+        return jsonify({"result": "success", "msg": "Profile picture updated!"})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
 @app.route("/get_profile")
 def get_profile():
     token_receive = request.cookies.get(TOKEN_KEY)
@@ -712,6 +734,7 @@ def edit_profile():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
         id = payload["id"]
+        
         full_name_receive = request.form.get("fullName_give")
         username_receive = request.form.get("username_give")
         email_receive = request.form.get("email_give")
@@ -734,10 +757,9 @@ def edit_profile():
         if password_receive:
             password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
             new_doc["password"] = password_hash
-
         if profile_picture:
             filename = secure_filename(profile_picture.filename)
-            profile_picture.save(os.path.join("static/profile_pictures", filename))
+            profile_picture.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
             new_doc["profile_picture"] = filename
 
         if new_doc:
@@ -752,6 +774,31 @@ def edit_profile():
             return jsonify({"result": "fail", "msg": "No data provided to update"})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
+    
+
+@app.route("/get_profile_picture")
+def get_profile_picture():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        id = payload["id"]
+
+        user = db.users.find_one({"_id": ObjectId(id)}, {"_id": False})
+        if not user:
+            user = db.admin.find_one({"_id": ObjectId(id)}, {"_id": False})
+
+        if user:
+            profile_picture = user.get("profile_picture")
+            if profile_picture:
+                profile_picture_url = url_for("static", filename=f"assets/ProfilePicture/{profile_picture}")
+                return jsonify({"profile_picture_url": profile_picture_url})
+            else:
+                return jsonify({"profile_picture_url": ""})
+        else:
+            return jsonify({"error": "User not found"}), 404
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return jsonify({"error": "Invalid token"}), 401
+    
 
 @app.route('/get_images', methods=['GET'])
 def get_images():

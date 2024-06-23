@@ -205,42 +205,44 @@
           },
         });
       }
+
+      
       function edit_profile() {
-  var fullname = $("#fullname").val();
-  var username = $("#username").val();
-  var email = $("#email").val();
-  var address = $("#address").val();
-  var phoneNumber = $("#phoneNumber").val();
-  var password = $("#password").val();
-  var profilePicture = $("#profilePicture")[0].files[0];
+    var fullname = $("#fullname").val();
+    var username = $("#username").val();
+    var email = $("#email").val();
+    var address = $("#address").val();
+    var phoneNumber = $("#phoneNumber").val();
+    var password = $("#password").val();
+    var profilePicture = $("#profilePicture")[0].files[0];
 
-  var formData = new FormData();
-  formData.append("fullName_give", fullname);
-  formData.append("username_give", username);
-  formData.append("email_give", email);
-  formData.append("address_give", address);
-  formData.append("phoneNumber_give", phoneNumber);
-  formData.append("password_give", password);
-  formData.append("profilePicture", profilePicture);
+    var formData = new FormData();
+    formData.append("fullName_give", fullname);
+    formData.append("username_give", username);
+    formData.append("email_give", email);
+    formData.append("address_give", address);
+    formData.append("phoneNumber_give", phoneNumber);
+    formData.append("password_give", password);
+    formData.append("profilePicture", profilePicture);
 
-  $.ajax({
-    type: "POST",
-    url: "/edit_profile",
-    data: formData,
-    contentType: false,
-    processData: false,
-    success: function (response) {
-      if (response.result === "success") {
-        alert("Profile updated successfully");
-        window.location.href = "/";
-      } else {
-        alert("Failed to update profile: " + response.msg);
-      }
-    },
-    error: function (response) {
-      alert("An error occurred: " + response.responseJSON.msg);
-    },
-  });
+    $.ajax({
+        type: "POST",
+        url: "/edit_profile",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            if (response.result === "success") {
+                alert("Profile updated successfully");
+                window.location.href = "/";
+            } else {
+                alert("Failed to update profile: " + response.msg);
+            }
+        },
+        error: function (response) {
+            alert("An error occurred: " + response.responseJSON.msg);
+        },
+    });
 }
     </script>
   </head>
@@ -248,15 +250,12 @@
     <div class="container">
       <div class="card">
         <h2>Edit profile</h2>
+        <br>
         <div class="profile-picture">
           <label for="profilePicture">
-            <img
-              id="profilePicturePreview"
-              src="https://via.placeholder.com/100x100.png?text=Profile+Picture"
-              alt="Profile Picture Preview"
-            />
+            <img id="profilePicturePreview" src="https://via.placeholder.com/100x100.png?text=Profile+Picture" alt="Profile Picture Preview" />
+            <input type="file" id="profilePicture" accept="image/*" style="display: none;" />
           </label>
-          <input type="file" id="profilePicture" accept="image/*" style="display: none;" />
         </div>
         <div class="input-group">
           <label for="fullName">First Name</label>
