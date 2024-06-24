@@ -593,7 +593,6 @@ def checkout():
     else:
         return jsonify({'result': 'error', 'message': 'Failed to save order.'}), 500
 
-
 @app.route('/status_pesanan')
 def get_orders():
     token_receive = request.cookies.get(TOKEN_KEY)
