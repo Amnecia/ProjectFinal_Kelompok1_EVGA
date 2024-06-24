@@ -13,23 +13,27 @@ from bson import ObjectId
 
 #from dotenv import load_dotenv
 import hashlib
-
+'''
 #dotenv_path = join(dirname(__file__), '.env')
 #load_dotenv(dotenv_path)
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
-app = Flask(__name__)
+
 
 MONGODB_URI = os.environ.get("MONGODB_URI")
 DB_NAME =  os.environ.get("DB_NAME")
 client = MongoClient(MONGODB_URI)
 db = client[DB_NAME]
-
+'''
+app = Flask(__name__)
 
 #client = MongoClient('mongodb+srv://andreasrafaeltobing:ManhwaXL9LUL@cluster0.aajaqnf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 #db = client.dbsandreasrafaeltobing
+
+client = MongoClient('mongodb+srv://ade:adesaef@cluster0.lqterof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+db = client.projekTA
 
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
@@ -764,6 +768,7 @@ def edit_profile():
         if password_receive:
             password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
             new_doc["password"] = password_hash
+
         if profile_picture:
             filename = secure_filename(profile_picture.filename)
             profile_picture.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
@@ -781,8 +786,6 @@ def edit_profile():
             return jsonify({"result": "fail", "msg": "No data provided to update"})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
-    
-
 @app.route("/get_profile_picture")
 def get_profile_picture():
     token_receive = request.cookies.get(TOKEN_KEY)
@@ -798,9 +801,10 @@ def get_profile_picture():
             profile_picture = user.get("profile_picture")
             if profile_picture:
                 profile_picture_url = url_for("static", filename=f"assets/ProfilePicture/{profile_picture}")
-                return jsonify({"profile_picture_url": profile_picture_url})
             else:
-                return jsonify({"profile_picture_url": ""})
+                # Return a placeholder image URL if profile picture is not found
+                profile_picture_url = url_for("static", filename="assets/ProfilePicture/placeholder.png")
+            return jsonify({"profile_picture_url": profile_picture_url})
         else:
             return jsonify({"error": "User not found"}), 404
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
