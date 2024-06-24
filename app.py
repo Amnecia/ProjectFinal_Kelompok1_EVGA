@@ -425,7 +425,7 @@ def submit_review(_id):
                     'rating': int(rating),
                     'review_text': review_text,
                     'username': username,
-                    'profile_picture': user.get("profile_picture_url"),  # Store the profile picture URL
+                    'profile_picture_url': user.get("profile_picture_url"),  # Store the profile picture URL
                     'today': mytime,
                 }
                 db.reviews.insert_one(review)
@@ -456,7 +456,6 @@ def submit_review(_id):
 #         average_rating = 0
 
 #     return render_template('detail_produk.html', produk=produk, id=_id, average_rating=average_rating, review_count=review_count, reviews=reviews)
-
 @app.route('/detail/<_id>', methods=['GET'])
 def detail_produk(_id):
     produk_id = ObjectId(_id)
@@ -479,7 +478,26 @@ def detail_produk(_id):
     else:
         average_rating = 0
 
-    return render_template('detail_produk.html', produk=produk, id=_id, average_rating=average_rating, review_count=review_count, reviews=reviews)
+    # Fetch reviews with profile pictures
+    reviews_with_pictures = []
+    for review in reviews:
+        profile_picture_url = get_profile_picture_url(review)
+        reviews_with_pictures.append({
+            'username': review['username'],
+            'profile_picture_url': profile_picture_url,
+            'rating': review['rating'],
+            'review_text': review['review_text'],
+            'today': review['today']
+        })
+
+    return render_template('detail_produk.html', produk=produk, id=_id, average_rating=average_rating, review_count=review_count, reviews=reviews_with_pictures)
+
+def get_profile_picture_url(review):
+    if review.get('profile_picture'):
+        return url_for("static", filename=f"assets/ProfilePicture/{review['profile_picture']}", _external=True)
+    else:
+        return url_for("static", filename="assets/ProfilePicture/placeholder.png", _external=True)
+    
 
 @app.route('/cart', methods=['GET'])
 def cart():
@@ -939,11 +957,16 @@ def get_reviews(_id):
     reviews = db.reviews.find({'produk_id': _id})
     reviews_list = []
     for review in reviews:
+        if review.get('profile_picture'):
+            profile_picture_url = url_for("static", filename=f"assets/ProfilePicture/{review['profile_picture']}", _external=True)
+        else:
+            profile_picture_url = url_for("static", filename="assets/ProfilePicture/placeholder.png", _external=True)
         reviews_list.append({
             'username': review['username'],
-            'profile_picture': review.get('profile_picture_url', 'default.jpg'),  # Use profile_picture_url instead
+            'profile_picture_url': profile_picture_url,
             'rating': review['rating'],
-            'review_text': review['review_text']
+            'review_text': review['review_text'],
+            'today': review['today']
         })
     return jsonify({'reviews': reviews_list})
 
