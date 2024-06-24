@@ -471,20 +471,20 @@ display: flex;
   <div class="reviews-container">
     <h2>Reviews ({{ review_count }})</h2>
     {% for review in reviews %}
-      <div class="review-item">
-        <img src="{{ url_for('static', filename='assets/profilePictures/' + (review.profile_picture if review.profile_picture else 'default.jpg')) }}" alt="Profile Picture">
+    <div class="review-item">
+      <img src="{{ review.profile_picture_url }}" alt="Profile Picture">
         <div class="review-content">
-          <p class="review-user-name">{{ review.username}}</p>
-          <div class="review-stars">
-            {% for i in range(review.rating) %}
-              <i class="fas fa-star" aria-hidden="true"></i>
-            {% endfor %}
-          </div>
-          <p class="review-description">{{ review.review_text }}</p>
-          <span>{{ review.today }}</span>
+        <p class="review-user-name">{{ review.username }}</p>
+        <div class="review-stars">
+          {% for i in range(review.rating) %}
+            <i class="fas fa-star" aria-hidden="true"></i>
+          {% endfor %}
         </div>
+        <p class="review-description">{{ review.review_text }}</p>
+        <span>{{ review.today }}</span>
       </div>
-    {% endfor %}
+    </div>
+  {% endfor %}
   </div>
 </div>
 

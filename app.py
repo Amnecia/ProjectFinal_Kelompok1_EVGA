@@ -399,7 +399,6 @@ def list():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
     
-
 @app.route('/submit_review/<_id>', methods=['POST'])
 def submit_review(_id):
     produk = db.produk.find_one({'_id': ObjectId(_id)})
@@ -417,7 +416,7 @@ def submit_review(_id):
 
             if user:
                 username = user.get("username")
-                profile_picture = user.get("profile_picture")
+                profile_picture = user.get("profile_picture")  # Get the profile picture from the user document
 
                 today = datetime.now()
                 mytime = today.strftime('%Y-%m-%d %H:%M')
@@ -426,10 +425,9 @@ def submit_review(_id):
                     'rating': int(rating),
                     'review_text': review_text,
                     'username': username,
-                    'profile_picture': profile_picture,
+                    'profile_picture': user.get("profile_picture_url"),  # Store the profile picture URL
                     'today': mytime,
                 }
-                # Insert the review into the database
                 db.reviews.insert_one(review)
                 # Redirect the user to the product detail page
                 return redirect(url_for('detail_produk', _id=_id))
@@ -438,6 +436,7 @@ def submit_review(_id):
         except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
             return 'Error: Invalid token', 401
     return 'Error: Product not found', 404
+
 
 # @app.route('/detail/<_id>', methods=['GET'])
 # def detail_produk(_id):
@@ -481,6 +480,7 @@ def detail_produk(_id):
         average_rating = 0
 
     return render_template('detail_produk.html', produk=produk, id=_id, average_rating=average_rating, review_count=review_count, reviews=reviews)
+
 @app.route('/cart', methods=['GET'])
 def cart():
     token_receive = request.cookies.get(TOKEN_KEY)
@@ -786,6 +786,7 @@ def edit_profile():
             return jsonify({"result": "fail", "msg": "No data provided to update"})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
+    
 @app.route("/get_profile_picture")
 def get_profile_picture():
     token_receive = request.cookies.get(TOKEN_KEY)
@@ -940,7 +941,7 @@ def get_reviews(_id):
     for review in reviews:
         reviews_list.append({
             'username': review['username'],
-            'profile_picture': review['profile_picture'],
+            'profile_picture': review.get('profile_picture_url', 'default.jpg'),  # Use profile_picture_url instead
             'rating': review['rating'],
             'review_text': review['review_text']
         })
