@@ -184,12 +184,15 @@
                     <h5 class="card-title">{{ product.nama }}</h5>
                     <p class="card-text">Rp. {{ product.harga }}</p>
                     <div class="star-rating">
-                        <i class="far fa-star" style="color: #FFD43B;"></i>
-                        <i class="far fa-star" style="color: #FFD43B;"></i>
-                        <i class="far fa-star" style="color: #FFD43B;"></i>
-                        <i class="far fa-star" style="color: #FFD43B;"></i>
-                        <i class="far fa-star" style="color: #FFD43B;"></i>
+                        {% for i in range(5) %}
+                            {% if i < product.average_rating %}
+                                <i class="fas fa-star" style="color: #FFD43B;"></i>
+                            {% else %}
+                                <i class="far fa-star" style="color: #FFD43B;"></i>
+                            {% endif %}
+                        {% endfor %}
                     </div>
+                    <p>Reviews: {{ product.review_count }}</p> <!-- Display review count -->
                     <div class="detail-container" style="padding-top: 20px;">
                         <a href="{{ url_for('detail_produk', _id=product._id) }}" class="btn btn-primary" style="background-color: #D00000; border: none;">View Details</a>
                     </div>

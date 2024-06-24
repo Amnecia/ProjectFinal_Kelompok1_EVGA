@@ -33,6 +33,203 @@
       object-fit: cover;
     }
     
+    * {
+        font-family: "Concert One", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+      }
+      .navbar {
+        background-color: #ff4500; /* red background */
+        border-bottom: 1px solid #444; /* dark gray border */
+        padding: 1rem 0;
+      }
+
+      .container-fluid {
+        position: relative; /* Add this line */
+      }
+
+      .navbar-brand {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #ffffff; /* white text */
+      }
+      .navbar-brand:hover {
+        color: #9c9c9c;
+      }
+
+      .btn-navbar {
+        font-size: 18px;
+        font-weight: bold;
+        background-color: #ff4500; /* green background */
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        margin-right: 1rem;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn-navbar:hover {
+        color: #ffffff;
+        background-color: #d00000; /* darker green on hover */
+      }
+
+      .btn-login {
+        width: 125px;
+        background-color: #100c08; /* purple background */
+        color: white;
+        border: none;
+        padding: 0.7rem 1.5rem; /* Increase padding to make the button larger */
+        margin-right: 1rem;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        position: absolute; /* Add this line */
+        right: 120px; /* Adjust the value to position the button correctly */
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.2rem; /* Increase font size */
+        text-align: center; /* Center the text */
+      }
+
+      .btn-login:hover {
+        color: rgb(255, 255, 255);
+        background-color: #585858; /* darker purple on hover */
+      }
+
+      .btn-checkout {
+        width: 375px;
+        background-color: #ff4500; /* orange background */
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        margin-right: 1rem;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn-checkout:hover {
+        color: white;
+        background-color: #d00000; /* darker orange on hover */
+      }
+
+      /* Additional styles for mobile navigation */
+      @media (max-width: 768px) {
+        .navbar-brand {
+          font-size: 1.2rem;
+        }
+        .btn-navbar {
+          padding: 0.4rem 0.8rem;
+          margin-right: 0.5rem;
+        }
+        .btn-login {
+          padding: 0.4rem 0.8rem;
+          margin-right: 0.5rem;
+        }
+        .btn-checkout {
+          padding: 0.4rem 0.8rem;
+          margin-right: 0.5rem;
+        }
+        .btn-login,
+        .btn-checkout {
+          position: static; /* Remove absolute positioning */
+          top: auto;
+          transform: none;
+        }
+        .btn-checkout {
+          margin-right: 1rem;
+        }
+      }
+
+      .navbar-toggler {
+        border: none;
+        background-color: transparent;
+      }
+
+      .navbar-toggler:hover {
+        border: none;
+        background-color: #d00000;
+      }
+
+      .navbar-toggler:focus {
+        box-shadow: none;
+        border: none;
+      }
+
+      .offcanvas-header {
+        background-color: #ff4500; /* green background */
+        color: white;
+      }
+
+      .offcanvas-title {
+        font-family: "Oswald", sans-serif;
+        font-size: 1.2rem;
+        font-weight: 700;
+      }
+
+      .btn-close-white {
+        background-color: white;
+      }
+
+      .logout {
+        font-size: 20px;
+        width: 375px;
+        text-align: left;
+        background-color: #ffc107; /* orange background */
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        margin-right: 1rem;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      .logout:hover {
+        background-color: #ffa07a; /* darker orange on hover */
+      }
+
+      /* Additional styles for mobile navigation */
+      @media (max-width: 768px) {
+        .navbar-brand {
+          font-size: 1.2rem;
+        }
+        .btn-navbar {
+          padding: 0.4rem 0.8rem;
+          margin-right: 0.5rem;
+        }
+        .btn-login {
+          padding: 0.4rem 0.8rem;
+          margin-right: 0.5rem;
+        }
+        .btn-checkout {
+          padding: 0.4rem 0.8rem;
+          margin-right: 0.5rem;
+        }
+        .btn-login,
+        .btn-checkout {
+          position: static; /* Remove absolute positioning */
+          top: auto;
+          transform: none;
+        }
+        .btn-checkout {
+          margin-right: 1rem;
+        }
+      }
+
+      .btn-navbar,
+      .btn-login,
+      .btn-checkout {
+        text-decoration: none;
+      }
+
+      /* Add styles to align checkout button */
+      .nav-item .nav-link {
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      .btn-checkout {
+        display: block;
+      }
   </style>
   <script>
     $(document).ready(function () {
@@ -44,57 +241,97 @@
         $(this).prevAll().removeClass('fa-regular fa-star').addClass('fa-solid fa-star');
       });
     });
+
+    $(document).ready(function() {
+    $('#submit-review').on('click', function(e) {
+      e.preventDefault();
+      var rating = $('#rating').val();
+      var reviewText = $('#deskripsiProduk').val();
+      var produkId = '{{ produk._id }}';
+
+      $.ajax({
+        type: 'POST',
+        url: '{{ url_for("submit_review", _id=produk._id) }}',
+        data: {
+          rating: rating,
+          review_text: reviewText
+        },
+        success: function(data) {
+          // Update the reviews container in detail_produk.html
+          $.ajax({
+            type: 'GET',
+            url: '{{ url_for("detail_produk", _id=produk._id) }}',
+            success: function(html) {
+              // Extract the updated reviews container from the response
+              var updatedReviewsContainer = $(html).find('.reviews-container');
+
+              // Update the existing reviews container on the page
+              $('.reviews-container').html(updatedReviewsContainer.html());
+
+              // Optionally, you can redirect the user back to detail_produk.html
+              window.location.href = '{{ url_for("detail_produk", _id=produk._id) }}';
+            }
+          });
+        }
+      });
+    });
+  });
   </script>
   <title>Tambah Ulasan</title>
 </head>
 
 <body>
+  <br>
+  <br>
+  <br>
+  <br>
   <div class="container border border-danger shadow rounded pt-4 pb-3">
     <div class="d-flex justify-content-center">
-      <div id="gambar" class="border border-danger my-4" style="height: 250px; width: 250px"></div>
+      <div id="gambar" class="border border-danger my-4" style="height: 250px; width: 250px">
+        <img src="{{ url_for('static', filename='assets/productImage/' + produk.image1) }}" alt="Product Image" style="max-width: 100%; max-height: 100%;">
+      </div>
     </div>
     <div class="text-center">
-      <input type="file" id="imageInput" style="display: none;" accept="image/*">
-      <label for="imageInput" class="btn btn-danger">Select Image</label>
+      <h2>{{ produk.nama }}</h2>
     </div>
-
-    <div class="d-flex justify-content-center mt-4" style="font-size: 20px;">
-      Rating :
-    </div>
-    <div class="d-flex justify-content-center mb-3">
-      <div class="star-rating ms-2">
-        <i class="fa-regular fa-star" data-rating="1" style="color: #FFD43B;"></i>
-        <i class="fa-regular fa-star" data-rating="2" style="color: #FFD43B;"></i>
-        <i class="fa-regular fa-star" data-rating="3" style="color: #FFD43B;"></i>
-        <i class="fa-regular fa-star" data-rating="4" style="color: #FFD43B;"></i>
-        <i class="fa-regular fa-star" data-rating="5" style="color: #FFD43B;"></i>
+    <form action="{{ url_for('submit_review', _id=produk._id) }}" method="post">
+      <!-- ... -->
+      <div class="d-flex justify-content-center mb-3">
+        <div class="star-rating ms-2">
+          <i class="fa-regular fa-star" data-rating="1" style="color: #FFD43B;"></i>
+          <i class="fa-regular fa-star" data-rating="2" style="color: #FFD43B;"></i>
+          <i class="fa-regular fa-star" data-rating="3" style="color: #FFD43B;"></i>
+          <i class="fa-regular fa-star" data-rating="4" style="color: #FFD43B;"></i>
+          <i class="fa-regular fa-star" data-rating="5" style="color: #FFD43B;"></i>
+        </div>
+        <!-- Keep only one hidden field inside the form -->
+        <input type="hidden" name="rating" id="rating" value="0">
       </div>
-      <input type="hidden" name="rating" id="rating" value="0">
-    </div>
-
-    <div class="mb-4 mx-2">
-      <label for="exampleFormControlTextarea1" class="form-label">
-        Berikan Penilaianmu Untuk Memberi Tahu Pembeli Lain
-      </label>
-      <textarea class="form-control border border-dark" id="deskripsiProduk" rows="4"></textarea>
-    </div>
-    <div class="row justify-content-end mb-3">
-      <div class="col-auto">
-        <button type="button" class="btn btn-outline-danger mx-2 px-4">Cancel</button>
-        <button type="button" class="btn btn-danger px-4">Upload</button>
+      <div class="mb-4 mx-2">
+          <label for="exampleFormControlTextarea1" class="form-label">
+              Berikan Penilaianmu Untuk Memberi Tahu Pembeli Lain
+          </label>
+          <textarea class="form-control border border-dark" id="deskripsiProduk" name="deskripsiProduk" rows="4"></textarea>
       </div>
-    </div>
-  </div>
+      <div class="row justify-content-end mb-3">
+          <div class="col-auto">
+              <button type="button" class="btn btn-outline-danger mx-2 px-4">Cancel</button>
+              <button type="submit" class="btn btn-danger px-4">Upload</button>
+          </div>
+      </div>
+    </form>
+
+
   <script>
-    $(document).ready(function () {
-      $('.star-rating .fa').on('click', function () {
-        var rating = $(this).data('rating');
-        $('#rating').val(rating);
-        $(this).siblings().removeClass('fa-star').addClass('fa-star-o');
-        $(this).removeClass('fa-star-o').addClass('fa-star');
-        $(this).prevAll().removeClass('fa-star-o').addClass('fa-star');
-      });
-    })
+  $(document).ready(function () {
+    $('.star-rating .fa-star').on('click', function () {
+      var rating = $(this).data('rating');
+      $('#rating').val(rating); // Update the value of the hidden field
+      $(this).siblings().removeClass('fa-solid fa-star').addClass('fa-regular fa-star');
+      $(this).removeClass('fa-regular fa-star').addClass('fa-solid fa-star');
+      $(this).prevAll().removeClass('fa-regular fa-star').addClass('fa-solid fa-star');
+    });
+  });
     $(document).ready(function () {
       $('.btn.btn-danger.px-4').on('click', function () {
         alert('Ulasan anda berhasil disimpan');
