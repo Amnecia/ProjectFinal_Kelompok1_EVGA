@@ -32,8 +32,8 @@ app = Flask(__name__)
 #client = MongoClient('mongodb+srv://andreasrafaeltobing:ManhwaXL9LUL@cluster0.aajaqnf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 #db = client.dbsandreasrafaeltobing
 
-client = MongoClient('mongodb+srv://ade:adesaef@cluster0.lqterof.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-db = client.projekTA
+client = MongoClient('mongodb://grace:sparta@ac-luh7xkk-shard-00-00.r4fnst4.mongodb.net:27017,ac-luh7xkk-shard-00-01.r4fnst4.mongodb.net:27017,ac-luh7xkk-shard-00-02.r4fnst4.mongodb.net:27017/?ssl=true&replicaSet=atlas-66k3xp-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0')
+db = client.dbgrace
 
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
@@ -48,7 +48,7 @@ TOKEN_KEY = 'mytoken'
 @app.route('/')
 def home():
     produk = db.produk.find()
-    etalase_folder = 'static/assets/etalase/'
+    etalase_folder = os.path.join(os.path.dirname(__file__), 'static', 'assets', 'etalase')
     etalase_images = [file for file in os.listdir(etalase_folder) if os.path.isfile(os.path.join(etalase_folder, file))]
 
     produk_with_review_count_and_rating = []
@@ -133,47 +133,6 @@ def sign_in():
     return jsonify({"result": "fail", "msg": "Login gagal, email atau password invalid"})
 
 
-
-#@app.route('/forget_password', methods=['POST'])
-#def forgot_password():
-    email_receive = request.form["email_give"]
-    user = db.users.find_one({
-        "email": email_receive
-        })
-    if user:
-        token = secret.token_hex(16)
-        user.update({
-            "password_reset_token": token
-            })
-        db.users.save(user)
-        send_password_reset_email(
-             email_receive, 
-             token,
-            )
-        return jsonify({
-            "result": "success", 
-            "msg": "Password reset link sent to your email"
-            })
-    else:
-        return jsonify({"result": "fail", "msg": "Email not found."})
-    
-    
-
-#@app.route('/reset_password', methods=['POST'])
-#def reset_password():
-    token_receive = request.form["token_give"]
-    new_password_receive = request.form["new_password_give"]
-    user = db.users.find_one({"password_reset_token": token_receive})
-    if user:
-        pw_hash = hashlib.sha256(new_password_receive.encode("utf-8")).hexdigest()
-        user.update({"password": pw_hash, "password_reset_token": ""})
-        db.users.save(user)
-        return jsonify({
-            "result": "success", 
-            "msg": "Password reset successfully"
-            })
-    else:
-        return jsonify({"result": "fail", "msg": "Invalid token."})
 
 #def send_password_reset_email(email, token):
     # Implement your email sending logic here
