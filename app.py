@@ -952,13 +952,15 @@ def form_ulasan(_id):
     produk = db.produk.find_one({'_id': ObjectId(_id)})
     return render_template('form_ulasan.html', produk=produk)
 
+
 @app.route('/get_reviews/<_id>', methods=['GET'])
 def get_reviews(_id):
     reviews = db.reviews.find({'produk_id': _id})
     reviews_list = []
     for review in reviews:
-        if review.get('profile_picture'):
-            profile_picture_url = url_for("static", filename=f"assets/ProfilePicture/{review['profile_picture']}", _external=True)
+        user = db.users.find_one({"_id": ObjectId(review['user_id'])}, {"_id": False})
+        if user:
+            profile_picture_url = url_for("static", filename=f"assets/ProfilePicture/{user.get('profile_picture')}", _external=True)
         else:
             profile_picture_url = url_for("static", filename="assets/ProfilePicture/placeholder.png", _external=True)
         reviews_list.append({

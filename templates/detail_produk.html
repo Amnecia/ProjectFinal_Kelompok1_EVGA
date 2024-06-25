@@ -463,7 +463,7 @@ display: flex;
   </div>
 </div>
 
-<!-- Review Section -->
+
 <!-- Review Section -->
 <div class="review-section">
   <h3 style="margin-left:20px; margin-top:20px;">Reviews</h3>
@@ -474,7 +474,7 @@ display: flex;
     {% for review in reviews %}
     <div class="review-item">
       <img src="{{ review.profile_picture_url }}" alt="Profile Picture">
-        <div class="review-content">
+      <div class="review-content">
         <p class="review-user-name">{{ review.username }}</p>
         <div class="review-stars">
           {% for i in range(review.rating) %}
